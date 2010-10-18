@@ -6,11 +6,11 @@ Gem::Specification.new do |s|
   s.name        = "olba"
   s.version     = Olba::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["TODO: Write your name"]
-  s.email       = ["TODO: Write your email address"]
+  s.authors     = ["Christopher Dell"]
+  s.email       = ["chris@tigrish.com"]
   s.homepage    = "http://rubygems.org/gems/olba"
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Add missing translation keys to Hablo}
+  s.description = %q{Post any unfound translation keys to the Hablo SaaS}
 
   s.rubyforge_project = "olba"
 

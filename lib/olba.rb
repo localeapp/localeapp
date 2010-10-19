@@ -13,7 +13,7 @@ class Olba
       :key      => key,
       :options  => options,
       :referrer => '<URL_REFERRER>'
-    }.to_json
+    }
     log(data)
     # send to hablo here
   end

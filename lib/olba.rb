@@ -1,7 +1,6 @@
 require 'olba/version'
 require 'olba/configuration'
 require 'olba/sender'
-require 'olba/rails/i18n'
 
 module Olba
   API_VERSION = "1"
@@ -33,5 +32,6 @@ module Olba
       yield(configuration)
       self.sender = Sender.new
     end
+
   end
 end

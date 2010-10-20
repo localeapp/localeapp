@@ -34,6 +34,5 @@ module Olba
     def public?
       !development_environments.include?(environment_name)
     end
-    
   end
 end

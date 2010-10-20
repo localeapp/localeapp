@@ -1,24 +1,37 @@
-class Olba
+require 'olba/version'
+require 'olba/configuration'
+require 'olba/sender'
+require 'olba/rails/i18n'
 
-  def self.log(str)
-    @log ||= Logger.new(STDOUT)
-    @log.warn('** [Olba] ' << str)
-  end
+module Olba
+  API_VERSION = "1"
+  LOG_PREFIX = "** [Olba] "
 
-  def self.handle_missing_translation(locale, key, options)
-    log('Posting to hablo.co')
-    data = {
-      :api_key  => '<API_KEY_HERE>',
-      :locale   => locale,
-      :key      => key,
-      :options  => options,
-      :referrer => '<URL_REFERRER>'
-    }
-    log(data)
-    # send to hablo here
-  end
+  class << self
+    # The sender object is responsible for delivering formatted data to the Olba server.
+    attr_accessor :sender
 
-  def self.display_missing_translation(locale, key)
-    %Q{<span style="color:red; font-weight:bold; border:2px solid red;">#{locale}, #{key}</span>}
+    # An Olba configuration object.
+    attr_accessor :configuration
+
+    # Writes out the given message to the #logger
+    def log(message)
+      logger.info LOG_PREFIX + message if logger
+    end
+
+    # Look for the Rails logger currently defined
+    def logger
+      self.configuration.logger
+    end
+  
+    # @example
+    # Olba.configure do |config|
+    #   config.api_key = '1234567890abcdef'
+    # end
+    def configure
+      self.configuration ||= Configuration.new
+      yield(configuration)
+      self.sender = Sender.new
+    end
   end
 end

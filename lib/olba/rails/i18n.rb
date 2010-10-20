@@ -4,8 +4,8 @@ module I18n
       Olba.log(exception.message)
       if MissingTranslationData === exception
         Olba.log('Detected missing translation')
-        Olba.handle_missing_translation(locale, key, options)
-        Olba.display_missing_translation(locale, key)
+        Olba.sender.post_translation(locale, key, options)
+        [locale, key].join(', ')
       else
         Olba.log('Raising exception')
         raise exception
@@ -16,4 +16,3 @@ module I18n
 end
 
 I18n.exception_handler = :obla_exception_handler
-

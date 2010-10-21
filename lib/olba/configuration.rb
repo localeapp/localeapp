@@ -7,6 +7,9 @@ module Olba
     # The host to connect to (defaults to hablo.co)
     attr_accessor :host
 
+    # The port to connect to (defaults to 80)
+    attr_accessor :port
+
     # The HTTP open timeout in seconds (defaults to 2).
     attr_accessor :http_open_timeout
 
@@ -24,6 +27,7 @@ module Olba
 
     def initialize
       @host                     = 'hablo.co'
+      @port                     = 80
       @http_open_timeout        = 2
       @http_read_timeout        = 5
       @development_environments = %w(test cucumber)

@@ -5,7 +5,8 @@ module Olba
   class Sender
 
     def post_translation(locale, key, options)
-      data = { :api_key => Olba.configuration.api_key, :locale => locale, :key => key, :options => options }
+      translation = { :key => key, :locale => locale, :substitutions => options.keys }
+      data = { :api_key => Olba.configuration.api_key, :translation => translation }
       RestClient.post(translation_resource_url, data.to_json, :content_type => :json, :accept => :json) do |response, request, result|
         Olba.log([translation_resource_url, response.code, data.inspect].join(' - '))
       end

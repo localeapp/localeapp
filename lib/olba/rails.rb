@@ -1,3 +1,4 @@
+require 'olba/rails/action_controller_base'
 require 'olba/rails/i18n'
 require 'olba/rails/translation_helper'
 
@@ -15,10 +16,18 @@ module Olba
       elsif defined?(RAILS_ENV)
         rails_env = RAILS_ENV
       end
+
+      if defined?(::Rails.root)
+        rails_root = ::Rails.root
+      elsif defined?(RAILS_ROOT)
+        rails_root = RAILS_ROOT
+      end
       
       Olba.configure do |config|
         config.logger           = rails_logger
         config.environment_name = rails_env
+        config.project_root     = rails_root
+        config.cluster_log      = File.join([rails_root, 'log', 'olba.yml'])
       end
     end
   end

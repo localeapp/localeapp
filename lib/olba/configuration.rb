@@ -19,11 +19,21 @@ module Olba
     # The name of the environment the application is running in
     attr_accessor :environment_name
 
+    # The path to the project in which the translation occurred, such as the RAILS_ROOT 
+    attr_accessor :project_root
+
     # The names of environments where notifications aren't sent (defaults to 'test', 'cucumber')
     attr_accessor :development_environments
 
     # The logger used by Olba
     attr_accessor :logger
+
+    # The number of seconds to wait before asking the service for new translations (defaults to 60).
+    attr_accessor :poll_interval
+
+    # The complete path to the log file where we store clustier information (defaults to ./olba.yml)
+    # olb/rails overwrites this to RAILS_ROOT/config/olba.yml
+    attr_accessor :cluster_log
 
     def initialize
       @host                     = 'hablo.co'
@@ -31,6 +41,8 @@ module Olba
       @http_open_timeout        = 2
       @http_read_timeout        = 5
       @development_environments = %w(test cucumber)
+      @poll_interval            = 60
+      @cluster_log              = 'olba.yml'
     end
 
     # Determines if the notifier will send notices.

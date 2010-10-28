@@ -1,4 +1,5 @@
 require 'yaml'
+require 'rest-client'
 
 module Olba
   class Receiver
@@ -15,7 +16,7 @@ module Olba
     end
 
     def initialize_cluster_log
-      unless File.exists?(Olba.configuration.cluster_log)
+      if !File.exists?(Olba.configuration.cluster_log) || !cluster_log
         File.open(Olba.configuration.cluster_log, 'w') do |f|
           f.write({:polled_at => Time.now.to_i, :updated_at => Time.now.to_i}.to_yaml)
         end
@@ -23,34 +24,48 @@ module Olba
     end
 
     def cluster_log
-      yml = YAML.load_file(Olba.configuration.cluster_log)
-      puts '---'
-      puts 'cluster: ' << yml.inspect
-      puts 'self   : ' << {:polled_at => @polled_at, :updated_at => @updated_at}.inspect
-      Olba.log(yml.inspect)
-      yml
+      YAML.load_file(Olba.configuration.cluster_log)
     end
 
     def cluster_updated?
-      puts @updated_at != cluster_log[:updated_at] ? 'UPDATED'  : 'NOT UPDATED'
       @updated_at != cluster_log[:updated_at]
     end
 
     def needs_polling?
-      puts cluster_log[:polled_at] < (Time.now.to_i - Olba.configuration.poll_interval) ? 'DO POLL' : 'no POLL'
       cluster_log[:polled_at] < (Time.now.to_i - Olba.configuration.poll_interval)
     end
 
     def poll!
-      # get updated_at from server
-      puts 'Polling'
-      File.open(Olba.configuration.cluster_log, 'w') do |f|
-        f.write({:polled_at => Time.now.to_i, :updated_at => Time.now.to_i}.to_yaml)
+      RestClient.get(translation_resource_status_url) do |response, request, result|
+        if response.code == 200
+          remote_updated_at = Time.parse(response.to_str).to_i
+        else
+          remote_updated_at = cluster_log[:updated_at]
+        end
+        File.open(Olba.configuration.cluster_log, 'w') do |f|
+          f.write({:polled_at => Time.now.to_i, :updated_at => remote_updated_at}.to_yaml)
+        end
       end
+      # get updated_at from server
     end
 
     def get_translations!
-      puts 'Getting translations'
+      RestClient.get(translation_resource_url) do |response, request, result|
+        Olba.log([translation_resource_url, response.code].join(' - '))
+        if response.code == 200
+          File.open(File.join(Olba.configuration.project_root, 'config', 'locales', 'olba.yml'), 'w') do |f|
+            f.write(response.to_str)
+          end
+        end
+      end
+    end
+
+    def translation_resource_url
+      "http://#{Olba.configuration.host}:#{Olba.configuration.port}/translations.yml?api_key=#{Olba.configuration.api_key}"
+    end
+
+    def translation_resource_status_url
+      "http://#{Olba.configuration.host}:#{Olba.configuration.port}/translations/updated_at?api_key=#{Olba.configuration.api_key}"
     end
   end
 end

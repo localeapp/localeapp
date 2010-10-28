@@ -44,11 +44,5 @@ module Olba
       @poll_interval            = 60
       @cluster_log              = 'olba.yml'
     end
-
-    # Determines if the notifier will send notices.
-    # @return [Boolean] Returns +false+ if in a development environment, +true+ otherwise.
-    def public?
-      !development_environments.include?(environment_name)
-    end
   end
 end

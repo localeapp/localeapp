@@ -35,6 +35,9 @@ module Olba
     # olb/rails overwrites this to RAILS_ROOT/config/olba.yml
     attr_accessor :cluster_log
 
+    # The complete path to the file where translations are stored
+    attr_accessor :locale_file
+
     def initialize
       @host                     = 'hablo.co'
       @port                     = 80
@@ -43,6 +46,7 @@ module Olba
       @development_environments = %w(test cucumber)
       @poll_interval            = 60
       @cluster_log              = 'olba.yml'
+      @locale_file              = 'translations.yml'
     end
   end
 end

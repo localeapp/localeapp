@@ -10,21 +10,16 @@ module Olba
     attr_accessor :updated_at
 
     def initialize
-      initialize_cluster_log
       @polled_at  = cluster_log[:polled_at]
       @updated_at = cluster_log[:updated_at]
     end
 
-    def initialize_cluster_log
-      if !File.exists?(Olba.configuration.cluster_log) || !cluster_log
-        File.open(Olba.configuration.cluster_log, 'w') do |f|
-          f.write({:polled_at => Time.now.to_i, :updated_at => Time.now.to_i}.to_yaml)
-        end
-      end
-    end
-
     def cluster_log
-      YAML.load_file(Olba.configuration.cluster_log)
+      if File.exists?(Olba.configuration.cluster_log)
+        YAML.load_file(Olba.configuration.cluster_log)
+      else
+        {}
+      end
     end
 
     def cluster_updated?
@@ -53,7 +48,7 @@ module Olba
       RestClient.get(translation_resource_url) do |response, request, result|
         Olba.log([translation_resource_url, response.code].join(' - '))
         if response.code == 200
-          File.open(File.join(Olba.configuration.project_root, 'config', 'locales', 'olba.yml'), 'w') do |f|
+          File.open(Olba.configuration.locale_file, 'w') do |f|
             f.write(response.to_str)
           end
         end
@@ -65,6 +60,7 @@ module Olba
     end
 
     def translation_resource_status_url
+      puts "http://#{Olba.configuration.host}:#{Olba.configuration.port}/translations/updated_at?api_key=#{Olba.configuration.api_key}"
       "http://#{Olba.configuration.host}:#{Olba.configuration.port}/translations/updated_at?api_key=#{Olba.configuration.api_key}"
     end
   end

@@ -1,4 +1,4 @@
-module Olba
+module LocaleApp
   class Configuration
   
     # The API key for your project, found on the project edit form
@@ -25,7 +25,7 @@ module Olba
     # The names of environments where notifications aren't sent (defaults to 'test', 'cucumber')
     attr_accessor :development_environments
 
-    # The logger used by Olba
+    # The logger used by LocaleApp
     attr_accessor :logger
 
     # The number of seconds to wait before asking the service for new translations (defaults to 60).

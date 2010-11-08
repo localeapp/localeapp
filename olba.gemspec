@@ -4,7 +4,7 @@ require "olba/version"
 
 Gem::Specification.new do |s|
   s.name        = "olba"
-  s.version     = Olba::VERSION
+  s.version     = LocaleApp::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Christopher Dell"]
   s.email       = ["chris@tigrish.com"]

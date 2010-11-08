@@ -1,7 +1,7 @@
 require 'yaml'
 require 'rest-client'
 
-module Olba
+module LocaleApp
   class Receiver
     # when we last asked the service for updates
     attr_accessor :polled_at
@@ -15,8 +15,8 @@ module Olba
     end
 
     def cluster_log
-      if File.exists?(Olba.configuration.cluster_log)
-        YAML.load_file(Olba.configuration.cluster_log)
+      if File.exists?(LocaleApp.configuration.cluster_log)
+        YAML.load_file(LocaleApp.configuration.cluster_log)
       else
         {}
       end
@@ -27,7 +27,7 @@ module Olba
     end
 
     def needs_polling?
-      cluster_log[:polled_at] < (Time.now.to_i - Olba.configuration.poll_interval)
+      cluster_log[:polled_at] < (Time.now.to_i - LocaleApp.configuration.poll_interval)
     end
 
     def poll!
@@ -37,7 +37,7 @@ module Olba
         else
           remote_updated_at = cluster_log[:updated_at]
         end
-        File.open(Olba.configuration.cluster_log, 'w') do |f|
+        File.open(LocaleApp.configuration.cluster_log, 'w') do |f|
           f.write({:polled_at => Time.now.to_i, :updated_at => remote_updated_at}.to_yaml)
         end
       end
@@ -46,9 +46,9 @@ module Olba
 
     def get_translations!
       RestClient.get(translation_resource_url) do |response, request, result|
-        Olba.log([translation_resource_url, response.code].join(' - '))
+        LocaleApp.log([translation_resource_url, response.code].join(' - '))
         if response.code == 200
-          File.open(Olba.configuration.locale_file, 'w') do |f|
+          File.open(LocaleApp.configuration.locale_file, 'w') do |f|
             f.write(response.to_str)
           end
         end
@@ -56,12 +56,12 @@ module Olba
     end
 
     def translation_resource_url
-      "http://#{Olba.configuration.host}:#{Olba.configuration.port}/translations.yml?api_key=#{Olba.configuration.api_key}"
+      "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations.yml?api_key=#{LocaleApp.configuration.api_key}"
     end
 
     def translation_resource_status_url
-      puts "http://#{Olba.configuration.host}:#{Olba.configuration.port}/translations/updated_at?api_key=#{Olba.configuration.api_key}"
-      "http://#{Olba.configuration.host}:#{Olba.configuration.port}/translations/updated_at?api_key=#{Olba.configuration.api_key}"
+      puts "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations/updated_at?api_key=#{LocaleApp.configuration.api_key}"
+      "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations/updated_at?api_key=#{LocaleApp.configuration.api_key}"
     end
   end
 end

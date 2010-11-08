@@ -13,7 +13,7 @@ namespace :olba do
         nil
       ).each do |key, value|
         puts "#{key} => #{value}"
-        Olba.sender.post_translation(locale, key, {}, value)
+        LocaleApp.sender.post_translation(locale, key, {}, value)
       end
     end
   end

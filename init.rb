@@ -1,1 +1,1 @@
-require 'olba'
+require 'locale_app'

@@ -1,4 +1,4 @@
-module Olba
+module LocaleApp
   class Configuration
   
     # The API key for your project, found on the project edit form
@@ -25,14 +25,14 @@ module Olba
     # The names of environments where notifications aren't sent (defaults to 'test', 'cucumber')
     attr_accessor :development_environments
 
-    # The logger used by Olba
+    # The logger used by LocaleApp
     attr_accessor :logger
 
     # The number of seconds to wait before asking the service for new translations (defaults to 60).
     attr_accessor :poll_interval
 
-    # The complete path to the log file where we store clustier information (defaults to ./olba.yml)
-    # olb/rails overwrites this to RAILS_ROOT/config/olba.yml
+    # The complete path to the log file where we store clustier information (defaults to ./locale_app.yml)
+    # olb/rails overwrites this to RAILS_ROOT/config/locale_app.yml
     attr_accessor :cluster_log
 
     # The complete path to the file where translations are stored
@@ -45,7 +45,7 @@ module Olba
       @http_read_timeout        = 5
       @development_environments = %w(test cucumber)
       @poll_interval            = 60
-      @cluster_log              = 'olba.yml'
+      @cluster_log              = 'locale_app.yml'
       @locale_file              = 'translations.yml'
     end
   end

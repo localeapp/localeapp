@@ -31,8 +31,8 @@ module LocaleApp
     # The number of seconds to wait before asking the service for new translations (defaults to 60).
     attr_accessor :poll_interval
 
-    # The complete path to the log file where we store clustier information (defaults to ./olba.yml)
-    # olb/rails overwrites this to RAILS_ROOT/config/olba.yml
+    # The complete path to the log file where we store clustier information (defaults to ./locale_app.yml)
+    # olb/rails overwrites this to RAILS_ROOT/config/locale_app.yml
     attr_accessor :cluster_log
 
     # The complete path to the file where translations are stored
@@ -45,7 +45,7 @@ module LocaleApp
       @http_read_timeout        = 5
       @development_environments = %w(test cucumber)
       @poll_interval            = 60
-      @cluster_log              = 'olba.yml'
+      @cluster_log              = 'locale_app.yml'
       @locale_file              = 'translations.yml'
     end
   end

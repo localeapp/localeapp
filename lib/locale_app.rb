@@ -1,7 +1,7 @@
-require 'olba/version'
-require 'olba/configuration'
-require 'olba/sender'
-require 'olba/receiver'
+require 'locale_app/version'
+require 'locale_app/configuration'
+require 'locale_app/sender'
+require 'locale_app/receiver'
 
 module LocaleApp
   API_VERSION = "1"

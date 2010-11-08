@@ -1,4 +1,4 @@
-namespace :olba do
+namespace :locale_app do
   desc 'Imports the en.yml file to the LocaleServer'
   task :import => :environment do
     require 'flatten'

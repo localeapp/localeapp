@@ -1,6 +1,6 @@
-require 'olba/rails/action_controller_base'
-require 'olba/rails/i18n'
-require 'olba/rails/translation_helper'
+require 'locale_app/rails/action_controller_base'
+require 'locale_app/rails/i18n'
+require 'locale_app/rails/translation_helper'
 
 module LocaleApp
   module Rails
@@ -27,8 +27,8 @@ module LocaleApp
         config.logger           = rails_logger
         config.environment_name = rails_env
         config.project_root     = rails_root
-        config.cluster_log      = File.join([rails_root, 'log', 'olba.yml'])
-        config.locale_file      = File.join([rails_root, 'config', 'locales', 'olba.yml'])
+        config.cluster_log      = File.join([rails_root, 'log', 'locale_app.yml'])
+        config.locale_file      = File.join([rails_root, 'config', 'locales', 'locale_app.yml'])
       end
       initialize_cluster_log
       initialize_locale_file
@@ -46,7 +46,7 @@ module LocaleApp
       if !File.exists?(LocaleApp.configuration.locale_file)
         File.open(LocaleApp.configuration.locale_file, 'w') do |f|
           translations = {}
-          translations['en'] = {'olba' => 'LocaleApp'}
+          translations['en'] = {'locale_app' => 'LocaleApp'}
           f.write(translations.to_yaml)
         end
       end
@@ -56,4 +56,4 @@ module LocaleApp
 end
 
 LocaleApp::Rails.initialize
-LocaleApp.log('Loaded olba/rails')
+LocaleApp.log('Loaded locale_app/rails')

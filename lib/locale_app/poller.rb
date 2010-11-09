@@ -2,10 +2,10 @@ require 'yaml'
 require 'rest-client'
 
 module LocaleApp
-  class Receiver
+  class Poller
     # when we last asked the service for updates
     attr_accessor :polled_at
-    
+
     # the last time the service had updates for us
     attr_accessor :updated_at
 

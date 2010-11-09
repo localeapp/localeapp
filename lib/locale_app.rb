@@ -1,7 +1,7 @@
 require 'locale_app/version'
 require 'locale_app/configuration'
 require 'locale_app/sender'
-require 'locale_app/receiver'
+require 'locale_app/poller'
 
 module LocaleApp
   API_VERSION = "1"
@@ -14,8 +14,8 @@ module LocaleApp
     # The sender object is responsible for delivering formatted data to the LocaleApp server.
     attr_accessor :sender
 
-    # The receiver object is responsible for retrieving data for the LocaleApp server
-    attr_accessor :receiver
+    # The poller object is responsible for retrieving data for the LocaleApp server
+    attr_accessor :poller
 
 
     # Writes out the given message to the #logger
@@ -36,7 +36,7 @@ module LocaleApp
       self.configuration ||= Configuration.new
       yield(configuration)
       self.sender = Sender.new
-      self.receiver = Receiver.new
+      self.poller = Poller.new
     end
 
   end

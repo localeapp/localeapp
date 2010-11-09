@@ -1,4 +1,4 @@
-namespace :olba do
+namespace :locale_app do
   desc 'Imports the en.yml file to the LocaleServer'
   task :import => :environment do
     require 'flatten'
@@ -13,7 +13,7 @@ namespace :olba do
         nil
       ).each do |key, value|
         puts "#{key} => #{value}"
-        Olba.sender.post_translation(locale, key, {}, value)
+        LocaleApp.sender.post_translation(locale, key, {}, value)
       end
     end
   end

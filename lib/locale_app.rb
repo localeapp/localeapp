@@ -1,21 +1,21 @@
-require 'olba/version'
-require 'olba/configuration'
-require 'olba/sender'
-require 'olba/receiver'
+require 'locale_app/version'
+require 'locale_app/configuration'
+require 'locale_app/sender'
+require 'locale_app/poller'
 
-module Olba
+module LocaleApp
   API_VERSION = "1"
-  LOG_PREFIX = "** [Olba] "
+  LOG_PREFIX = "** [LocaleApp] "
 
   class << self
-    # An Olba configuration object.
+    # An LocaleApp configuration object.
     attr_accessor :configuration
     
-    # The sender object is responsible for delivering formatted data to the Olba server.
+    # The sender object is responsible for delivering formatted data to the LocaleApp server.
     attr_accessor :sender
 
-    # The receiver object is responsible for retrieving data for the Olba server
-    attr_accessor :receiver
+    # The poller object is responsible for retrieving data for the LocaleApp server
+    attr_accessor :poller
 
 
     # Writes out the given message to the #logger
@@ -29,14 +29,14 @@ module Olba
     end
   
     # @example
-    # Olba.configure do |config|
+    # LocaleApp.configure do |config|
     #   config.api_key = '1234567890abcdef'
     # end
     def configure
       self.configuration ||= Configuration.new
       yield(configuration)
       self.sender = Sender.new
-      self.receiver = Receiver.new
+      self.poller = Poller.new
     end
 
   end

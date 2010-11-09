@@ -10,24 +10,24 @@ module LocaleApp
     attr_accessor :updated_at
 
     def initialize
-      @polled_at  = cluster_log[:polled_at]
-      @updated_at = cluster_log[:updated_at]
+      @polled_at  = synchronization_data_file[:polled_at]
+      @updated_at = synchronization_data_file[:updated_at]
     end
 
-    def cluster_log
-      if File.exists?(LocaleApp.configuration.cluster_log)
-        YAML.load_file(LocaleApp.configuration.cluster_log)
+    def synchronization_data
+      if File.exists?(LocaleApp.configuration.synchronization_data_file)
+        YAML.load_file(LocaleApp.configuration.synchronization_data_file)
       else
         {}
       end
     end
 
-    def cluster_updated?
-      @updated_at != cluster_log[:updated_at]
+    def translations_changed?
+      @updated_at != synchronization_data[:updated_at]
     end
 
     def needs_polling?
-      cluster_log[:polled_at] < (Time.now.to_i - LocaleApp.configuration.poll_interval)
+      synchronization_data[:polled_at] < (Time.now.to_i - LocaleApp.configuration.poll_interval)
     end
 
     def poll!
@@ -35,9 +35,9 @@ module LocaleApp
         if response.code == 200
           remote_updated_at = Time.parse(response.to_str).to_i
         else
-          remote_updated_at = cluster_log[:updated_at]
+          remote_updated_at = synchronization_data[:updated_at]
         end
-        File.open(LocaleApp.configuration.cluster_log, 'w') do |f|
+        File.open(LocaleApp.configuration.synchronization_data_file, 'w') do |f|
           f.write({:polled_at => Time.now.to_i, :updated_at => remote_updated_at}.to_yaml)
         end
       end

@@ -16,7 +16,7 @@ module ActionController
       if ::LocaleApp.poller.cluster_updated?
         ::LocaleApp.log Time.now.to_i.to_s << '- reloading I18n'
         I18n.reload!
-        ::LocaleApp.poller.updated_at = ::LocaleApp.poller.cluster_log[:updated_at]
+        ::LocaleApp.poller.updated_at = ::LocaleApp.poller.synchronization_data[:updated_at]
       end
     end
   end

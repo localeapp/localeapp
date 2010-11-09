@@ -22,21 +22,21 @@ module LocaleApp
       elsif defined?(RAILS_ROOT)
         rails_root = RAILS_ROOT
       end
-      
+
       LocaleApp.configure do |config|
-        config.logger           = rails_logger
-        config.environment_name = rails_env
-        config.project_root     = rails_root
-        config.cluster_log      = File.join([rails_root, 'log', 'locale_app.yml'])
-        config.locale_file      = File.join([rails_root, 'config', 'locales', 'locale_app.yml'])
+        config.logger                    = rails_logger
+        config.environment_name          = rails_env
+        config.project_root              = rails_root
+        config.synchronization_data_file = File.join([rails_root, 'log', 'locale_app.yml'])
+        config.locale_file               = File.join([rails_root, 'config', 'locales', 'locale_app.yml'])
       end
-      initialize_cluster_log
+      initialize_synchronization_data_file
       initialize_locale_file
     end
 
-    def self.initialize_cluster_log
-      if !File.exists?(LocaleApp.configuration.cluster_log)
-        File.open(LocaleApp.configuration.cluster_log, 'w') do |f|
+    def self.initialize_synchronization_data_file
+      if !File.exists?(LocaleApp.configuration.synchronization_data_file)
+        File.open(LocaleApp.configuration.synchronization_data_file, 'w') do |f|
           f.write({:polled_at => Time.now.to_i, :updated_at => Time.now.to_i}.to_yaml)
         end
       end
@@ -51,7 +51,6 @@ module LocaleApp
         end
       end
     end
-    
   end
 end
 

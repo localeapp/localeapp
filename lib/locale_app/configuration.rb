@@ -19,34 +19,38 @@ module LocaleApp
     # The name of the environment the application is running in
     attr_accessor :environment_name
 
-    # The path to the project in which the translation occurred, such as the RAILS_ROOT 
+    # The path to the project in which the translation occurred, such as the
+    # RAILS_ROOT
     attr_accessor :project_root
 
-    # The names of environments where notifications aren't sent (defaults to 'test', 'cucumber')
+    # The names of environments where notifications aren't sent (defaults to
+    # 'test', 'cucumber')
     attr_accessor :development_environments
 
     # The logger used by LocaleApp
     attr_accessor :logger
 
-    # The number of seconds to wait before asking the service for new translations (defaults to 60).
+    # The number of seconds to wait before asking the service for new
+    # translations (defaults to 60).
     attr_accessor :poll_interval
 
-    # The complete path to the log file where we store clustier information (defaults to ./locale_app.yml)
-    # olb/rails overwrites this to RAILS_ROOT/config/locale_app.yml
-    attr_accessor :cluster_log
+    # The complete path to the data file where we store synchronization
+    # information (defaults to ./locale_app.yml) local_app/rails overwrites
+    # this to RAILS_ROOT/log/locale_app.yml
+    attr_accessor :synchronization_data_file
 
     # The complete path to the file where translations are stored
     attr_accessor :locale_file
 
     def initialize
-      @host                     = 'hablo.co'
-      @port                     = 80
-      @http_open_timeout        = 2
-      @http_read_timeout        = 5
-      @development_environments = %w(test cucumber)
-      @poll_interval            = 60
-      @cluster_log              = 'locale_app.yml'
-      @locale_file              = 'translations.yml'
+      @host                      = 'hablo.co'
+      @port                      = 80
+      @http_open_timeout         = 2
+      @http_read_timeout         = 5
+      @development_environments  = %w(test cucumber)
+      @poll_interval             = 60
+      @synchronization_data_file = 'locale_app.yml'
+      @locale_file               = 'translations.yml'
     end
   end
 end

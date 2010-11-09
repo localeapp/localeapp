@@ -37,10 +37,8 @@ module LocaleApp
     attr_accessor :translation_data_file
 
     def initialize
-      @host                      = 'hablo.co'
+      @host                      = 'localeapp.com'
       @port                      = 80
-      @http_open_timeout         = 2
-      @http_read_timeout         = 5
       @disabled_environments     = %w(test cucumber)
       @poll_interval             = 60
       @synchronization_data_file = 'locale_app.yml'

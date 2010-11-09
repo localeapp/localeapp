@@ -10,8 +10,8 @@ module LocaleApp
     attr_accessor :updated_at
 
     def initialize
-      @polled_at  = synchronization_data_file[:polled_at]
-      @updated_at = synchronization_data_file[:updated_at]
+      @polled_at  = synchronization_data[:polled_at]
+      @updated_at = synchronization_data[:updated_at]
     end
 
     def synchronization_data

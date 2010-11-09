@@ -1,5 +1,6 @@
 require 'locale_app/rails/action_controller_base'
 require 'locale_app/rails/i18n'
+require 'locale_app/rails/translation_helper'
 
 module LocaleApp
   module Rails

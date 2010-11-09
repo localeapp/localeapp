@@ -28,10 +28,10 @@ module LocaleApp
         config.environment_name          = rails_env
         config.project_root              = rails_root
         config.synchronization_data_file = File.join([rails_root, 'log', 'locale_app.yml'])
-        config.locale_file               = File.join([rails_root, 'config', 'locales', 'locale_app.yml'])
+        config.translation_data_file     = File.join([rails_root, 'config', 'locales', 'locale_app.yml'])
       end
       initialize_synchronization_data_file
-      initialize_locale_file
+      initialize_translation_data_file
     end
 
     def self.initialize_synchronization_data_file
@@ -42,9 +42,9 @@ module LocaleApp
       end
     end
 
-    def self.initialize_locale_file
-      if !File.exists?(LocaleApp.configuration.locale_file)
-        File.open(LocaleApp.configuration.locale_file, 'w') do |f|
+    def self.initialize_translation_data_file
+      if !File.exists?(LocaleApp.configuration.translation_data_file)
+        File.open(LocaleApp.configuration.translation_data_file, 'w') do |f|
           translations = {}
           translations['en'] = {'locale_app' => 'LocaleApp'}
           f.write(translations.to_yaml)

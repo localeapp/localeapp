@@ -34,7 +34,7 @@ module LocaleApp
     attr_accessor :synchronization_data_file
 
     # The complete path to the file where translations are stored
-    attr_accessor :locale_file
+    attr_accessor :translation_data_file
 
     def initialize
       @host                      = 'hablo.co'
@@ -44,7 +44,7 @@ module LocaleApp
       @disabled_environments     = %w(test cucumber)
       @poll_interval             = 60
       @synchronization_data_file = 'locale_app.yml'
-      @locale_file               = 'translations.yml'
+      @translation_data_file     = 'translations.yml'
     end
   end
 end

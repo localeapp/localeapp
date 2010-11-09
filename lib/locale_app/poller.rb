@@ -48,7 +48,7 @@ module LocaleApp
       RestClient.get(translation_resource_url) do |response, request, result|
         LocaleApp.log([translation_resource_url, response.code].join(' - '))
         if response.code == 200
-          File.open(LocaleApp.configuration.locale_file, 'w') do |f|
+          File.open(LocaleApp.configuration.translation_data_file, 'w') do |f|
             f.write(response.to_str)
           end
         end

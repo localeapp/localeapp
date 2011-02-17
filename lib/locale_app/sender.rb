@@ -4,7 +4,8 @@ require 'json'
 module LocaleApp
   class Sender
 
-    def post_translation(locale, key, options={}, value=nil)
+    def post_translation(locale, key, options, value=nil)
+      options ||= {}
       translation = { :key => key, :locale => locale, :substitutions => options.keys, :description => value}
       data = { :api_key => LocaleApp.configuration.api_key, :translation => translation }
       RestClient.post(translation_resource_url, data.to_json, :content_type => :json, :accept => :json) do |response, request, result|

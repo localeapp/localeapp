@@ -44,5 +44,9 @@ module LocaleApp
       @synchronization_data_file = 'locale_app.yml'
       @translation_data_file     = 'translations.yml'
     end
+
+    def disabled?
+      disabled_environments.include?(environment_name)
+    end
   end
 end

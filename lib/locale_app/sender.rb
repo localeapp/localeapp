@@ -4,7 +4,9 @@ require 'json'
 module LocaleApp
   class Sender
 
-    def post_translation(locale, key, options, value=nil)
+    def post_translation(locale, key, options, value = nil)
+      return if LocaleApp.configuration.disabled?
+
       options ||= {}
       translation = { :key => key, :locale => locale, :substitutions => options.keys, :description => value}
       data = { :api_key => LocaleApp.configuration.api_key, :translation => translation }

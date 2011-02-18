@@ -16,7 +16,15 @@ module LocaleApp
     end
 
     def translation_resource_url
-      "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations"
+      uri_params = {
+        :host => LocaleApp.configuration.host,
+        :port => LocaleApp.configuration.port,
+        :path => '/translations'
+      }
+      if LocaleApp.configuration.http_auth_username
+        uri_params[:userinfo] = "#{LocaleApp.configuration.http_auth_username}:#{LocaleApp.configuration.http_auth_password}"
+      end
+      URI::HTTP.build(uri_params).to_s
     end
 
   end

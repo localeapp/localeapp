@@ -10,6 +10,9 @@ module LocaleApp
     # The port to connect to (defaults to 80)
     attr_accessor :port
 
+    attr_accessor :http_auth_username
+    attr_accessor :http_auth_password
+
     # The name of the environment the application is running in
     attr_accessor :environment_name
 

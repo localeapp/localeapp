@@ -6,6 +6,12 @@ describe LocaleApp::Sender, "#translation_resource_url" do
       LocaleApp::Sender.new.translation_resource_url.should == "http://test.host:1234/translations"
     end
   end
+
+  it "includes http auth if if configuration" do
+    with_configuration(:host => 'test.host', :port => 1234, :http_auth_username => 'foo', :http_auth_password => 'bar') do
+      LocaleApp::Sender.new.translation_resource_url.should == "http://foo:bar@test.host:1234/translations"
+    end
+  end
 end
 
 describe LocaleApp::Sender, "#post_translation(locale, key, options, value = nil)" do

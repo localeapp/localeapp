@@ -56,12 +56,29 @@ module LocaleApp
     end
 
     def translation_resource_url
-      "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations.yml?api_key=#{LocaleApp.configuration.api_key}"
+      uri_params = {
+        :host => LocaleApp.configuration.host,
+        :port => LocaleApp.configuration.port,
+        :path => '/translations.yml',
+        :query => "api_key=#{LocaleApp.configuration.api_key}"
+      }
+      if LocaleApp.configuration.http_auth_username
+        uri_params[:userinfo] = "#{LocaleApp.configuration.http_auth_username}:#{LocaleApp.configuration.http_auth_password}"
+      end
+      URI::HTTP.build(uri_params).to_s
     end
 
     def translation_resource_status_url
-      puts "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations/updated_at?api_key=#{LocaleApp.configuration.api_key}"
-      "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations/updated_at?api_key=#{LocaleApp.configuration.api_key}"
+      uri_params = {
+        :host => LocaleApp.configuration.host,
+        :port => LocaleApp.configuration.port,
+        :path => '/translations/updated_at',
+        :query => "api_key=#{LocaleApp.configuration.api_key}"
+      }
+      if LocaleApp.configuration.http_auth_username
+        uri_params[:userinfo] = "#{LocaleApp.configuration.http_auth_username}:#{LocaleApp.configuration.http_auth_password}"
+      end
+      URI::HTTP.build(uri_params).to_s
     end
   end
 end

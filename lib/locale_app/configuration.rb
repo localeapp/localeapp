@@ -36,16 +36,16 @@ module LocaleApp
     # this to RAILS_ROOT/log/locale_app.yml
     attr_accessor :synchronization_data_file
 
-    # The complete path to the file where translations are stored
-    attr_accessor :translation_data_file
+    # The complete path to the directory where translations are stored
+    attr_accessor :translation_data_directory
 
     def initialize
-      @host                      = 'localeapp.com'
-      @port                      = 80
-      @disabled_environments     = %w(test cucumber)
-      @poll_interval             = 60
-      @synchronization_data_file = 'locale_app.yml'
-      @translation_data_file     = 'translations.yml'
+      @host                       = 'localeapp.com'
+      @port                       = 80
+      @disabled_environments      = %w(test cucumber)
+      @poll_interval              = 60
+      @synchronization_data_file  = 'locale_app.yml'
+      @translation_data_directory = File.join('config', 'locales')
     end
 
     def disabled?

@@ -21,6 +21,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency('json')
   s.add_dependency('rest-client')
+  s.add_dependency('ya2yaml')
 
   # i18n is a dev dependency as we'll use whichever version is in rails
   # when the gem runs

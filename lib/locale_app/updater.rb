@@ -23,13 +23,13 @@ end
 
 module LocaleApp
   class Updater
-    def update(data)
-      data[:translations].keys.each do |short_code|
+    def self.update(data)
+      data['translations'].keys.each do |short_code|
         filename = File.join(LocaleApp.configuration.translation_data_directory, "#{short_code}.yml")
         translations = YAML.load(File.read(filename))
-        new_data = { short_code => data[:translations][short_code] }
+        new_data = { short_code => data['translations'][short_code] }
         translations.deep_merge!(new_data)
-        data[:deleted].each do |key|
+        data['deleted'].each do |key|
           translations.remove_flattened_key!(short_code, key)
         end
         File.open(filename, "w+") do |file|

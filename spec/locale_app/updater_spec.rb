@@ -1,22 +1,24 @@
 require 'spec_helper'
 
-describe LocaleApp::Updater, "#update(data)" do
+describe LocaleApp::Updater, ".update(data)" do
   before(:each) do
     @yml_dir = Dir.mktmpdir
     Dir.glob(File.join(File.dirname(__FILE__), '..', 'fixtures', '*.yml')).each { |f| FileUtils.cp f, @yml_dir }
-
-    with_configuration(:translation_data_directory => @yml_dir) do
-      @updater = LocaleApp::Updater.new
-    end
   end
 
   after(:each) do
     FileUtils.rm_rf @yml_dir
   end
 
+  def do_update(data)
+    with_configuration(:translation_data_directory => @yml_dir) do
+      LocaleApp::Updater.update(data)
+    end
+  end
+
   it "adds, updates and deletes keys in the yml files" do
-    @updater.update({
-      :translations => {
+    do_update({
+      'translations' => {
         'en' => {
           'foo' => { 'monkey' => 'hello', 'night' => 'night' }
         },
@@ -24,7 +26,7 @@ describe LocaleApp::Updater, "#update(data)" do
           'foo' => { 'monkey' => 'hola', 'night' => 'noche' }
         }
       },
-      :deleted => [
+      'deleted' => [
         'foo.delete_me',
         'bar.delete_me_too'
     ]})

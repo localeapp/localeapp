@@ -5,18 +5,11 @@ module ActionController
       # ask the server for new translations
       if ::LocaleApp.poller.needs_polling?
         ::LocaleApp.log Time.now.to_i.to_s << ' - polling'
-        ::LocaleApp.poller.poll!
-        if ::LocaleApp.poller.translations_changed?
-          ::LocaleApp.log Time.now.to_i.to_s << '- downloading translations'
-          ::LocaleApp.poller.get_translations!
+        if ::LocaleApp.poller.poll!
+          ::LocaleApp.log Time.now.to_i.to_s << '- reloading I18n'
+          I18n.reload!
+          ::LocaleApp.poller.updated_at = ::LocaleApp.poller.synchronization_data[:updated_at]
         end
-      end
-       
-      # reload i18n when new translations have been downloaded
-      if ::LocaleApp.poller.translations_changed?
-        ::LocaleApp.log Time.now.to_i.to_s << '- reloading I18n'
-        I18n.reload!
-        ::LocaleApp.poller.updated_at = ::LocaleApp.poller.synchronization_data[:updated_at]
       end
     end
   end

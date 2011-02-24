@@ -1,4 +1,7 @@
-require 'i18n/core_ext/hash'
+# AUDIT: Find a better way of doing this
+unless Hash.respond_to?(:deep_merge!)
+  require 'i18n/core_ext/hash'
+end
 
 class Hash
   def remove_flattened_key!(locale, key)

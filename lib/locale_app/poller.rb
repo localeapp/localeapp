@@ -28,17 +28,19 @@ module LocaleApp
     end
 
     def poll!
-      response = RestClient.get(translation_resource_url)
       polled_at = Time.now.to_i # don't care about split second timing here
       updated_at = synchronization_data[:updated_at]
-      did_update = case response.code
-      when 304; false
-      when 500..599; false
-      when 200
-        updated_at = Time.parse(response.headers[:date]).to_i
-        Updater.update(JSON.parse(response))
-        true
-      else false
+      did_update = begin
+        response = RestClient.get(translation_resource_url)
+        if response.code == 200
+          updated_at = Time.parse(response.headers[:date]).to_i
+          Updater.update(JSON.parse(response))
+          true
+        else
+          false
+        end
+      rescue RestClient::RequestFailed, RestClient::NotModified
+        false
       end
       File.open(LocaleApp.configuration.synchronization_data_file, 'w+') do |f|
         f.write({:polled_at => polled_at, :updated_at => updated_at}.to_yaml)

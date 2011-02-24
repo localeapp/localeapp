@@ -23,12 +23,12 @@ describe LocaleApp::Poller, "#poll!" do
   end
 
   it "returns false if get returns 304 Not Modified" do
-    RestClient.stub!(:get).and_return(stub_response(304))
+    RestClient.stub!(:get).and_raise(RestClient::NotModified)
     @poller.poll!.should == false
   end
 
   it "returns false if get returns a 50x response" do
-    RestClient.stub!(:get).and_return(stub_response(502))
+    RestClient.stub!(:get).and_raise(RestClient::RequestFailed)
     @poller.poll!.should == false
   end
 

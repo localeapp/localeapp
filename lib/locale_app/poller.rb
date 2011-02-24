@@ -50,7 +50,7 @@ module LocaleApp
       uri_params = {
         :host => LocaleApp.configuration.host,
         :port => LocaleApp.configuration.port,
-        :path => '/translations.yml',
+        :path => '/translations.json',
         :query => "api_key=#{LocaleApp.configuration.api_key}&updated_at=#{synchronization_data[:updated_at]}"
       }
       if LocaleApp.configuration.http_auth_username

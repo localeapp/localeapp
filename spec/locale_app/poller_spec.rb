@@ -79,7 +79,7 @@ describe LocaleApp::Poller, "#translation_resource_url" do
       :host => 'test.host',
       :port => 1234,
       :api_key => 'KEY'
-    ).should == "http://test.host:1234/translations.yml?api_key=KEY&updated_at=#{@update_date.to_i}"
+    ).should == "http://test.host:1234/translations.json?api_key=KEY&updated_at=#{@update_date.to_i}"
   end
 
   it "includes http auth if if configuration" do
@@ -89,6 +89,6 @@ describe LocaleApp::Poller, "#translation_resource_url" do
       :http_auth_username => 'foo',
       :http_auth_password => 'bar',
       :api_key => 'KEY'
-    ).should == "http://foo:bar@test.host:1234/translations.yml?api_key=KEY&updated_at=#{@update_date.to_i}"
+    ).should == "http://foo:bar@test.host:1234/translations.json?api_key=KEY&updated_at=#{@update_date.to_i}"
   end
 end

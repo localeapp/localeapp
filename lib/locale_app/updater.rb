@@ -1,6 +1,8 @@
 # AUDIT: Find a better way of doing this
-unless Hash.respond_to?(:deep_merge!)
+begin
   require 'i18n/core_ext/hash'
+rescue LoadError
+  # Assume that we're in rails 2.3 and AS supplies deep_merge
 end
 
 class Hash

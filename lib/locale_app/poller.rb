@@ -1,5 +1,6 @@
 require 'yaml'
 require 'rest-client'
+require 'time'
 
 module LocaleApp
   class Poller
@@ -34,7 +35,7 @@ module LocaleApp
       when 304; false
       when 500..599; false
       when 200
-        updated_at = response.headers[:date].to_i
+        updated_at = Time.parse(response.headers[:date]).to_i
         Updater.update(JSON.parse(response))
         true
       else false

@@ -17,7 +17,7 @@ describe LocaleApp::Poller, "#poll!" do
   def stub_response(code = 200, hash = {}, headers = {})
     @data = hash.to_json
     @data.stub!(:code).and_return(code)
-    headers[:date] ||= Time.now
+    headers[:date] ||= Time.now.to_s
     @data.stub!(:headers).and_return(headers)
     @data
   end
@@ -45,7 +45,7 @@ describe LocaleApp::Poller, "#poll!" do
 
   it "updates the synchonization data file" do
     update_date = Time.now
-    RestClient.stub!(:get).and_return(stub_response(200, @hash, { :date => update_date }))
+    RestClient.stub!(:get).and_return(stub_response(200, @hash, { :date => update_date.to_s }))
     @poller.poll!
     sync_data = YAML.load(File.read(@sync_filename))
     sync_data[:updated_at].should == update_date.to_i

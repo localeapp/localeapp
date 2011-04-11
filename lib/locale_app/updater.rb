@@ -18,9 +18,12 @@ class Hash
     if keys.empty?
       sub_hash.delete(current_key)
     else
-      remove_child_keys!(sub_hash[current_key], keys)
-      if sub_hash[current_key].empty?
-        sub_hash.delete(current_key)
+      child_hash = sub_hash[current_key]
+      unless child_hash.nil?
+        remove_child_keys!(child_hash, keys)
+        if child_hash.empty?
+          sub_hash.delete(current_key)
+        end
       end
     end
   end

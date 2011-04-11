@@ -28,7 +28,8 @@ describe LocaleApp::Updater, ".update(data)" do
       },
       'deleted' => [
         'foo.delete_me',
-        'bar.delete_me_too'
+        'bar.delete_me_too',
+        'hah.imnotreallyhere'
     ]})
     File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en: 

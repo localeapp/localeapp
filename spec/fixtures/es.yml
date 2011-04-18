@@ -1,0 +1,6 @@
+es:
+  bar:
+    delete_me_too: ES_Delete
+  foo:
+    delete_me: ES_Delete
+    monkey: Mono

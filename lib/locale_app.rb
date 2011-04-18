@@ -2,6 +2,11 @@ require 'locale_app/version'
 require 'locale_app/configuration'
 require 'locale_app/sender'
 require 'locale_app/poller'
+require 'locale_app/updater'
+
+# AUDIT: Will this work on ruby 1.9.x
+$KCODE="UTF8"
+require 'ya2yaml'
 
 module LocaleApp
   API_VERSION = "1"
@@ -28,7 +33,7 @@ module LocaleApp
       self.configuration.logger
     end
   
-    # @example
+    # @example Configuration
     # LocaleApp.configure do |config|
     #   config.api_key = '1234567890abcdef'
     # end

@@ -1,5 +1,6 @@
 require 'yaml'
 require 'rest-client'
+require 'time'
 
 module LocaleApp
   class Poller
@@ -22,46 +23,43 @@ module LocaleApp
       end
     end
 
-    def translations_changed?
-      @updated_at != synchronization_data[:updated_at]
-    end
-
     def needs_polling?
       synchronization_data[:polled_at] < (Time.now.to_i - LocaleApp.configuration.poll_interval)
     end
 
     def poll!
-      RestClient.get(translation_resource_status_url) do |response, request, result|
+      polled_at = Time.now.to_i # don't care about split second timing here
+      updated_at = synchronization_data[:updated_at]
+      did_update = begin
+        response = RestClient.get(translation_resource_url)
         if response.code == 200
-          remote_updated_at = Time.parse(response.to_str).to_i
+          updated_at = Time.parse(response.headers[:date]).to_i
+          Updater.update(JSON.parse(response))
+          true
         else
-          remote_updated_at = synchronization_data[:updated_at]
+          false
         end
-        File.open(LocaleApp.configuration.synchronization_data_file, 'w') do |f|
-          f.write({:polled_at => Time.now.to_i, :updated_at => remote_updated_at}.to_yaml)
-        end
+      rescue RestClient::RequestFailed, RestClient::NotModified
+        false
       end
-      # get updated_at from server
-    end
+      File.open(LocaleApp.configuration.synchronization_data_file, 'w+') do |f|
+        f.write({:polled_at => polled_at, :updated_at => updated_at}.to_yaml)
+      end
 
-    def get_translations!
-      RestClient.get(translation_resource_url) do |response, request, result|
-        LocaleApp.log([translation_resource_url, response.code].join(' - '))
-        if response.code == 200
-          File.open(LocaleApp.configuration.translation_data_file, 'w') do |f|
-            f.write(response.to_str)
-          end
-        end
-      end
+      did_update
     end
 
     def translation_resource_url
-      "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations.yml?api_key=#{LocaleApp.configuration.api_key}"
-    end
-
-    def translation_resource_status_url
-      puts "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations/updated_at?api_key=#{LocaleApp.configuration.api_key}"
-      "http://#{LocaleApp.configuration.host}:#{LocaleApp.configuration.port}/translations/updated_at?api_key=#{LocaleApp.configuration.api_key}"
+      uri_params = {
+        :host => LocaleApp.configuration.host,
+        :port => LocaleApp.configuration.port,
+        :path => '/translations.json',
+        :query => "api_key=#{LocaleApp.configuration.api_key}&updated_at=#{synchronization_data[:updated_at]}"
+      }
+      if LocaleApp.configuration.http_auth_username
+        uri_params[:userinfo] = "#{LocaleApp.configuration.http_auth_username}:#{LocaleApp.configuration.http_auth_password}"
+      end
+      URI::HTTP.build(uri_params).to_s
     end
   end
 end

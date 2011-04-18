@@ -24,30 +24,19 @@ module LocaleApp
       end
 
       LocaleApp.configure do |config|
-        config.logger                    = rails_logger
-        config.environment_name          = rails_env
-        config.project_root              = rails_root
-        config.synchronization_data_file = File.join([rails_root, 'log', 'locale_app.yml'])
-        config.translation_data_file     = File.join([rails_root, 'config', 'locales', 'locale_app.yml'])
+        config.logger                     = rails_logger
+        config.environment_name           = rails_env
+        config.project_root               = rails_root
+        config.synchronization_data_file  = File.join([rails_root, 'log', 'locale_app.yml'])
+        config.translation_data_directory = File.join([rails_root, 'config', 'locales'])
       end
       initialize_synchronization_data_file
-      initialize_translation_data_file
     end
 
     def self.initialize_synchronization_data_file
       if !File.exists?(LocaleApp.configuration.synchronization_data_file)
         File.open(LocaleApp.configuration.synchronization_data_file, 'w') do |f|
           f.write({:polled_at => Time.now.to_i, :updated_at => Time.now.to_i}.to_yaml)
-        end
-      end
-    end
-
-    def self.initialize_translation_data_file
-      if !File.exists?(LocaleApp.configuration.translation_data_file)
-        File.open(LocaleApp.configuration.translation_data_file, 'w') do |f|
-          translations = {}
-          translations['en'] = {'locale_app' => 'LocaleApp'}
-          f.write(translations.to_yaml)
         end
       end
     end

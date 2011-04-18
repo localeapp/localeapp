@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "locale_app"
   s.version     = LocaleApp::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Christopher Dell"]
-  s.email       = ["chris@tigrish.com"]
+  s.authors     = ["Christopher Dell", "Chris McGrath"]
+  s.email       = ["chris@tigrish.com", "chris@octopod.info"]
   s.homepage    = "http://rubygems.org/gems/locale_app"
   s.summary     = %q{Add missing translation keys to Hablo}
   s.description = %q{Post any unfound translation keys to the Hablo SaaS}
@@ -21,4 +21,12 @@ Gem::Specification.new do |s|
 
   s.add_dependency('json')
   s.add_dependency('rest-client')
+  s.add_dependency('ya2yaml')
+
+  # i18n is a dev dependency as we'll use whichever version is in rails
+  # when the gem runs
+  s.add_development_dependency('i18n')
+  s.add_development_dependency('rspec')
+  s.add_development_dependency('yard')
+  s.add_development_dependency('RedCloth')
 end

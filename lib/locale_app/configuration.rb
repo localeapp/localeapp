@@ -40,7 +40,7 @@ module LocaleApp
     attr_accessor :translation_data_directory
 
     def initialize
-      @host                       = 'localeapp.com'
+      @host                       = 'api.localeapp.com'
       @port                       = 80
       @disabled_environments      = %w(test cucumber)
       @poll_interval              = 60

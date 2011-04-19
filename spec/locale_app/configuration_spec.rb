@@ -5,6 +5,14 @@ describe LocaleApp::Configuration do
     @configuration = LocaleApp::Configuration.new
   end
 
+  it "sets the host by default" do
+    @configuration.host.should == 'api.localeapp.com'
+  end
+
+  it "allows the host to be overwritten" do
+    expect { @configuration.host = 'test.host' }.to change(@configuration, :host).to('test.host')
+  end
+
   it "includes http_auth_username defaulting to nil" do
     @configuration.http_auth_username.should == nil
     @configuration.http_auth_username = "test"

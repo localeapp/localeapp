@@ -4,6 +4,8 @@ require 'time'
 
 module LocaleApp
   class Poller
+    include ::LocaleApp::Routes
+    
     # when we last asked the service for updates
     attr_accessor :polled_at
 
@@ -31,7 +33,7 @@ module LocaleApp
       polled_at = Time.now.to_i # don't care about split second timing here
       updated_at = synchronization_data[:updated_at]
       did_update = begin
-        response = RestClient.get(translation_resource_url)
+        response = RestClient.get(translations_url(:query => {:updated_at => updated_at}), :accept => :json)
         if response.code == 200
           updated_at = Time.parse(response.headers[:date]).to_i
           Updater.update(JSON.parse(response))
@@ -49,17 +51,5 @@ module LocaleApp
       did_update
     end
 
-    def translation_resource_url
-      uri_params = {
-        :host => LocaleApp.configuration.host,
-        :port => LocaleApp.configuration.port,
-        :path => '/translations.json',
-        :query => "api_key=#{LocaleApp.configuration.api_key}&updated_at=#{synchronization_data[:updated_at]}"
-      }
-      if LocaleApp.configuration.http_auth_username
-        uri_params[:userinfo] = "#{LocaleApp.configuration.http_auth_username}:#{LocaleApp.configuration.http_auth_password}"
-      end
-      URI::HTTP.build(uri_params).to_s
-    end
   end
 end

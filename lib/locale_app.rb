@@ -1,5 +1,6 @@
 require 'locale_app/version'
 require 'locale_app/configuration'
+require 'locale_app/routes'
 require 'locale_app/sender'
 require 'locale_app/poller'
 require 'locale_app/updater'

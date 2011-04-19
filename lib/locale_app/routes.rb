@@ -22,7 +22,7 @@ module LocaleApp
     end
 
     def project_path
-      "/api/projects/#{LocaleApp.configuration.api_key}"
+      "/projects/#{LocaleApp.configuration.api_key}"
     end
 
     def translations_path

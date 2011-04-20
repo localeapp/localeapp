@@ -1,7 +1,9 @@
 require 'i18n'
 require 'locale_app'
+require 'fakeweb'
+require 'support/locale_app_integration_data'
 
-def with_configuration(options)
+def with_configuration(options = {})
   LocaleApp.configuration = nil
   LocaleApp.configure do |configuration|
     options.each do |option, value| 
@@ -12,5 +14,8 @@ def with_configuration(options)
 end
 
 RSpec.configure do |config|
-
+  config.include(LocaleAppIntegrationData)
+  config.before(:each) do
+    FakeWeb.allow_net_connect = false
+  end
 end

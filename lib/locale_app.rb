@@ -4,6 +4,8 @@ require 'locale_app/routes'
 require 'locale_app/sender'
 require 'locale_app/poller'
 require 'locale_app/updater'
+require 'locale_app/key_checker'
+require 'locale_app/cli/install'
 
 # AUDIT: Will this work on ruby 1.9.x
 $KCODE="UTF8"

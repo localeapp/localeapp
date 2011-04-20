@@ -31,3 +31,21 @@ describe LocaleApp::Configuration do
     @configuration.translation_data_directory.should == "test"
   end
 end
+
+describe LocaleApp::Configuration, "#write_initial(path)" do
+  it "creates a configuration file containing just the api key at the given path" do
+    configuration = LocaleApp::Configuration.new
+    configuration.api_key = "APIKEY"
+    path = 'test_path'
+    file = stub('file')
+    file.should_receive(:write).with <<-CONTENT
+require 'locale_app/rails'
+
+LocaleApp.configure do |config|
+  config.api_key = 'APIKEY'
+end
+CONTENT
+    File.should_receive(:open).with(path, 'w+').and_yield(file)
+    configuration.write_initial(path)
+  end
+end

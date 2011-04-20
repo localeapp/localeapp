@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+
+require 'locale_app'
+
+# Don't connect to the net if we're running under cucumber for testing
+# Use FakeWeb to simulate api.localeapp.com
+if ENV['FAKE_WEB_DURING_CUCUMBER_RUN'] && fake_data_as_json = ENV['FAKE_WEB_FAKES']
+  require 'fakeweb'
+  FakeWeb.allow_net_connect = false
+  fakes = JSON.parse(fake_data_as_json)
+  fakes.each do |fake|
+    FakeWeb.register_uri fake['method'].to_sym, fake['uri'], :body => fake['body'], :status => fake['status']
+  end
+end
+
+args = ARGV.dup
+
+command = args.shift.strip rescue nil
+
+case command
+when 'install'
+  key = args.shift.strip rescue nil
+  installer = LocaleApp::CLI::Install.new
+  installer.execute(key)
+else
+puts <<-HELP
+Usage: localeapp COMMAND [ARGS]
+
+Commands:
+  install <key> - Creates new configuration files and confirms key works
+HELP
+end

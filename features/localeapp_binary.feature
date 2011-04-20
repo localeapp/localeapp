@@ -24,3 +24,4 @@ Feature: localeapp executable
     Project: Test Project
     Default Locale: en (English)
     """
+    And a file named "config/initializers/locale_app.rb" should exist

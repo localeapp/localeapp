@@ -14,6 +14,9 @@ module LocaleApp
           output.puts "Success!"
           output.puts "Project: #{project_data['name']}"
           output.puts "Default Locale: #{project_data['default_locale']['code']} (#{project_data['default_locale']['name']})"
+          config_file_path = "config/initializers/locale_app.rb"
+          output.puts "Writing configuration file to #{config_file_path}"
+          write_configuration_file config_file_path
         else
           output.puts "ERROR: Project not found"
           return
@@ -23,6 +26,10 @@ module LocaleApp
       private
       def check_key(key)
         LocaleApp::KeyChecker.new.check(key)
+      end
+
+      def write_configuration_file(path)
+        LocaleApp.configuration.write_initial(path)
       end
     end
   end

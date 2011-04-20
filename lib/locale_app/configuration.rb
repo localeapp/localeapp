@@ -51,5 +51,19 @@ module LocaleApp
     def disabled?
       disabled_environments.include?(environment_name)
     end
+
+    def write_initial(path)
+      dir = File.dirname(path)
+      FileUtils.mkdir_p(dir)
+      File.open(path, 'w+') do |file|
+        file.write <<-CONTENT
+require 'locale_app/rails'
+
+LocaleApp.configure do |config|
+  config.api_key = '#{@api_key}'
+end
+CONTENT
+      end
+    end
   end
 end

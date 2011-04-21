@@ -12,7 +12,7 @@ module LocaleApp
           LocaleApp.configuration = LocaleApp::Configuration.new
         end
         LocaleApp.configuration.api_key = key
-        response = RestClient.get(project_url + ".json")
+        response = RestClient.get(project_url)
         [true, JSON.parse(response)]
       rescue RestClient::ResourceNotFound => e
         [false, {}]

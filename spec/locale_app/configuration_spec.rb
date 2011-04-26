@@ -30,6 +30,50 @@ describe LocaleApp::Configuration do
     @configuration.translation_data_directory = "test"
     @configuration.translation_data_directory.should == "test"
   end
+
+  context "disabled_sending_environments" do
+    it "does not include development by default" do
+      @configuration.environment_name = 'development'
+      @configuration.sending_disabled?.should be_false
+    end
+
+    it "include cucumber by default" do
+      @configuration.environment_name = 'cucumber'
+      @configuration.sending_disabled?.should be_true
+    end
+
+    it "include test by default" do
+      @configuration.environment_name = 'test'
+      @configuration.sending_disabled?.should be_true
+    end
+
+    it "include production by default" do
+      @configuration.environment_name = 'production'
+      @configuration.sending_disabled?.should be_true
+    end
+  end
+
+  context "disabled_polling_environments" do
+    it "does not include development by default" do
+      @configuration.environment_name = 'development'
+      @configuration.polling_disabled?.should be_false
+    end
+
+    it "include cucumber by default" do
+      @configuration.environment_name = 'cucumber'
+      @configuration.polling_disabled?.should be_true
+    end
+
+    it "include test by default" do
+      @configuration.environment_name = 'test'
+      @configuration.polling_disabled?.should be_true
+    end
+
+    it "include production by default" do
+      @configuration.environment_name = 'production'
+      @configuration.polling_disabled?.should be_true
+    end
+  end
 end
 
 describe LocaleApp::Configuration, "#write_initial(path)" do

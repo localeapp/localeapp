@@ -4,7 +4,7 @@ module LocaleApp
     # The API key for your project, found on the project edit form
     attr_accessor :api_key
 
-    # The host to connect to (defaults to hablo.co)
+    # The host to connect to (defaults to api.localeapp.com)
     attr_accessor :host
 
     # The port to connect to (defaults to 80)
@@ -21,14 +21,18 @@ module LocaleApp
     attr_accessor :project_root
 
     # The names of environments where notifications aren't sent (defaults to
-    # 'test', 'cucumber')
-    attr_accessor :disabled_environments
+    # 'test', 'cucumber', 'production')
+    attr_accessor :disabled_sending_environments
+
+    # The names of environments where updates aren't pulled (defaults to
+    # 'test', 'cucumber', 'production')
+    attr_accessor :disabled_polling_environments
 
     # The logger used by LocaleApp
     attr_accessor :logger
 
     # The number of seconds to wait before asking the service for new
-    # translations (defaults to 60).
+    # translations (defaults to 0 - every request).
     attr_accessor :poll_interval
 
     # The complete path to the data file where we store synchronization
@@ -40,16 +44,21 @@ module LocaleApp
     attr_accessor :translation_data_directory
 
     def initialize
-      @host                       = 'api.localeapp.com'
-      @port                       = 80
-      @disabled_environments      = %w(test cucumber)
-      @poll_interval              = 60
-      @synchronization_data_file  = 'locale_app.yml'
-      @translation_data_directory = File.join('config', 'locales')
+      @host                          = 'api.localeapp.com'
+      @port                          = 80
+      @disabled_sending_environments = %w(test cucumber production)
+      @disabled_polling_environments = %w(test cucumber production)
+      @poll_interval                 = 0
+      @synchronization_data_file     = 'locale_app.yml'
+      @translation_data_directory    = File.join('config', 'locales')
     end
 
-    def disabled?
-      disabled_environments.include?(environment_name)
+    def polling_disabled?
+      disabled_polling_environments.include?(environment_name)
+    end
+
+    def sending_disabled?
+      disabled_polling_environments.include?(environment_name)
     end
 
     def write_initial(path)

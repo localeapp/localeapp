@@ -6,8 +6,6 @@ module LocaleApp
     include ::LocaleApp::Routes
 
     def post_translation(locale, key, options, value = nil)
-      return if LocaleApp.configuration.disabled?
-
       options ||= {}
       translation = { :key => key, :locale => locale, :substitutions => options.keys, :description => value}
       data = { :translation => translation }

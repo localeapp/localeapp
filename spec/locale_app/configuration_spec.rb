@@ -31,44 +31,48 @@ describe LocaleApp::Configuration do
     @configuration.translation_data_directory.should == "test"
   end
 
-  context "environment" do
-    it "defaults development to enabled" do
+  context "disabled_sending_environments" do
+    it "does not include development by default" do
       @configuration.environment_name = 'development'
-      @configuration.should_not be_disabled
+      @configuration.sending_disabled?.should be_false
     end
 
-    it "defaults cucumber to disabled" do
+    it "include cucumber by default" do
       @configuration.environment_name = 'cucumber'
-      @configuration.should be_disabled
+      @configuration.sending_disabled?.should be_true
     end
 
-    it "defaults test to disabled" do
+    it "include test by default" do
       @configuration.environment_name = 'test'
-      @configuration.should be_disabled
+      @configuration.sending_disabled?.should be_true
     end
 
-    it "defaults production to disabled" do
+    it "include production by default" do
       @configuration.environment_name = 'production'
-      @configuration.should be_disabled
+      @configuration.sending_disabled?.should be_true
     end
   end
-end
-  
-describe LocaleApp::Configuration, '#disabled?' do
-  before(:each) do
-    @configuration = LocaleApp::Configuration.new
-  end
 
-  it "returns true when environemnt_name is in disableld_environments" do
-    @configuration.disabled_environments = %w{foo bar}
-    @configuration.environment_name = 'foo'
-    @configuration.disabled?.should be_true
-  end
+  context "disabled_polling_environments" do
+    it "does not include development by default" do
+      @configuration.environment_name = 'development'
+      @configuration.polling_disabled?.should be_false
+    end
 
-  it "returns false when environemnt_name is NOT in disableld_environments" do
-    @configuration.disabled_environments = %w{foo bar}
-    @configuration.environment_name = 'biz'
-    @configuration.disabled?.should be_false
+    it "include cucumber by default" do
+      @configuration.environment_name = 'cucumber'
+      @configuration.polling_disabled?.should be_true
+    end
+
+    it "include test by default" do
+      @configuration.environment_name = 'test'
+      @configuration.polling_disabled?.should be_true
+    end
+
+    it "include production by default" do
+      @configuration.environment_name = 'production'
+      @configuration.polling_disabled?.should be_true
+    end
   end
 end
 

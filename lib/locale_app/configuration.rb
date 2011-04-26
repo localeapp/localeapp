@@ -22,7 +22,11 @@ module LocaleApp
 
     # The names of environments where notifications aren't sent (defaults to
     # 'test', 'cucumber', 'production')
-    attr_accessor :disabled_environments
+    attr_accessor :disabled_sending_environments
+
+    # The names of environments where updates aren't pulled (defaults to
+    # 'test', 'cucumber', 'production')
+    attr_accessor :disabled_polling_environments
 
     # The logger used by LocaleApp
     attr_accessor :logger
@@ -40,16 +44,21 @@ module LocaleApp
     attr_accessor :translation_data_directory
 
     def initialize
-      @host                       = 'api.localeapp.com'
-      @port                       = 80
-      @disabled_environments      = %w(test cucumber production)
-      @poll_interval              = 0
-      @synchronization_data_file  = 'locale_app.yml'
-      @translation_data_directory = File.join('config', 'locales')
+      @host                          = 'api.localeapp.com'
+      @port                          = 80
+      @disabled_sending_environments = %w(test cucumber production)
+      @disabled_polling_environments = %w(test cucumber production)
+      @poll_interval                 = 0
+      @synchronization_data_file     = 'locale_app.yml'
+      @translation_data_directory    = File.join('config', 'locales')
     end
 
-    def disabled?
-      disabled_environments.include?(environment_name)
+    def polling_disabled?
+      disabled_polling_environments.include?(environment_name)
+    end
+
+    def sending_disabled?
+      disabled_polling_environments.include?(environment_name)
     end
 
     def write_initial(path)

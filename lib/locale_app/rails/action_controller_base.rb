@@ -1,6 +1,10 @@
 module ActionController
   class Base
+    before_filter :handle_translation_updates
+
     def handle_translation_updates
+      return if ::LocaleApp.configuration.disabled?
+
       ::LocaleApp.log Time.now.to_i.to_s << '-- Handling translation updates'
       # ask the server for new translations
       if ::LocaleApp.poller.needs_polling?

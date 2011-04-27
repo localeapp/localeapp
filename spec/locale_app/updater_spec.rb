@@ -44,4 +44,16 @@ es:
     night: noche
 ES
   end
+
+  it "creates a new yml file if an unknown locale is passed" do
+    do_update({
+      'translations' => {
+        'ja' => { 'foo' => 'bar'}
+      }
+    })
+    File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
+ja: 
+  foo: bar
+JA
+  end
 end

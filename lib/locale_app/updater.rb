@@ -34,12 +34,21 @@ module LocaleApp
     def self.update(data)
       data['translations'].keys.each do |short_code|
         filename = File.join(LocaleApp.configuration.translation_data_directory, "#{short_code}.yml")
-        translations = YAML.load(File.read(filename))
-        new_data = { short_code => data['translations'][short_code] }
-        translations.deep_merge!(new_data)
-        data['deleted'].each do |key|
-          translations.remove_flattened_key!(short_code, key)
+
+        if File.exist?(filename)
+          translations = YAML.load(File.read(filename))
+          new_data = { short_code => data['translations'][short_code] }
+          translations.deep_merge!(new_data)
+        else
+          translations = { short_code => data['translations'][short_code] }
         end
+
+        if data['deleted']
+          data['deleted'].each do |key|
+            translations.remove_flattened_key!(short_code, key)
+          end
+        end
+
         File.open(filename, "w+") do |file|
           file.write translations.ya2yaml[5..-1]
         end

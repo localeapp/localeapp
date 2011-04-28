@@ -22,6 +22,10 @@ module LocaleApp
         rails_root = RAILS_ROOT
       end
 
+      if ::Rails::VERSION::MAJOR == 2 && ::Rails::VERSION::MINOR >= 3 # TODO: Check previous rails versions if required
+        require 'locale_app/rails/2_3_translation_helper_monkeypatch'
+      end
+
       LocaleApp.configure do |config|
         config.logger                     = rails_logger
         config.environment_name           = rails_env

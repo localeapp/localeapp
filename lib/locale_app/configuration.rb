@@ -58,7 +58,7 @@ module LocaleApp
     end
 
     def sending_disabled?
-      disabled_polling_environments.include?(environment_name)
+      disabled_sending_environments.include?(environment_name)
     end
 
     def write_initial(path)

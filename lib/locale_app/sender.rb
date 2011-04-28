@@ -9,7 +9,7 @@ module LocaleApp
       options ||= {}
       translation = { :key => key, :locale => locale, :substitutions => options.keys, :description => value}
       data = { :translation => translation }
-      RestClient.post(translations_url, data.to_json, :content_type => :json, :accept => :json) do |response, request, result|
+      RestClient.post(translations_url, data.to_json, :content_type => :json) do |response, request, result|
         LocaleApp.log([translations_url, response.code, data.inspect].join(' - '))
       end
     end

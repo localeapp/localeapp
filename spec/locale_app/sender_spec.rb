@@ -15,7 +15,7 @@ describe LocaleApp::Sender, "#post_translation(locale, key, options, value = nil
         :description => "test content"
       }
     }
-    RestClient.should_receive(:post).with(@sender.translations_url, data.to_json, :content_type => :json, :accept => :json )
+    RestClient.should_receive(:post).with(@sender.translations_url, data.to_json, :content_type => :json)
     @sender.post_translation('en', 'test.key', { 'foo' => 'foo', 'bar' => 'bar' }, 'test content')
   end
 end

@@ -33,7 +33,7 @@ module LocaleApp
       polled_at = Time.now.to_i # don't care about split second timing here
       updated_at = synchronization_data[:updated_at]
       did_update = begin
-        response = RestClient.get(translations_url(:query => {:updated_at => updated_at}), :accept => :json)
+        response = RestClient.get(translations_url(:query => {:updated_at => updated_at}))
         if response.code == 200
           updated_at = Time.parse(response.headers[:date]).to_i
           Updater.update(JSON.parse(response))

@@ -4,6 +4,9 @@ describe LocaleApp::Updater, ".update(data)" do
   before(:each) do
     @yml_dir = Dir.mktmpdir
     Dir.glob(File.join(File.dirname(__FILE__), '..', 'fixtures', '*.yml')).each { |f| FileUtils.cp f, @yml_dir }
+    with_configuration(:translation_data_directory => @yml_dir) do
+      @updater = LocaleApp::Updater.new
+    end
   end
 
   after(:each) do
@@ -11,9 +14,7 @@ describe LocaleApp::Updater, ".update(data)" do
   end
 
   def do_update(data)
-    with_configuration(:translation_data_directory => @yml_dir) do
-      LocaleApp::Updater.update(data)
-    end
+    @updater.update(data)
   end
 
   it "adds, updates and deletes keys in the yml files" do

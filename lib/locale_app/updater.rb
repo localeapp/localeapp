@@ -1,3 +1,4 @@
+require 'i18n'
 # AUDIT: Find a better way of doing this
 begin
   require 'i18n/core_ext/hash'
@@ -31,7 +32,8 @@ end
 
 module LocaleApp
   class Updater
-    def self.update(data)
+
+    def update(data)
       data['translations'].keys.each do |short_code|
         filename = File.join(LocaleApp.configuration.translation_data_directory, "#{short_code}.yml")
 

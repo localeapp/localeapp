@@ -11,4 +11,22 @@ module LocaleAppIntegrationData
       }
     }
   end
+
+  def valid_translation_data
+    {
+      'translations' => {
+        'en' => {
+          'foo' => { 'monkey' => 'hello', 'night' => 'night' }
+          },
+          'es' => {
+            'foo' => { 'monkey' => 'hola', 'night' => 'noche' }
+          },
+      },
+      'deleted' => [
+        'foo.delete_me',
+        'bar.delete_me_too',
+        'hah.imnotreallyhere'
+      ]
+    }
+  end
 end

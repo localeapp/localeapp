@@ -8,7 +8,8 @@ Feature: localeapp executable
     Usage: localeapp COMMAND [ARGS]
 
     Commands:
-      install <key> - Creates new configuration files and confirms key works
+      install <api_key> - Creates new configuration files and confirms key works
+      update            - Forcefully updates translations for all locales
     """
 
   Scenario: Running install
@@ -25,3 +26,26 @@ Feature: localeapp executable
     Default Locale: en (English)
     """
     And a file named "config/initializers/locale_app.rb" should exist
+
+  Scenario: Running update
+    In order to retreive my translations
+    Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"
+    And a file named "config/initializers/locale_app.rb" with:
+    """
+    require 'locale_app/rails'
+    LocaleApp.configure do |config|
+      config.api_key = 'MYAPIKEY'
+    end
+    """
+    And a directory named "config/locales"
+    When I run `localeapp update`
+    Then the output should contain:
+    """
+    LocaleApp Update
+
+    Fetching translations:
+    Success!
+    Updating backend:
+    Success!
+    """
+    And a file named "config/locales/en.yml" should exist

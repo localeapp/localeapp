@@ -49,7 +49,7 @@ module LocaleApp
       @disabled_sending_environments = %w(test cucumber production)
       @disabled_polling_environments = %w(test cucumber production)
       @poll_interval                 = 0
-      @synchronization_data_file     = 'locale_app.yml'
+      @synchronization_data_file     = File.join('log', 'locale_app.yml')
       @translation_data_directory    = File.join('config', 'locales')
     end
 

@@ -1,6 +1,3 @@
-require 'locale_app/rails/action_controller_base'
-require 'locale_app/rails/i18n'
-
 module LocaleApp
   module Rails
     def self.initialize
@@ -46,5 +43,9 @@ module LocaleApp
   end
 end
 
-LocaleApp::Rails.initialize
-LocaleApp.log('Loaded locale_app/rails')
+if defined?(Rails)
+  require 'locale_app/rails/action_controller_base'
+  require 'locale_app/rails/i18n'
+  LocaleApp::Rails.initialize
+  LocaleApp.log('Loaded locale_app/rails')
+end

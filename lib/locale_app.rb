@@ -6,9 +6,11 @@ require 'locale_app/poller'
 require 'locale_app/updater'
 require 'locale_app/key_checker'
 require 'locale_app/cli/install'
+require 'locale_app/cli/update'
 
 # AUDIT: Will this work on ruby 1.9.x
-$KCODE="UTF8"
+$KCODE="UTF8" if RUBY_VERSION < '1.9'
+
 require 'ya2yaml'
 
 module LocaleApp
@@ -24,6 +26,9 @@ module LocaleApp
 
     # The poller object is responsible for retrieving data for the LocaleApp server
     attr_accessor :poller
+
+    # The updater object is responsible for merging translations into the i18n backend
+    attr_accessor :updater
 
 
     # Writes out the given message to the #logger
@@ -43,9 +48,20 @@ module LocaleApp
     def configure
       self.configuration ||= Configuration.new
       yield(configuration)
-      self.sender = Sender.new
-      self.poller = Poller.new
+      self.sender  = Sender.new
+      self.poller  = Poller.new
+      self.updater = Updater.new
     end
 
+    # requires the LocaleApp configuration
+    def include_config_file(file_path=nil)
+      file_path ||= File.join(Dir.pwd, 'config', 'initializers', 'locale_app')
+      begin
+        require file_path
+        true
+      rescue
+        false
+      end
+    end
   end
 end

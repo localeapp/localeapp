@@ -25,6 +25,12 @@ module LocaleApp
       end
     end
 
+    def write_synchronization_data!(polled_at, updated_at)
+      File.open(LocaleApp.configuration.synchronization_data_file, 'w+') do |f|
+        f.write({:polled_at => polled_at, :updated_at => updated_at}.to_yaml)
+      end
+    end
+
     def needs_polling?
       synchronization_data[:polled_at] < (Time.now.to_i - LocaleApp.configuration.poll_interval)
     end
@@ -36,7 +42,7 @@ module LocaleApp
         response = RestClient.get(translations_url(:query => {:updated_at => updated_at}))
         if response.code == 200
           updated_at = Time.parse(response.headers[:date]).to_i
-          Updater.update(JSON.parse(response))
+          LocaleApp.updater.update(JSON.parse(response))
           true
         else
           false
@@ -44,10 +50,8 @@ module LocaleApp
       rescue RestClient::RequestFailed, RestClient::NotModified
         false
       end
-      File.open(LocaleApp.configuration.synchronization_data_file, 'w+') do |f|
-        f.write({:polled_at => polled_at, :updated_at => updated_at}.to_yaml)
-      end
-
+      
+      write_synchronization_data!(polled_at, updated_at)
       did_update
     end
 

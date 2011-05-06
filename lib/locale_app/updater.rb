@@ -6,30 +6,6 @@ rescue LoadError
   # Assume that we're in rails 2.3 and AS supplies deep_merge
 end
 
-class Hash
-  def remove_flattened_key!(locale, key)
-    keys = I18n.normalize_keys(locale, key, '').map(&:to_s)
-    current_key = keys.shift
-    remove_child_keys!(self[current_key], keys)
-    self
-  end
-
-  def remove_child_keys!(sub_hash, keys)
-    current_key = keys.shift
-    if keys.empty?
-      sub_hash.delete(current_key)
-    else
-      child_hash = sub_hash[current_key]
-      unless child_hash.nil?
-        remove_child_keys!(child_hash, keys)
-        if child_hash.empty?
-          sub_hash.delete(current_key)
-        end
-      end
-    end
-  end
-end
-
 module LocaleApp
   class Updater
 
@@ -47,12 +23,35 @@ module LocaleApp
 
         if data['deleted']
           data['deleted'].each do |key|
-            translations.remove_flattened_key!(short_code, key)
+            remove_flattened_key!(translations, short_code, key)
           end
         end
 
         File.open(filename, "w+") do |file|
           file.write translations.ya2yaml[5..-1]
+        end
+      end
+    end
+
+    private
+    def remove_flattened_key!(hash, locale, key)
+      keys = I18n.normalize_keys(locale, key, '').map(&:to_s)
+      current_key = keys.shift
+      remove_child_keys!(hash[current_key], keys)
+      hash
+    end
+
+    def remove_child_keys!(sub_hash, keys)
+      current_key = keys.shift
+      if keys.empty?
+        sub_hash.delete(current_key)
+      else
+        child_hash = sub_hash[current_key]
+        unless child_hash.nil?
+          remove_child_keys!(child_hash, keys)
+          if child_hash.empty?
+            sub_hash.delete(current_key)
+          end
         end
       end
     end

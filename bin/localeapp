@@ -23,14 +23,14 @@ when 'install'
   key = args.shift.strip rescue nil
   installer = LocaleApp::CLI::Install.new
   installer.execute(key)
-when 'update'
-  LocaleApp::CLI::Update.new.execute
+when 'pull'
+  LocaleApp::CLI::Pull.new.execute
 else
 puts <<-HELP
 Usage: localeapp COMMAND [ARGS]
 
 Commands:
   install <api_key> - Creates new configuration files and confirms key works
-  update            - Forcefully updates translations for all locales
+  pull              - Pulls all translations from LocaleApp.com
 HELP
 end

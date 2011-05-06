@@ -1,10 +1,10 @@
 module LocaleApp
   module CLI
-    class Update
+    class Pull
       include ::LocaleApp::Routes
 
       def execute(output = $stdout)
-        output.puts "LocaleApp Update"
+        output.puts "LocaleApp Pull"
         output.puts ""
 
         unless LocaleApp.include_config_file

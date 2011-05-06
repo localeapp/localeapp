@@ -9,7 +9,7 @@ Feature: localeapp executable
 
     Commands:
       install <api_key> - Creates new configuration files and confirms key works
-      update            - Forcefully updates translations for all locales
+      pull              - Pulls all translations from LocaleApp.com
     """
 
   Scenario: Running install
@@ -27,7 +27,7 @@ Feature: localeapp executable
     """
     And a file named "config/initializers/locale_app.rb" should exist
 
-  Scenario: Running update
+  Scenario: Running pull
     In order to retreive my translations
     Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"
     And a file named "config/initializers/locale_app.rb" with:
@@ -38,10 +38,10 @@ Feature: localeapp executable
     end
     """
     And a directory named "config/locales"
-    When I run `localeapp update`
+    When I run `localeapp pull`
     Then the output should contain:
     """
-    LocaleApp Update
+    LocaleApp Pull
 
     Fetching translations:
     Success!

@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Christopher Dell", "Chris McGrath"]
   s.email       = ["chris@tigrish.com", "chris@octopod.info"]
   s.homepage    = "http://rubygems.org/gems/locale_app"
-  s.summary     = %q{Add missing translation keys to Hablo}
-  s.description = %q{Post any unfound translation keys to the Hablo SaaS}
+  s.summary     = %q{Add missing translation keys to LocaleApp}
+  s.description = %q{Post any unfound translation keys to the LocaleApp SaaS}
 
   s.rubyforge_project = "locale_app"
 

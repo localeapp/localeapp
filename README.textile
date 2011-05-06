@@ -7,7 +7,7 @@ h3. Rails 3
 Add the locale_app gem to your Gemfile :
 
 <pre><code>
-gem 'locale_app', :git => 'git@starbug.devmodo.com:gems/olba.git'
+gem 'locale_app'
 </code></pre>
 
 Configure locale_app with the following code in config/initializers/locale_app.rb :
@@ -25,7 +25,7 @@ h3. Rails 2.3
 Define locale_app in config/environment.rb :
 
 <pre><code>
-config.gem 'locale_app', :source => 'git@starbug.devmodo.com:gems/olba.git' 
+config.gem 'locale_app'
 </code></pre>
 
 Install the gem :

@@ -18,6 +18,13 @@ args = ARGV.dup
 
 command = args.shift.strip rescue nil
 
+unless %w{help install}.include?(command)
+  unless LocaleApp.include_config_file
+    puts "Could not load config file"
+    exit
+  end
+end
+
 case command
 when 'install'
   key = args.shift.strip rescue nil
@@ -25,6 +32,10 @@ when 'install'
   installer.execute(key)
 when 'pull'
   LocaleApp::CLI::Pull.new.execute
+when 'push'
+  file = args.shift.strip rescue nil
+  pusher = LocaleApp::CLI::Push.new
+  pusher.execute(file)
 else
 puts <<-HELP
 Usage: localeapp COMMAND [ARGS]
@@ -32,5 +43,6 @@ Usage: localeapp COMMAND [ARGS]
 Commands:
   install <api_key> - Creates new configuration files and confirms key works
   pull              - Pulls all translations from LocaleApp.com
+  push <file>       - Pushes a translation file to LocaleApp.com
 HELP
 end

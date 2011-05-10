@@ -7,11 +7,6 @@ module LocaleApp
         output.puts "LocaleApp Pull"
         output.puts ""
 
-        unless LocaleApp.include_config_file
-          output.puts "Could not load config file"
-          return
-        end
-        
         output.puts "Fetching translations:"
         response = RestClient.get(translations_url)
         if response.code == 200

@@ -13,7 +13,11 @@ module LocaleApp
         if valid_key
           output.puts "Success!"
           output.puts "Project: #{project_data['name']}"
-          output.puts "Default Locale: #{project_data['default_locale']['code']} (#{project_data['default_locale']['name']})"
+          locale_app_default_code = project_data['default_locale']['code']
+          output.puts "Default Locale: #{locale_app_default_code} (#{project_data['default_locale']['name']})"
+          if I18n.default_locale.to_s != locale_app_default_code
+            output.puts "WARNING: I18n.default_locale is #{I18n.default_locale}, change in config/environment.rb (Rails 2) or config/application.rb (Rails 3)"
+          end
           config_file_path = "config/initializers/locale_app.rb"
           output.puts "Writing configuration file to #{config_file_path}"
           write_configuration_file config_file_path

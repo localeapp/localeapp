@@ -13,6 +13,10 @@ module LocaleApp
       url.to_s
     end
 
+    def import_url(options={})
+      URI::HTTP.build(base_options.merge(:path => import_path)).to_s
+    end
+
   private
 
     def base_options
@@ -33,6 +37,10 @@ module LocaleApp
       path = project_path << '/translations'
       path << ".#{format}" if format
       path
+    end
+
+    def import_path(format = nil)
+      project_path << '/import/'
     end
   end
 end

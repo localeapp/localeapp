@@ -5,8 +5,10 @@ require 'locale_app/sender'
 require 'locale_app/poller'
 require 'locale_app/updater'
 require 'locale_app/key_checker'
+  
 require 'locale_app/cli/install'
 require 'locale_app/cli/pull'
+require 'locale_app/cli/push'
 
 # AUDIT: Will this work on ruby 1.9.x
 $KCODE="UTF8" if RUBY_VERSION < '1.9'

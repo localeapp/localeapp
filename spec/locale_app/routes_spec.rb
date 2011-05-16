@@ -49,4 +49,12 @@ describe LocaleApp::Routes do
       end
     end
   end
+
+  describe "#import_url" do
+    it "appends 'import to the project url" do
+      with_configuration(@config) do
+        @routes.import_url.should == 'http://test.host/projects/API_KEY/import/'
+      end
+    end
+  end
 end

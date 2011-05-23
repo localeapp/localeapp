@@ -14,7 +14,7 @@ module LocaleApp
         
         output.puts "Pushing file:"
         response = RestClient.post(import_url, :file => File.new(file))
-        if response.code == 200
+        if response.code == 202
           puts "Success!"
           puts ""
           puts "#{file} queued for processing."

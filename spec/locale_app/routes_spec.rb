@@ -39,7 +39,9 @@ describe LocaleApp::Routes do
 
     it "adds query parameters on to the url" do
       with_configuration(@config) do
-        @routes.translations_url(:query => {:updated_at => '2011-04-19', :foo => :bar}).should == "http://test.host/projects/API_KEY/translations.json?updated_at=2011-04-19&foo=bar"
+        url = @routes.translations_url(:query => {:updated_at => '2011-04-19', :foo => :bar})
+        url.should match(/\?.*updated_at=2011-04-19/)
+        url.should match(/\?.*foo=bar/)
       end
     end
 

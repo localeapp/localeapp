@@ -1,5 +1,5 @@
 #!/bin/sh
 source "$HOME/.rvm/scripts/rvm"
-rvm gemset use 1.9.2-p180@locale_app
+rvm gemset use $BUILD_RUBY_VERSION@locale_app
 bundle install
 rake

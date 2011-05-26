@@ -10,6 +10,7 @@ module LocaleApp
       begin
         if LocaleApp.configuration.nil? # no config file yet
           LocaleApp.configuration = LocaleApp::Configuration.new
+          LocaleApp.configuration.host = ENV['LA_TEST_HOST'] if ENV['LA_TEST_HOST']
         end
         LocaleApp.configuration.api_key = key
         response = RestClient.get(project_url)

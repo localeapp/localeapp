@@ -13,5 +13,12 @@ module LocaleApp
         LocaleApp.log([translations_url, response.code, data.inspect].join(' - '))
       end
     end
+
+    def post_missing_translations
+      data = { :translations => LocaleApp.missing_translations.to_send }
+      RestClient.post(missing_translations_url, data.to_json, :content_type => :json) do |response, request, result|
+        LocaleApp.log([missing_translations_url, response.code, data.inspect].join(' - '))
+      end
+    end
   end
 end

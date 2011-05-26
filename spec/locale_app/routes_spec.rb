@@ -52,6 +52,28 @@ describe LocaleApp::Routes do
     end
   end
 
+  describe "#missing_translations_url" do
+    it "it extends the project_url and defaults to json" do
+      with_configuration(@config) do
+        @routes.missing_translations_url.should == "http://test.host/projects/API_KEY/translations/missing.json"
+      end
+    end
+
+    it "adds query parameters on to the url" do
+      with_configuration(@config) do
+        url = @routes.missing_translations_url(:query => {:updated_at => '2011-04-19', :foo => :bar})
+        url.should match(/\?.*updated_at=2011-04-19/)
+        url.should match(/\?.*foo=bar/)
+      end
+    end
+
+    it "can be changed to another content type" do
+      with_configuration(@config) do
+        @routes.missing_translations_url(:format => :yml).should == 'http://test.host/projects/API_KEY/translations/missing.yml'
+      end
+    end
+  end
+
   describe "#import_url" do
     it "appends 'import to the project url" do
       with_configuration(@config) do

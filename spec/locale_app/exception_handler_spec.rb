@@ -1,9 +1,8 @@
 require 'spec_helper'
-require 'locale_app/rails/i18n'
+require 'locale_app/exception_handler'
 
-describe I18n, '#locale_app_exception_handler(exception, locale, key, options)' do
+describe LocaleApp::ExceptionHandler, '#call(exception, locale, key, options)' do
   before(:each) do
-    @exception = I18n::MissingTranslationData.new('en', 'foo.bar', {})
     LocaleApp.configure do |config|
       config.api_key = 'abcdef'
     end

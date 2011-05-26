@@ -12,12 +12,12 @@ describe I18n, '#locale_app_exception_handler(exception, locale, key, options)' 
   it "posts a translation when sending is enabled" do
     LocaleApp.configuration.environment_name = 'development'
     LocaleApp.sender.should_receive(:post_translation)
-    I18n.locale_app_exception_handler(@exception, :en, 'foo.bar', {})
+    I18n.t('foo')
   end
 
   it "doesn't post a translation when sending is disabled" do
     LocaleApp.configuration.environment_name = 'test'
     LocaleApp.sender.should_not_receive(:post_translation)
-    I18n.locale_app_exception_handler(@exception, :en, 'foo.bar', {})
+    I18n.t('foo')
   end
 end

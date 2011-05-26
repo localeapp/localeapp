@@ -1,22 +1,19 @@
-module I18n
-  class << self
-    def locale_app_exception_handler(exception, locale, key, options)
-      LocaleApp.log(exception.message)
-      if MissingTranslationData === exception
-        LocaleApp.log('Detected missing translation')
-        
-        unless LocaleApp.configuration.sending_disabled?
-          LocaleApp.sender.post_translation(locale, key, options)
-        end
+class LocaleAppExceptionHandler
+  def self.call(exception, locale, key, options)
+    LocaleApp.log(exception.message)
+    if I18n::MissingTranslationData === exception
+      LocaleApp.log('Detected missing translation')
 
-        [locale, key].join(', ')
-      else
-        LocaleApp.log('Raising exception')
-        raise
+      unless LocaleApp.configuration.sending_disabled?
+        LocaleApp.sender.post_translation(locale, key, options)
       end
-    end
 
+      [locale, key].join(', ')
+    else
+      LocaleApp.log('Raising exception')
+      raise
+    end
   end
 end
 
-I18n.exception_handler = :locale_app_exception_handler
+I18n.exception_handler = LocaleAppExceptionHandler

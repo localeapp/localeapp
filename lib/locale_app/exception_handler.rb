@@ -5,9 +5,7 @@ module LocaleApp
       if I18n::MissingTranslationData === exception
         LocaleApp.log('Detected missing translation')
 
-        unless LocaleApp.configuration.sending_disabled?
-          LocaleApp.sender.post_translation(locale, key, options)
-        end
+        LocaleApp.missing_translations.add(locale, key, options)
 
         [locale, key].join(', ')
       else

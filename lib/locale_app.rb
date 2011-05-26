@@ -5,6 +5,7 @@ require 'locale_app/sender'
 require 'locale_app/poller'
 require 'locale_app/updater'
 require 'locale_app/key_checker'
+require 'locale_app/missing_translations'
   
 require 'locale_app/cli/install'
 require 'locale_app/cli/pull'
@@ -32,6 +33,10 @@ module LocaleApp
     # The updater object is responsible for merging translations into the i18n backend
     attr_accessor :updater
 
+    # The missing_translations object is responsible for keeping track of missing translations
+    # that will be sent to the backend
+    attr_reader :missing_translations
+
 
     # Writes out the given message to the #logger
     def log(message)
@@ -53,6 +58,7 @@ module LocaleApp
       self.sender  = Sender.new
       self.poller  = Poller.new
       self.updater = Updater.new
+      @missing_translations = MissingTranslations.new
     end
 
     # requires the LocaleApp configuration

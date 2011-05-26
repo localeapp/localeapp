@@ -8,15 +8,8 @@ describe LocaleApp::ExceptionHandler, '#call(exception, locale, key, options)' d
     end
   end
 
-  it "posts a translation when sending is enabled" do
-    LocaleApp.configuration.environment_name = 'development'
-    LocaleApp.sender.should_receive(:post_translation)
-    I18n.t('foo')
-  end
-
-  it "doesn't post a translation when sending is disabled" do
-    LocaleApp.configuration.environment_name = 'test'
-    LocaleApp.sender.should_not_receive(:post_translation)
-    I18n.t('foo')
+  it "adds the missing translation to the missing translation list" do
+    LocaleApp.missing_translations.should_receive(:add).with(:en, 'foo', { :baz => 'bam' })
+    I18n.t('foo', :baz => 'bam')
   end
 end

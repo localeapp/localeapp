@@ -52,6 +52,16 @@ describe LocaleApp::Routes do
     end
   end
 
+  describe "#translations_endpoint(options = {})" do
+    it "returns :get and the translations url for the options" do
+      with_configuration(@config) do
+        options = { :foo => :bar }
+        @routes.should_receive(:translations_url).with(options).and_return('url')
+        @routes.translations_endpoint(options).should == [:get, 'url']
+      end
+    end
+  end
+
   describe "#missing_translations_url" do
     it "it extends the project_url and defaults to json" do
       with_configuration(@config) do

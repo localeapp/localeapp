@@ -17,7 +17,7 @@ module LocaleApp
     end
 
     def call(obj)
-      method, url = send("#{endpoint}_endpoint")
+      method, url = send("#{endpoint}_endpoint", options[:url_options] || {})
       LocaleApp.debug("API CALL: #{method} #{url}")
       success = false
       while connection_attempts < max_connection_attempts
@@ -51,6 +51,7 @@ module LocaleApp
           RestClient.send(method, url)
         end
       rescue RestClient::ResourceNotFound,
+        RestClient::NotModified,
         RestClient::InternalServerError,
         RestClient::BadGateway,
         RestClient::ServiceUnavailable,

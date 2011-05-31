@@ -17,7 +17,14 @@ describe LocaleApp::ApiCaller, "#call(object)" do
   end
 
   it "gets the method and url for the endpoint" do
-    @api_caller.should_receive(:test_endpoint).and_return([:get, @url])
+    @api_caller.should_receive(:test_endpoint).with({}).and_return([:get, @url])
+    RestClient.stub!(:get).and_return(double('response', :code => 200))
+    @api_caller.call(self)
+  end
+
+  it "passes through any url options" do
+    @api_caller.should_receive(:test_endpoint).with({:foo => :bar}).and_return([:get, @url])
+    @api_caller.options[:url_options] = { :foo => :bar }
     RestClient.stub!(:get).and_return(double('response', :code => 200))
     @api_caller.call(self)
   end
@@ -95,6 +102,7 @@ describe LocaleApp::ApiCaller, "#call(object)" do
     end
 
     {
+      304 => 'Not Modified',
       404 => 'Resource Not Found',
       500 => 'Internal Server Error',
       # Work out when this could happen

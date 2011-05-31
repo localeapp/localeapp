@@ -18,20 +18,24 @@ module LocaleApp
 
     def call(obj)
       method, url = send("#{endpoint}_endpoint")
+      LocaleApp.debug("API CALL: #{method} #{url}")
+      success = false
       while connection_attempts < max_connection_attempts
         sleep_if_retrying
         response = make_call(method, url)
+        LocaleApp.debug("RESPONSE: #{response.code}")
         valid_response_codes = (200..207).to_a
         if valid_response_codes.include?(response.code.to_i)
           if options[:success]
+            LocaleApp.debug("CALLING SUCCESS HANDLER: #{options[:success]}")
             obj.send(options[:success], response)
           end
+          success = true
           break
         end
       end
 
-      # failed if we get here
-      if options[:failure]
+      if !success && options[:failure]
         obj.send(options[:failure], response)
       end
     end
@@ -40,6 +44,7 @@ module LocaleApp
     def make_call(method, url)
       begin
         @connection_attempts += 1
+        LocaleApp.debug("ATTEMPT #{@connection_attempts}")
         if method == :post
           RestClient.send(method, url, options[:payload])
         else
@@ -55,7 +60,9 @@ module LocaleApp
 
     def sleep_if_retrying
       if @connection_attempts > 0
-        sleep @connection_attempts * 5
+        time = @connection_attempts * 5
+        LocaleApp.debug("Sleeping for #{time} before retrying")
+        sleep time
       end
     end
   end

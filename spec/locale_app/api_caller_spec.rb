@@ -58,6 +58,12 @@ describe LocaleApp::ApiCaller, "#call(object)" do
       @api_caller.call(@object)
       @api_caller.connection_attempts.should == 1
     end
+
+    it "doesn't call the failure handler" do
+      @api_caller.options[:failure] = :failure
+      @object.should_not_receive(:failure)
+      @api_caller.call(@object)
+    end
   end
 
   context " call failed" do

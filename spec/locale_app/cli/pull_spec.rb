@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'locale_app/cli/pull'
 
-describe LocaleApp::CLI::Pull, "#execute(output = $stdout)" do
+describe LocaleApp::CLI::Pull, "#execute" do
   before do
     @output = StringIO.new
     @puller = LocaleApp::CLI::Pull.new(@output)

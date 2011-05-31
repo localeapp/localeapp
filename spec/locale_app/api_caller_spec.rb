@@ -95,6 +95,7 @@ describe LocaleApp::ApiCaller, "#call(object)" do
     end
 
     {
+      404 => 'Resource Not Found',
       500 => 'Internal Server Error',
       # Work out when this could happen
       # 501 => 'Not Implemented',

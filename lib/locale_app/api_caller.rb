@@ -50,7 +50,8 @@ module LocaleApp
         else
           RestClient.send(method, url)
         end
-      rescue RestClient::InternalServerError,
+      rescue RestClient::ResourceNotFound,
+        RestClient::InternalServerError,
         RestClient::BadGateway,
         RestClient::ServiceUnavailable,
         RestClient::GatewayTimeout => error

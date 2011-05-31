@@ -24,6 +24,10 @@ module LocaleApp
       url.to_s
     end
 
+    def import_endpoint(options = {})
+      [:post, import_url(options)]
+    end
+
     def import_url(options={})
       URI::HTTP.build(base_options.merge(:path => import_path)).to_s
     end

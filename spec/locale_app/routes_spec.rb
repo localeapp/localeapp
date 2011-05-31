@@ -91,4 +91,14 @@ describe LocaleApp::Routes do
       end
     end
   end
+
+  describe "#import_endpoint(options = {})" do
+    it "returns :post and the import url for the options" do
+      with_configuration(@config) do
+        options = { :foo => :bar }
+        @routes.should_receive(:import_url).with(options).and_return('url')
+        @routes.import_endpoint(options).should == [:post, 'url']
+      end
+    end
+  end
 end

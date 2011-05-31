@@ -27,6 +27,15 @@ describe LocaleApp::ApiCaller, "#call(object)" do
     @api_caller.call(self)
   end
 
+  context " a POST request" do
+    it "uses the content of the :payload option as the payload" do
+      @api_caller.stub!(:test_endpoint).and_return([:post, @url])
+      @api_caller.options[:payload] = "test data"
+      RestClient.should_receive(:post).with(@url, "test data").and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+  end
+
   context " call succeeded" do
     before do
       FakeWeb.register_uri(:get, @url, :body => '', :status => [200, 'OK'])

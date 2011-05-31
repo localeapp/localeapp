@@ -40,7 +40,11 @@ module LocaleApp
     def make_call(method, url)
       begin
         @connection_attempts += 1
-        RestClient.send(method, url)
+        if method == :post
+          RestClient.send(method, url, options[:payload])
+        else
+          RestClient.send(method, url)
+        end
       rescue RestClient::InternalServerError,
         RestClient::BadGateway,
         RestClient::ServiceUnavailable,

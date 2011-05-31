@@ -10,6 +10,16 @@ describe LocaleApp::Routes do
     @config = {:host => 'test.host', :api_key => 'API_KEY'}
   end
 
+  describe "#project_endpoint(options = {})" do
+    it "returns :get and the project url for the options" do
+      with_configuration(@config) do
+        options = { :foo => :bar }
+        @routes.should_receive(:project_url).with(options).and_return('url')
+        @routes.project_endpoint(options).should == [:get, 'url']
+      end
+    end
+  end
+
   describe '#project_url' do
     it "is constructed from the configuration host and port and defaults to json" do
       with_configuration(@config.merge(:port => 1234)) do

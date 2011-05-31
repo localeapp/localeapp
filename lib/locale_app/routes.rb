@@ -1,6 +1,10 @@
 module LocaleApp
   module Routes
 
+    def project_endpoint(options = {})
+      [:get, project_url(options)]
+    end
+
     def project_url(options = {})
       options[:format] ||= 'json'
       URI::HTTP.build(base_options.merge(:path => project_path(options[:format]))).to_s

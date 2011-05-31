@@ -45,9 +45,13 @@ module LocaleApp
       logger.info LOG_PREFIX + message if logger
     end
 
+    def debug(message)
+      logger.debug(LOG_PREFIX + message) if logger
+    end
+
     # Look for the Rails logger currently defined
     def logger
-      self.configuration.logger
+      self.configuration && self.configuration.logger
     end
   
     # @example Configuration

@@ -4,7 +4,7 @@ require 'time'
 
 module LocaleApp
   class Poller
-    include ::LocaleApp::Routes
+    include ::LocaleApp::ApiCall
     
     # when we last asked the service for updates
     attr_accessor :polled_at
@@ -37,23 +37,26 @@ module LocaleApp
 
     def poll!
       polled_at = Time.now.to_i # don't care about split second timing here
-      updated_at = synchronization_data[:updated_at]
-      did_update = begin
-        response = RestClient.get(translations_url(:query => {:updated_at => updated_at}))
-        if response.code == 200
-          updated_at = Time.parse(response.headers[:date]).to_i
-          LocaleApp.updater.update(JSON.parse(response))
-          true
-        else
-          false
-        end
-      rescue RestClient::RequestFailed, RestClient::NotModified
-        false
-      end
-      
-      write_synchronization_data!(polled_at, updated_at)
-      did_update
+      @updated_at = synchronization_data[:updated_at]
+
+      api_call :translations,
+        :url_options => { :query => { :updated_at => updated_at }},
+        :success => :handle_success,
+        :failure => :handle_failure,
+        :max_connection_attempts => 1
+
+      write_synchronization_data!(polled_at, @updated_at)
+      @success
     end
 
+    def handle_success(response)
+      @success = true
+      @updated_at = Time.parse(response.headers[:date]).to_i
+      LocaleApp.updater.update(JSON.parse(response))
+    end
+
+    def handle_failure(response)
+      @success = false
+    end
   end
 end

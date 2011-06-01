@@ -51,3 +51,4 @@ In app/controllers/application_controller.rb
 <pre><code>
 before_filter :handle_translation_updates
 </code></pre>
+

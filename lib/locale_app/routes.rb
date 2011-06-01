@@ -21,6 +21,14 @@ module LocaleApp
       [:get, translations_url(options)]
     end
 
+    def create_translation_endpoint(options = {})
+      [:post, translations_url(options)]
+    end
+
+    def missing_translations_endpoint(options = {})
+      [:post, missing_translations_url(options)]
+    end
+
     def missing_translations_url(options={})
       options[:format] ||= 'json'
       url = URI::HTTP.build(base_options.merge(:path => missing_translations_path(options[:format])))

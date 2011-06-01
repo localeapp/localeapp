@@ -72,6 +72,26 @@ describe LocaleApp::Routes do
     end
   end
 
+  describe "#create_translation_endpoint(options = {})" do
+    it "returns :post and the translation url for the options" do
+      with_configuration(@config) do
+        options = { :foo => :bar }
+        @routes.should_receive(:translations_url).with(options).and_return('url')
+        @routes.create_translation_endpoint(options).should == [:post, 'url']
+      end
+    end
+  end
+
+  describe "#missing_translations_endpoint(options = {})" do
+    it "returns :post and the missing_translations url for the options" do
+      with_configuration(@config) do
+        options = { :foo => :bar }
+        @routes.should_receive(:missing_translations_url).with(options).and_return('url')
+        @routes.missing_translations_endpoint(options).should == [:post, 'url']
+      end
+    end
+  end
+
   describe "#missing_translations_url" do
     it "it extends the project_url and defaults to json" do
       with_configuration(@config) do

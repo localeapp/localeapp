@@ -29,7 +29,11 @@ case command
 when 'install'
   key = args.shift.strip rescue nil
   installer = LocaleApp::CLI::Install.new
-  installer.execute(key)
+  if installer.execute(key)
+    exit 0
+  else
+    exit 1
+  end
 when 'pull'
   LocaleApp::CLI::Pull.new.execute
 when 'push'

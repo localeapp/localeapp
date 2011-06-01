@@ -26,6 +26,21 @@ Feature: localeapp executable
     Default Locale: en (English)
     """
     And a file named "config/initializers/locale_app.rb" should exist
+    And the exit status should be 0
+
+  Scenario: Running install with bad api key
+    In order to configure my project and check my api key is correct
+    When I have a valid project on localeapp.com but an incorrect api key "BADAPIKEY"
+    And I run `localeapp install BADAPIKEY`
+    Then the output should contain:
+    """
+    LocaleApp Install
+
+    Checking API key: BADAPIKEY
+    ERROR: Project not found
+    """
+    And a file named "config/initializers/locale_app.rb" should not exist
+    And the exit status should not be 0
 
   Scenario: Running pull
     In order to retreive my translations

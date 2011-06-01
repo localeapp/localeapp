@@ -1,6 +1,10 @@
 module LocaleApp
   module Routes
 
+    def project_endpoint(options = {})
+      [:get, project_url(options)]
+    end
+
     def project_url(options = {})
       options[:format] ||= 'json'
       URI::HTTP.build(base_options.merge(:path => project_path(options[:format]))).to_s
@@ -13,11 +17,27 @@ module LocaleApp
       url.to_s
     end
 
+    def translations_endpoint(options = {})
+      [:get, translations_url(options)]
+    end
+
+    def create_translation_endpoint(options = {})
+      [:post, translations_url(options)]
+    end
+
+    def missing_translations_endpoint(options = {})
+      [:post, missing_translations_url(options)]
+    end
+
     def missing_translations_url(options={})
       options[:format] ||= 'json'
       url = URI::HTTP.build(base_options.merge(:path => missing_translations_path(options[:format])))
       url.query = options[:query].map { |k,v| "#{k}=#{v}" }.join('&') if options[:query]
       url.to_s
+    end
+
+    def import_endpoint(options = {})
+      [:post, import_url(options)]
     end
 
     def import_url(options={})

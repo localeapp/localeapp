@@ -2,6 +2,7 @@ require 'i18n'
 require 'locale_app'
 require 'fakeweb'
 require 'support/locale_app_integration_data'
+require 'logger'
 
 def with_configuration(options = {})
   LocaleApp.configuration = nil

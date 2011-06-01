@@ -21,9 +21,10 @@ module LocaleApp
           config_file_path = "config/initializers/locale_app.rb"
           output.puts "Writing configuration file to #{config_file_path}"
           write_configuration_file config_file_path
+          true
         else
           output.puts "ERROR: Project not found"
-          return
+          false
         end
       end
 

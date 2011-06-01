@@ -20,7 +20,7 @@ module LocaleApp
     # For now it's pretty dumb
     def to_send
       data = []
-      @translations.each do |locale, records|
+      @translations.sort.each do |locale, records|
         records.each do |key, record|
           missing_data = {}
           missing_data[:key] = key

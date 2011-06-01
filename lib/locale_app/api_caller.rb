@@ -45,10 +45,11 @@ module LocaleApp
       begin
         @connection_attempts += 1
         LocaleApp.debug("ATTEMPT #{@connection_attempts}")
+        request_options = options[:request_options] || {}
         if method == :post
-          RestClient.send(method, url, options[:payload])
+          RestClient.send(method, url, options[:payload], request_options)
         else
-          RestClient.send(method, url)
+          RestClient.send(method, url, request_options)
         end
       rescue RestClient::ResourceNotFound,
         RestClient::NotModified,

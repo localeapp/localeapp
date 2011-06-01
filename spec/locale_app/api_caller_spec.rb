@@ -29,16 +29,34 @@ describe LocaleApp::ApiCaller, "#call(object)" do
     @api_caller.call(self)
   end
 
-  it "makes the call to the api" do
-    RestClient.should_receive(:get).with(@url).and_return(double('response', :code => 200))
-    @api_caller.call(self)
+  context "a GET request" do
+    it "makes the call to the api" do
+      RestClient.should_receive(:get).with(@url, {}).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+
+    it "adds any :request_options to the api call" do
+      RestClient.should_receive(:get).with(@url, :foo => :bar).and_return(double('response', :code => 200))
+      @api_caller.options[:request_options] = { :foo => :bar }
+      @api_caller.call(self)
+    end
   end
 
+
   context " a POST request" do
-    it "uses the content of the :payload option as the payload" do
+    before do
       @api_caller.stub!(:test_endpoint).and_return([:post, @url])
       @api_caller.options[:payload] = "test data"
-      RestClient.should_receive(:post).with(@url, "test data").and_return(double('response', :code => 200))
+    end
+
+    it "makes the call to the api using :payload as the payload" do
+      RestClient.should_receive(:post).with(@url, "test data", {}).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+
+    it "adds any :request_options to the api call" do
+      RestClient.should_receive(:post).with(@url, "test data", :foo => :bar).and_return(double('response', :code => 200))
+      @api_caller.options[:request_options] = { :foo => :bar }
       @api_caller.call(self)
     end
   end

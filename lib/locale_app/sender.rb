@@ -12,6 +12,7 @@ module LocaleApp
       @data = { :translation => translation }
       api_call :create_translation,
         :payload => @data.to_json,
+        :request_options => { :content_type => :json },
         :success => :handle_single_translation_success,
         :failure => :handle_single_translation_failure,
         :max_connection_attempts => 1
@@ -29,6 +30,7 @@ module LocaleApp
       @data = { :translations => LocaleApp.missing_translations.to_send }
       api_call :missing_translations,
         :payload => @data.to_json,
+        :request_options => { :content_type => :json },
         :success => :handle_missing_translation_success,
         :failure => :handle_missing_translation_failure,
         :max_connection_attempts => 1

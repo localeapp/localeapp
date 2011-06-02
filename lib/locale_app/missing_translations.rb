@@ -20,7 +20,8 @@ module LocaleApp
     # For now it's pretty dumb
     def to_send
       data = []
-      @translations.sort.each do |locale, records|
+      # need the sort to make specs work under 1.8
+      @translations.sort { |a, b| a.to_s <=> b.to_s }.each do |locale, records|
         records.each do |key, record|
           missing_data = {}
           missing_data[:key] = key

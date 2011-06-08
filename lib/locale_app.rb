@@ -19,6 +19,22 @@ $KCODE="UTF8" if RUBY_VERSION < '1.9'
 
 require 'ya2yaml'
 
+# AUDIT: Find a better way of doing this
+begin
+  require 'i18n'
+rescue LoadError
+  # we're in 2.3 and we need to load rails to get the vendored i18n
+  require 'thread' # for rubygems > 1.6.0 support
+  require 'activesupport'
+end
+
+begin
+  require 'i18n/core_ext/hash'
+rescue LoadError
+  # Assume that we're in rails 2.3 and AS supplies deep_merge
+end
+
+
 module LocaleApp
   API_VERSION = "1"
   LOG_PREFIX = "** [LocaleApp] "

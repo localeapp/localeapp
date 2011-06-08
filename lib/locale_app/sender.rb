@@ -27,7 +27,9 @@ module LocaleApp
     end
 
     def post_missing_translations
-      @data = { :translations => LocaleApp.missing_translations.to_send }
+      to_send = LocaleApp.missing_translations.to_send
+      return if to_send.empty?
+      @data = { :translations => to_send }
       api_call :missing_translations,
         :payload => @data.to_json,
         :request_options => { :content_type => :json },

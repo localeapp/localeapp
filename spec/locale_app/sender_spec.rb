@@ -40,4 +40,10 @@ describe LocaleApp::Sender, "#post_missing_translations" do
     RestClient.should_receive(:post).with(@sender.missing_translations_url, data.to_json, :content_type => :json).and_return(double('response', :code => 200))
     @sender.post_missing_translations
   end
+
+  it "does nothing if there are no missing translations to send" do
+    LocaleApp.missing_translations.should_receive(:to_send).and_return([])
+    RestClient.should_not_receive(:post)
+    @sender.post_missing_translations
+  end
 end

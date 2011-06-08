@@ -42,6 +42,11 @@ when 'push'
   pusher.execute(file)
 when 'update'
   LocaleApp::CLI::Update.new.execute
+when 'daemon'
+  while true do
+    LocaleApp::CLI::Update.new.execute
+    sleep 5
+  end
 else
 puts <<-HELP
 Usage: localeapp COMMAND [ARGS]
@@ -51,5 +56,6 @@ Commands:
   pull              - Pulls all translations from LocaleApp.com
   push <file>       - Pushes a translation file to LocaleApp.com
   update            - Gets any changes since the last poll and updates the yml files
+  daemon            - Simple daemon that checks every 5 seconds for new translations
 HELP
 end

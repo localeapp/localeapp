@@ -24,6 +24,10 @@ module LocaleApp
     # 'test', 'cucumber', 'production')
     attr_accessor :disabled_sending_environments
 
+    # The names of environments where I18n.reload isn't called for each request
+    # (defaults to 'test', 'cucumber', 'production')
+    attr_accessor :disabled_reloading_environments
+
     # The names of environments where updates aren't pulled (defaults to
     # 'test', 'cucumber', 'production')
     attr_accessor :disabled_polling_environments
@@ -44,22 +48,26 @@ module LocaleApp
     attr_accessor :translation_data_directory
 
     def initialize
-      @host                          = 'api.localeapp.com'
-      @port                          = 80
-      @disabled_sending_environments = %w(test cucumber production)
-      @disabled_polling_environments = %w(test cucumber production)
-      @poll_interval                 = 0
-      @synchronization_data_file     = File.join('log', 'locale_app.yml')
-      @translation_data_directory    = File.join('config', 'locales')
+      @host                            = 'api.localeapp.com'
+      @port                            = 80
+      @disabled_sending_environments   = %w(test cucumber production)
+      
+      @disabled_polling_environments   = %w(test cucumber production)
+      @poll_interval                   = 0
+      @synchronization_data_file       = File.join('log', 'locale_app.yml')
+      @translation_data_directory      = File.join('config', 'locales')
       if ENV['DEBUG']
         require 'logger'
         @logger = Logger.new(STDOUT)
       end
-
     end
 
     def polling_disabled?
       disabled_polling_environments.include?(environment_name)
+    end
+
+    def reloading_disabled?
+      disabled_reloading_environments.include?(environment_name)
     end
 
     def sending_disabled?

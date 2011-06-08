@@ -51,7 +51,7 @@ module LocaleApp
       @host                            = 'api.localeapp.com'
       @port                            = 80
       @disabled_sending_environments   = %w(test cucumber production)
-      
+      @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)
       @poll_interval                   = 0
       @synchronization_data_file       = File.join('log', 'locale_app.yml')

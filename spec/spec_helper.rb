@@ -2,6 +2,7 @@ require 'i18n'
 require 'locale_app'
 require 'fakeweb'
 require 'support/locale_app_integration_data'
+require 'support/locale_app_synchronization_data'
 require 'logger'
 
 def with_configuration(options = {})
@@ -16,6 +17,7 @@ end
 
 RSpec.configure do |config|
   config.include(LocaleAppIntegrationData)
+  config.include(LocaleAppSynchronizationData)
   config.before(:each) do
     FakeWeb.allow_net_connect = false
   end

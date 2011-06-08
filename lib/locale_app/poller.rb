@@ -13,8 +13,8 @@ module LocaleApp
     attr_accessor :updated_at
 
     def initialize
-      @polled_at  = synchronization_data[:polled_at]
-      @updated_at = synchronization_data[:updated_at]
+      @polled_at  = synchronization_data[:polled_at]  || 0
+      @updated_at = synchronization_data[:updated_at] || 0
     end
 
     def synchronization_data
@@ -40,23 +40,18 @@ module LocaleApp
     end
 
     def poll!
-      polled_at = Time.now.to_i # don't care about split second timing here
-      @updated_at = synchronization_data[:updated_at]
-
       api_call :translations,
         :url_options => { :query => { :updated_at => updated_at }},
         :success => :handle_success,
         :failure => :handle_failure,
         :max_connection_attempts => 1
-
-      write_synchronization_data!(polled_at, @updated_at)
       @success
     end
 
     def handle_success(response)
       @success = true
-      @updated_at = Time.parse(response.headers[:date]).to_i
       LocaleApp.updater.update(JSON.parse(response))
+      write_synchronization_data!(Time.now.to_i, Time.parse(response.headers[:date]).to_i)
     end
 
     def handle_failure(response)

@@ -12,6 +12,7 @@ require 'locale_app/missing_translations'
 require 'locale_app/cli/install'
 require 'locale_app/cli/pull'
 require 'locale_app/cli/push'
+require 'locale_app/cli/update'
 
 # AUDIT: Will this work on ruby 1.9.x
 $KCODE="UTF8" if RUBY_VERSION < '1.9'

@@ -51,6 +51,11 @@ module LocaleApp
       @poll_interval                 = 0
       @synchronization_data_file     = File.join('log', 'locale_app.yml')
       @translation_data_directory    = File.join('config', 'locales')
+      if ENV['DEBUG']
+        require 'logger'
+        @logger = Logger.new(STDOUT)
+      end
+
     end
 
     def polling_disabled?

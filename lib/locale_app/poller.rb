@@ -35,6 +35,10 @@ module LocaleApp
       synchronization_data[:polled_at] < (Time.now.to_i - LocaleApp.configuration.poll_interval)
     end
 
+    def needs_reloading?
+      synchronization_data[:updated_at] != @updated_at
+    end
+
     def poll!
       polled_at = Time.now.to_i # don't care about split second timing here
       @updated_at = synchronization_data[:updated_at]

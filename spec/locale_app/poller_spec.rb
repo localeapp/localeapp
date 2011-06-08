@@ -9,7 +9,7 @@ describe LocaleApp::Poller do
     @data
   end
 
-  before(:each) do
+  before do
     @tmpdir = Dir.mktmpdir
     @updated_at = Time.now
     @sync_filename = File.join(@tmpdir, 'test_sync.yml')
@@ -22,18 +22,30 @@ describe LocaleApp::Poller do
     @hash = { 'translations' => {}, 'deleted' => [] }
   end
 
-  after(:each) do
+  after do
     FileUtils.rm_rf @tmpdir
   end
 
+  describe "#needs_reloading?" do
+    it "returns true when updated_at has been changed in the synchronization file" do
+      @poller.write_synchronization_data!(@poller.polled_at, 12345)
+      @poller.needs_reloading?.should be_true
+    end
+
+    it "returns false when updated_at is the same as in the synchronization file" do
+      @poller.needs_reloading?.should be_false
+    end
+  end
+
   describe "#write_synchronization_data!(polled_at, updated_at)" do
-    it "updates the synchonization data file" do
-      update_date = Time.now
-      FakeWeb.register_uri(:get, "http://api.localeapp.com/projects/TEST_KEY/translations.json?updated_at=#{@updated_at.to_i}", :body => @hash.to_json, :status => ['200', 'OK'], :date => update_date.httpdate)
-      @poller.poll!
-      sync_data = YAML.load(File.read(@sync_filename))
-      sync_data[:updated_at].should == update_date.to_i
-      sync_data[:polled_at].should be_within(5).of(Time.now.to_i)
+    it "updates polled_at in the synchronization file" do
+      polled_at = lambda { @poller.synchronization_data[:polled_at] }
+      expect { @poller.write_synchronization_data!(01234, 56789) }.to change(polled_at, :call).to(01234)
+    end
+
+    it "updates updated_at in the synchronization file" do
+      updated_at = lambda { @poller.synchronization_data[:updated_at] }
+      expect { @poller.write_synchronization_data!(01234, 56789) }.to change(updated_at, :call).to(56789)
     end
   end
     

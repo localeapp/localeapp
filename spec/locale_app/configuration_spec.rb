@@ -53,6 +53,28 @@ describe LocaleApp::Configuration do
     end
   end
 
+  context "disabled_reloading_environments" do
+    it "does not include development by default" do
+      @configuration.environment_name = 'development'
+      @configuration.reloading_disabled?.should be_false
+    end
+
+    it "include cucumber by default" do
+      @configuration.environment_name = 'cucumber'
+      @configuration.reloading_disabled?.should be_true
+    end
+
+    it "include test by default" do
+      @configuration.environment_name = 'test'
+      @configuration.reloading_disabled?.should be_true
+    end
+
+    it "include production by default" do
+      @configuration.environment_name = 'production'
+      @configuration.reloading_disabled?.should be_true
+    end
+  end
+  
   context "disabled_polling_environments" do
     it "does not include development by default" do
       @configuration.environment_name = 'development'

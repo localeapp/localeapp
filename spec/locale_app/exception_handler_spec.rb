@@ -12,4 +12,10 @@ describe LocaleApp::ExceptionHandler, '#call(exception, locale, key, options)' d
     LocaleApp.missing_translations.should_receive(:add).with(:en, 'foo', { :baz => 'bam' })
     I18n.t('foo', :baz => 'bam')
   end
+
+  it "handles when the key is an array of keys" do
+    LocaleApp.missing_translations.should_receive(:add).with(:en, 'foo', {})
+    LocaleApp.missing_translations.should_receive(:add).with(:en, 'bar', {})
+    I18n.t(['foo', 'bar'])
+  end
 end

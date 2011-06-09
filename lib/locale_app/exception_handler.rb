@@ -3,9 +3,11 @@ module LocaleApp
     def self.call(exception, locale, key, options)
       LocaleApp.log(exception.message)
       if I18n::MissingTranslationData === exception
-        LocaleApp.log('Detected missing translation')
+        LocaleApp.log("Detected missing translation for key(s) #{key.inspect}")
 
-        LocaleApp.missing_translations.add(locale, key, options)
+        [*key].each do |key|
+          LocaleApp.missing_translations.add(locale, key, options)
+        end
 
         [locale, key].join(', ')
       else

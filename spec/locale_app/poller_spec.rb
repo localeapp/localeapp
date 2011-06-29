@@ -6,7 +6,7 @@ describe LocaleApp::Poller do
     with_configuration(:synchronization_data_file => LocaleAppSynchronizationData::setup(nil, @updated_at), :api_key => 'TEST_KEY') do
       @poller = LocaleApp::Poller.new
     end
-    @hash = { 'translations' => {}, 'deleted' => [] }
+    @hash = { 'translations' => {}, 'deleted' => [], 'locales' => [] }
   end
 
   after do

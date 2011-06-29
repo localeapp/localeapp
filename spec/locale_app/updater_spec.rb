@@ -31,7 +31,9 @@ describe LocaleApp::Updater, ".update(data)" do
         'foo.delete_me',
         'bar.delete_me_too',
         'hah.imnotreallyhere'
-    ]})
+      ],
+      'locales' => %w{en es}
+    })
     File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en: 
   foo: 
@@ -46,15 +48,42 @@ es:
 ES
   end
 
+  it "deletes keys in the yml files when updates are empty" do
+    do_update({
+      'translations' => {},
+      'deleted' => [
+        'foo.delete_me',
+        'bar.delete_me_too',
+        'hah.imnotreallyhere'
+      ],
+      'locales' => %w{es}
+    })
+    File.read(File.join(@yml_dir, 'es.yml')).should == <<-ES
+es: 
+  foo: 
+    monkey: Mono
+ES
+  end
+
   it "creates a new yml file if an unknown locale is passed" do
     do_update({
       'translations' => {
         'ja' => { 'foo' => 'bar'}
-      }
+      },
+      'locales' => ['ja']
     })
     File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
 ja: 
   foo: bar
 JA
+  end
+
+  it "doesn't create a new yml file if an unknown locale is passed but it has no translations" do
+    do_update({
+      'translations' => {},
+      'deletes' => ['foo.delete_me'],
+      'locales' => ['ja']
+    })
+    File.exist?(File.join(@yml_dir, 'ja.yml')).should be_false
   end
 end

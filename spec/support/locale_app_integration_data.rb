@@ -26,7 +26,8 @@ module LocaleAppIntegrationData
         'foo.delete_me',
         'bar.delete_me_too',
         'hah.imnotreallyhere'
-      ]
+      ],
+      'locales' => %w{en es}
     }
   end
 end

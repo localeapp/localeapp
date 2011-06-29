@@ -2,13 +2,15 @@ module LocaleApp
   class Updater
 
     def update(data)
-      data['translations'].keys.each do |short_code|
+      data['locales'].each do |short_code|
         filename = File.join(LocaleApp.configuration.translation_data_directory, "#{short_code}.yml")
 
         if File.exist?(filename)
           translations = YAML.load(File.read(filename))
-          new_data = { short_code => data['translations'][short_code] }
-          translations.deep_merge!(new_data)
+          if data['translations'] && data['translations'][short_code]
+            new_data = { short_code => data['translations'][short_code] }
+            translations.deep_merge!(new_data)
+          end
         else
           translations = { short_code => data['translations'][short_code] }
         end
@@ -19,8 +21,10 @@ module LocaleApp
           end
         end
 
-        File.open(filename, "w+") do |file|
-          file.write translations.ya2yaml[5..-1]
+        if translations[short_code]
+          File.open(filename, "w+") do |file|
+            file.write translations.ya2yaml[5..-1]
+          end
         end
       end
     end

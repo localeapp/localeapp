@@ -25,6 +25,10 @@ module LocaleApp
         @output.puts "Success!"
         LocaleApp.poller.write_synchronization_data!(Time.now.to_i, Time.now.to_i)
       end
+
+      def report_failure(response)
+        @output.puts "Failed!"
+      end
     end
   end
 end

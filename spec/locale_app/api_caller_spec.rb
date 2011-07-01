@@ -146,5 +146,12 @@ describe LocaleApp::ApiCaller, "#call(object)" do
         @api_caller.call(@object)
       end
     end
+
+    it "handles ECONNREFUSED" do
+      RestClient.stub(:send).and_raise(Errno::ECONNREFUSED)
+      @api_caller.options[:failure] = :fail
+      @object.should_receive(:fail)
+      @api_caller.call(@object)
+    end
   end
 end

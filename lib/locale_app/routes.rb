@@ -1,5 +1,6 @@
 module LocaleApp
   module Routes
+    VERSION = 'v1'
 
     def project_endpoint(options = {})
       [:get, project_url(options)]
@@ -55,7 +56,7 @@ module LocaleApp
     end
 
     def project_path(format = nil)
-      path = "/projects/#{LocaleApp.configuration.api_key}"
+      path = "/#{VERSION}/projects/#{LocaleApp.configuration.api_key}"
       path << ".#{format}" if format
       path
     end

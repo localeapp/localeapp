@@ -23,19 +23,19 @@ describe LocaleApp::Routes do
   describe '#project_url' do
     it "is constructed from the configuration host and port and defaults to json" do
       with_configuration(@config.merge(:port => 1234)) do
-        @routes.project_url.should == "http://test.host:1234/projects/API_KEY.json"
+        @routes.project_url.should == "http://test.host:1234/v1/projects/API_KEY.json"
       end
     end
 
     it "includes http auth if in configuration" do
       with_configuration(@config.merge(:port => 1234, :http_auth_username => 'foo', :http_auth_password => 'bar')) do
-        @routes.project_url.should == "http://foo:bar@test.host:1234/projects/API_KEY.json"
+        @routes.project_url.should == "http://foo:bar@test.host:1234/v1/projects/API_KEY.json"
       end
     end
 
     it "can be changed to another content type" do
       with_configuration(@config) do
-        @routes.project_url(:format => :yml).should == 'http://test.host/projects/API_KEY.yml'
+        @routes.project_url(:format => :yml).should == 'http://test.host/v1/projects/API_KEY.yml'
       end
     end
   end
@@ -43,7 +43,7 @@ describe LocaleApp::Routes do
   describe "#translations_url" do
     it "it extends the project_url and defaults to json" do
       with_configuration(@config) do
-        @routes.translations_url.should == "http://test.host/projects/API_KEY/translations.json"
+        @routes.translations_url.should == "http://test.host/v1/projects/API_KEY/translations.json"
       end
     end
 
@@ -57,7 +57,7 @@ describe LocaleApp::Routes do
 
     it "can be changed to another content type" do
       with_configuration(@config) do
-        @routes.translations_url(:format => :yml).should == 'http://test.host/projects/API_KEY/translations.yml'
+        @routes.translations_url(:format => :yml).should == 'http://test.host/v1/projects/API_KEY/translations.yml'
       end
     end
   end
@@ -95,7 +95,7 @@ describe LocaleApp::Routes do
   describe "#missing_translations_url" do
     it "it extends the project_url and defaults to json" do
       with_configuration(@config) do
-        @routes.missing_translations_url.should == "http://test.host/projects/API_KEY/translations/missing.json"
+        @routes.missing_translations_url.should == "http://test.host/v1/projects/API_KEY/translations/missing.json"
       end
     end
 
@@ -109,7 +109,7 @@ describe LocaleApp::Routes do
 
     it "can be changed to another content type" do
       with_configuration(@config) do
-        @routes.missing_translations_url(:format => :yml).should == 'http://test.host/projects/API_KEY/translations/missing.yml'
+        @routes.missing_translations_url(:format => :yml).should == 'http://test.host/v1/projects/API_KEY/translations/missing.yml'
       end
     end
   end
@@ -117,7 +117,7 @@ describe LocaleApp::Routes do
   describe "#import_url" do
     it "appends 'import to the project url" do
       with_configuration(@config) do
-        @routes.import_url.should == 'http://test.host/projects/API_KEY/import/'
+        @routes.import_url.should == 'http://test.host/v1/projects/API_KEY/import/'
       end
     end
   end

@@ -22,7 +22,7 @@ module LocaleApp
         end
 
         if translations[short_code]
-          File.open(filename, "w+") do |file|
+          atomic_write(filename) do |file|
             file.write translations.ya2yaml[5..-1]
           end
         end
@@ -50,6 +50,14 @@ module LocaleApp
           end
         end
       end
+    end
+
+    # from ActiveSupport
+    def atomic_write(file_name, temp_dir = Dir.tmpdir)
+      temp_file = Tempfile.new(File.basename(file_name), temp_dir)
+      yield temp_file
+      temp_file.close
+      File.rename(temp_file.path, file_name)
     end
   end
 end

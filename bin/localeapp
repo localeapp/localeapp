@@ -1,0 +1,61 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+
+require 'locale_app'
+
+# Don't connect to the net if we're running under cucumber for testing
+# Use FakeWeb to simulate api.localeapp.com
+if ENV['FAKE_WEB_DURING_CUCUMBER_RUN'] && fake_data_as_json = ENV['FAKE_WEB_FAKES']
+  require 'fakeweb'
+  FakeWeb.allow_net_connect = false
+  fakes = JSON.parse(fake_data_as_json)
+  fakes.each do |fake|
+    FakeWeb.register_uri fake['method'].to_sym, fake['uri'], { :body => fake['body'], :status => fake['status'] }.merge(fake['headers'])
+  end
+end
+
+args = ARGV.dup
+
+command = args.shift.strip rescue nil
+
+unless %w{help install}.include?(command)
+  unless LocaleApp.include_config_file
+    puts "Could not load config file"
+    exit
+  end
+end
+
+case command
+when 'install'
+  key = args.shift.strip rescue nil
+  installer = LocaleApp::CLI::Install.new
+  if installer.execute(key)
+    exit 0
+  else
+    exit 1
+  end
+when 'pull'
+  LocaleApp::CLI::Pull.new.execute
+when 'push'
+  file = args.shift.strip rescue nil
+  pusher = LocaleApp::CLI::Push.new
+  pusher.execute(file)
+when 'update'
+  LocaleApp::CLI::Update.new.execute
+when 'daemon'
+  while true do
+    LocaleApp::CLI::Update.new.execute
+    sleep 5
+  end
+else
+puts <<-HELP
+Usage: localeapp COMMAND [ARGS]
+
+Commands:
+  install <api_key> - Creates new configuration files and confirms key works
+  pull              - Pulls all translations from LocaleApp.com
+  push <file>       - Pushes a translation file to LocaleApp.com
+  update            - Gets any changes since the last poll and updates the yml files
+  daemon            - Simple daemon that checks every 5 seconds for new translations
+HELP
+end

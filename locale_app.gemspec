@@ -26,6 +26,7 @@ Gem::Specification.new do |s|
   # i18n is a dev dependency as we'll use whichever version is in rails
   # when the gem runs
   s.add_development_dependency('i18n', '0.5.0')
+  s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '2.5.0')
   s.add_development_dependency('yard', '0.6.7')
   s.add_development_dependency('RedCloth', '4.2.7')

@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "locale_app/version"
+require "localeapp/version"
 
 Gem::Specification.new do |s|
   s.name        = "localeapp"
-  s.version     = LocaleApp::VERSION
+  s.version     = Localeapp::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Christopher Dell", "Chris McGrath"]
   s.email       = ["chris@tigrish.com", "chris@octopod.info"]

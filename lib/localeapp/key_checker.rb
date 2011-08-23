@@ -2,16 +2,16 @@ require 'yaml'
 require 'rest-client'
 require 'time'
 
-module LocaleApp
+module Localeapp
   class KeyChecker
-    include ::LocaleApp::ApiCall
+    include ::Localeapp::ApiCall
 
     def check(key)
-      if LocaleApp.configuration.nil? # no config file yet
-        LocaleApp.configuration = LocaleApp::Configuration.new
-        LocaleApp.configuration.host = ENV['LA_TEST_HOST'] if ENV['LA_TEST_HOST']
+      if Localeapp.configuration.nil? # no config file yet
+        Localeapp.configuration = Localeapp::Configuration.new
+        Localeapp.configuration.host = ENV['LA_TEST_HOST'] if ENV['LA_TEST_HOST']
       end
-      LocaleApp.configuration.api_key = key
+      Localeapp.configuration.api_key = key
       api_call :project,
         :success => :handle_success,
         :failure => :handle_failure,

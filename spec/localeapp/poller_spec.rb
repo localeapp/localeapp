@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe LocaleApp::Poller do
+describe Localeapp::Poller do
   before do
     @updated_at = Time.now.to_i
-    with_configuration(:synchronization_data_file => LocaleAppSynchronizationData::setup(nil, @updated_at), :api_key => 'TEST_KEY') do
-      @poller = LocaleApp::Poller.new
+    with_configuration(:synchronization_data_file => LocaleappSynchronizationData::setup(nil, @updated_at), :api_key => 'TEST_KEY') do
+      @poller = Localeapp::Poller.new
     end
     @hash = { 'translations' => {}, 'deleted' => [], 'locales' => [] }
   end
 
   after do
-    LocaleAppSynchronizationData::destroy
+    LocaleappSynchronizationData::destroy
   end
 
   describe "#needs_reloading?" do
@@ -54,7 +54,7 @@ describe LocaleApp::Poller do
 
     it "passes the data through to the Updater" do
       FakeWeb.register_uri(:get, "http://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => @hash.to_json, :status => ['200', 'OK'], :date => Time.now.httpdate)
-      LocaleApp.updater.should_receive(:update).with(@hash)
+      Localeapp.updater.should_receive(:update).with(@hash)
       @poller.poll!
     end
   end

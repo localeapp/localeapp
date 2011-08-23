@@ -1,4 +1,4 @@
-module LocaleApp
+module Localeapp
   MissingTranslationRecord = Struct.new(:key, :locale, :options)
 
   class MissingTranslations

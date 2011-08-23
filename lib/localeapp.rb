@@ -14,39 +14,39 @@ rescue LoadError
 end
 
 
-require 'locale_app/version'
-require 'locale_app/configuration'
-require 'locale_app/routes'
-require 'locale_app/api_call'
-require 'locale_app/api_caller'
-require 'locale_app/sender'
-require 'locale_app/poller'
-require 'locale_app/updater'
-require 'locale_app/key_checker'
-require 'locale_app/missing_translations'
+require 'localeapp/version'
+require 'localeapp/configuration'
+require 'localeapp/routes'
+require 'localeapp/api_call'
+require 'localeapp/api_caller'
+require 'localeapp/sender'
+require 'localeapp/poller'
+require 'localeapp/updater'
+require 'localeapp/key_checker'
+require 'localeapp/missing_translations'
   
-require 'locale_app/cli/install'
-require 'locale_app/cli/pull'
-require 'locale_app/cli/push'
-require 'locale_app/cli/update'
+require 'localeapp/cli/install'
+require 'localeapp/cli/pull'
+require 'localeapp/cli/push'
+require 'localeapp/cli/update'
 
 # AUDIT: Will this work on ruby 1.9.x
 $KCODE="UTF8" if RUBY_VERSION < '1.9'
 
 require 'ya2yaml'
 
-module LocaleApp
+module Localeapp
   API_VERSION = "1"
-  LOG_PREFIX = "** [LocaleApp] "
+  LOG_PREFIX = "** [Localeapp] "
 
   class << self
-    # An LocaleApp configuration object.
+    # An Localeapp configuration object.
     attr_accessor :configuration
     
-    # The sender object is responsible for delivering formatted data to the LocaleApp server.
+    # The sender object is responsible for delivering formatted data to the Localeapp server.
     attr_accessor :sender
 
-    # The poller object is responsible for retrieving data for the LocaleApp server
+    # The poller object is responsible for retrieving data for the Localeapp server
     attr_accessor :poller
 
     # The updater object is responsible for merging translations into the i18n backend
@@ -72,7 +72,7 @@ module LocaleApp
     end
   
     # @example Configuration
-    # LocaleApp.configure do |config|
+    # Localeapp.configure do |config|
     #   config.api_key = '1234567890abcdef'
     # end
     def configure
@@ -84,9 +84,9 @@ module LocaleApp
       @missing_translations = MissingTranslations.new
     end
 
-    # requires the LocaleApp configuration
+    # requires the Localeapp configuration
     def include_config_file(file_path=nil)
-      file_path ||= File.join(Dir.pwd, 'config', 'initializers', 'locale_app')
+      file_path ||= File.join(Dir.pwd, 'config', 'initializers', 'localeapp')
       begin
         require file_path
         true

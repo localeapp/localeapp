@@ -1,4 +1,4 @@
-module LocaleApp
+module Localeapp
   module CLI
     class Update
       def initialize(output = $stdout)
@@ -6,8 +6,8 @@ module LocaleApp
       end
 
       def execute
-        poller = LocaleApp::Poller.new
-        @output.puts("LocaleApp update: checking for translations since #{poller.updated_at}")
+        poller = Localeapp::Poller.new
+        @output.puts("Localeapp update: checking for translations since #{poller.updated_at}")
         if poller.poll!
           @output.puts "Found and updated new translations"
         else

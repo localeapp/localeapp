@@ -1,4 +1,4 @@
-namespace :locale_app do
+namespace :localeapp do
   desc 'Imports the en.yml file to the LocaleServer'
   task :import => :environment do
     require 'flatten'
@@ -13,7 +13,7 @@ namespace :locale_app do
         nil
       ).each do |key, value|
         puts "#{key} => #{value}"
-        LocaleApp.sender.post_translation(locale, key, {}, value)
+        Localeapp.sender.post_translation(locale, key, {}, value)
       end
     end
   end

@@ -1,4 +1,4 @@
-module LocaleApp
+module Localeapp
   class Configuration
   
     # The API key for your project, found on the project edit form
@@ -32,7 +32,7 @@ module LocaleApp
     # 'test', 'cucumber', 'production')
     attr_accessor :disabled_polling_environments
 
-    # The logger used by LocaleApp
+    # The logger used by Localeapp
     attr_accessor :logger
 
     # The number of seconds to wait before asking the service for new
@@ -40,8 +40,8 @@ module LocaleApp
     attr_accessor :poll_interval
 
     # The complete path to the data file where we store synchronization
-    # information (defaults to ./locale_app.yml) local_app/rails overwrites
-    # this to RAILS_ROOT/log/locale_app.yml
+    # information (defaults to ./localeapp.yml) local_app/rails overwrites
+    # this to RAILS_ROOT/log/localeapp.yml
     attr_accessor :synchronization_data_file
 
     # The complete path to the directory where translations are stored
@@ -54,7 +54,7 @@ module LocaleApp
       @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)
       @poll_interval                   = 0
-      @synchronization_data_file       = File.join('log', 'locale_app.yml')
+      @synchronization_data_file       = File.join('log', 'localeapp.yml')
       @translation_data_directory      = File.join('config', 'locales')
       if ENV['DEBUG']
         require 'logger'
@@ -79,9 +79,9 @@ module LocaleApp
       FileUtils.mkdir_p(dir)
       File.open(path, 'w+') do |file|
         file.write <<-CONTENT
-require 'locale_app/rails'
+require 'localeapp/rails'
 
-LocaleApp.configure do |config|
+Localeapp.configure do |config|
   config.api_key = '#{@api_key}'
   config.host = '#{@host}'
   config.port = #{@port}

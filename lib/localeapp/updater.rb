@@ -1,9 +1,9 @@
-module LocaleApp
+module Localeapp
   class Updater
 
     def update(data)
       data['locales'].each do |short_code|
-        filename = File.join(LocaleApp.configuration.translation_data_directory, "#{short_code}.yml")
+        filename = File.join(Localeapp.configuration.translation_data_directory, "#{short_code}.yml")
 
         if File.exist?(filename)
           translations = YAML.load(File.read(filename))

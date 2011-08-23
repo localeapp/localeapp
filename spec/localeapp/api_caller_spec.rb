@@ -1,16 +1,16 @@
 require 'spec_helper'
 
-describe LocaleApp::ApiCaller, ".new(endpoint, options = {})" do
+describe Localeapp::ApiCaller, ".new(endpoint, options = {})" do
   it "stores the endpoint and options" do
-    api_caller = LocaleApp::ApiCaller.new(:endpoint, :foo => :bar)
+    api_caller = Localeapp::ApiCaller.new(:endpoint, :foo => :bar)
     api_caller.endpoint.should == :endpoint
     api_caller.options.should == { :foo => :bar }
   end
 end
 
-describe LocaleApp::ApiCaller, "#call(object)" do
+describe Localeapp::ApiCaller, "#call(object)" do
   before do
-    @api_caller = LocaleApp::ApiCaller.new(:test)
+    @api_caller = Localeapp::ApiCaller.new(:test)
     @url = 'http://example.com/test'
     @api_caller.stub!(:test_endpoint).and_return([:get, @url])
     @api_caller.stub!(:sleep_if_retrying)

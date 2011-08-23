@@ -1,14 +1,14 @@
-module LocaleApp
+module Localeapp
   module CLI
     class Push
-      include ::LocaleApp::ApiCall
+      include ::Localeapp::ApiCall
 
       def initialize(output = $stdout)
         @output = output
       end
 
       def execute(file_path = nil)
-        @output.puts "LocaleApp Push"
+        @output.puts "Localeapp Push"
         @output.puts ""
 
         @file_path = file_path

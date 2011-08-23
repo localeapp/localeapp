@@ -1,4 +1,4 @@
-module LocaleAppSynchronizationData
+module LocaleappSynchronizationData
   def self.file(dir)
     File.join(dir, 'test_sync.yml')
   end

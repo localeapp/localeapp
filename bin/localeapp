@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
-require 'locale_app'
+require 'localeapp'
 
 # Don't connect to the net if we're running under cucumber for testing
 # Use FakeWeb to simulate api.localeapp.com
@@ -19,7 +19,7 @@ args = ARGV.dup
 command = args.shift.strip rescue nil
 
 unless %w{help install}.include?(command)
-  unless LocaleApp.include_config_file
+  unless Localeapp.include_config_file
     puts "Could not load config file"
     exit
   end
@@ -28,23 +28,23 @@ end
 case command
 when 'install'
   key = args.shift.strip rescue nil
-  installer = LocaleApp::CLI::Install.new
+  installer = Localeapp::CLI::Install.new
   if installer.execute(key)
     exit 0
   else
     exit 1
   end
 when 'pull'
-  LocaleApp::CLI::Pull.new.execute
+  Localeapp::CLI::Pull.new.execute
 when 'push'
   file = args.shift.strip rescue nil
-  pusher = LocaleApp::CLI::Push.new
+  pusher = Localeapp::CLI::Push.new
   pusher.execute(file)
 when 'update'
-  LocaleApp::CLI::Update.new.execute
+  Localeapp::CLI::Update.new.execute
 when 'daemon'
   while true do
-    LocaleApp::CLI::Update.new.execute
+    Localeapp::CLI::Update.new.execute
     sleep 5
   end
 else
@@ -53,8 +53,8 @@ Usage: localeapp COMMAND [ARGS]
 
 Commands:
   install <api_key> - Creates new configuration files and confirms key works
-  pull              - Pulls all translations from LocaleApp.com
-  push <file>       - Pushes a translation file to LocaleApp.com
+  pull              - Pulls all translations from localeapp.com
+  push <file>       - Pushes a translation file to localeapp.com
   update            - Gets any changes since the last poll and updates the yml files
   daemon            - Simple daemon that checks every 5 seconds for new translations
 HELP

@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'locale_app/cli/install'
+require 'localeapp/cli/install'
 
-describe LocaleApp::CLI::Install, '.execute(key, output = $stdout)' do
+describe Localeapp::CLI::Install, '.execute(key, output = $stdout)' do
   before(:each) do
     @output = StringIO.new
-    @command = LocaleApp::CLI::Install.new
+    @command = Localeapp::CLI::Install.new
   end
 
   it "displays error if key is nil" do

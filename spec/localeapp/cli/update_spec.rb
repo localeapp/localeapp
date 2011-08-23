@@ -1,17 +1,17 @@
 require 'spec_helper'
-require 'locale_app/cli/update'
+require 'localeapp/cli/update'
 
-describe LocaleApp::CLI::Update, "#execute" do
+describe Localeapp::CLI::Update, "#execute" do
   before do
     @output = StringIO.new
-    @updater = LocaleApp::CLI::Update.new(@output)
+    @updater = Localeapp::CLI::Update.new(@output)
   end
 
   it "creates a Poller and calls poll! on it" do
     with_configuration do
-      poller = LocaleApp::Poller.new
+      poller = Localeapp::Poller.new
       poller.should_receive(:poll!)
-      LocaleApp::Poller.should_receive(:new).and_return(poller)
+      Localeapp::Poller.should_receive(:new).and_return(poller)
       @updater.execute
     end
   end

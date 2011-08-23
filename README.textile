@@ -1,8 +1,8 @@
-h1. Locale (http://www.localeapp.com)
+h1. Locale
 
 The localeapp gem connects your rails app to the Locale service on
-localeapp.com. Locale makes hand editing translation files something you don't
-have to do.
+"localeapp.com":http://www.localeapp.com. Locale makes hand editing translation
+files something you don't have to do.
 
 The gem hooks into the i18n exception mechanism to send missing translations to
 the app. When translated content has been added it's automatically pulled down

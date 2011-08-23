@@ -1,21 +1,21 @@
-module LocaleApp
+module Localeapp
   class ExceptionHandler
     def self.call(exception, locale, key, options)
-      LocaleApp.log(exception.message)
+      Localeapp.log(exception.message)
       if I18n::MissingTranslationData === exception
-        LocaleApp.log("Detected missing translation for key(s) #{key.inspect}")
+        Localeapp.log("Detected missing translation for key(s) #{key.inspect}")
 
         [*key].each do |key|
-          LocaleApp.missing_translations.add(locale, key, options)
+          Localeapp.missing_translations.add(locale, key, options)
         end
 
         [locale, key].join(', ')
       else
-        LocaleApp.log('Raising exception')
+        Localeapp.log('Raising exception')
         raise
       end
     end
   end
 end
 
-I18n.exception_handler = LocaleApp::ExceptionHandler
+I18n.exception_handler = Localeapp::ExceptionHandler

@@ -1,6 +1,6 @@
 require 'aruba/cucumber'
-require File.expand_path(File.join(File.dirname(__FILE__), '../../spec/support/locale_app_integration_data'))
-World(LocaleAppIntegrationData)
+require File.expand_path(File.join(File.dirname(__FILE__), '../../spec/support/localeapp_integration_data'))
+World(LocaleappIntegrationData)
 
 ENV['PATH'] = "#{File.expand_path(File.dirname(__FILE__) + '/../../bin')}#{File::PATH_SEPARATOR}#{ENV['PATH']}"
 

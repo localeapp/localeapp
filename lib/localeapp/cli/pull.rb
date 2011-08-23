@@ -1,14 +1,14 @@
-module LocaleApp
+module Localeapp
   module CLI
     class Pull
-      include ::LocaleApp::ApiCall
+      include ::Localeapp::ApiCall
 
       def initialize(output = $stdout)
         @output = output
       end
 
       def execute
-        @output.puts "LocaleApp Pull"
+        @output.puts "Localeapp Pull"
         @output.puts ""
 
         @output.puts "Fetching translations:"
@@ -21,9 +21,9 @@ module LocaleApp
       def update_backend(response)
         @output.puts "Success!"
         @output.puts "Updating backend:"
-        LocaleApp.updater.update(JSON.parse(response))
+        Localeapp.updater.update(JSON.parse(response))
         @output.puts "Success!"
-        LocaleApp.poller.write_synchronization_data!(Time.now.to_i, Time.now.to_i)
+        Localeapp.poller.write_synchronization_data!(Time.now.to_i, Time.now.to_i)
       end
 
       def report_failure(response)

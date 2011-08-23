@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 class TestRoutes
-  include LocaleApp::Routes
+  include Localeapp::Routes
 end
   
-describe LocaleApp::Routes do
+describe Localeapp::Routes do
   before(:each) do
     @routes = TestRoutes.new
     @config = {:host => 'test.host', :api_key => 'API_KEY'}

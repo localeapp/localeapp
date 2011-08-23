@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe LocaleApp::CLI::Push, "#execute(file)" do
+describe Localeapp::CLI::Push, "#execute(file)" do
   before do
     @output = StringIO.new
-    @pusher = LocaleApp::CLI::Push.new(@output)
+    @pusher = Localeapp::CLI::Push.new(@output)
   end
 
   it "creates a new file object and makes the api call to the translations endpoint" do

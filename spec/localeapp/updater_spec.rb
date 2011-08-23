@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe LocaleApp::Updater, ".update(data)" do
+describe Localeapp::Updater, ".update(data)" do
   before(:each) do
     @yml_dir = Dir.mktmpdir
     Dir.glob(File.join(File.dirname(__FILE__), '..', 'fixtures', '*.yml')).each { |f| FileUtils.cp f, @yml_dir }
     with_configuration(:translation_data_directory => @yml_dir) do
-      @updater = LocaleApp::Updater.new
+      @updater = Localeapp::Updater.new
     end
   end
 

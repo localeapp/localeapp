@@ -1,4 +1,4 @@
-module LocaleApp
+module Localeapp
   module Routes
     VERSION = 'v1'
 
@@ -48,15 +48,15 @@ module LocaleApp
   private
 
     def base_options
-      options = {:host => LocaleApp.configuration.host, :port => LocaleApp.configuration.port}
-      if LocaleApp.configuration.http_auth_username
-        options[:userinfo] = "#{LocaleApp.configuration.http_auth_username}:#{LocaleApp.configuration.http_auth_password}"
+      options = {:host => Localeapp.configuration.host, :port => Localeapp.configuration.port}
+      if Localeapp.configuration.http_auth_username
+        options[:userinfo] = "#{Localeapp.configuration.http_auth_username}:#{Localeapp.configuration.http_auth_password}"
       end
       options
     end
 
     def project_path(format = nil)
-      path = "/#{VERSION}/projects/#{LocaleApp.configuration.api_key}"
+      path = "/#{VERSION}/projects/#{Localeapp.configuration.api_key}"
       path << ".#{format}" if format
       path
     end

@@ -1,10 +1,10 @@
 require 'rest-client'
 require 'json'
 
-module LocaleApp
+module Localeapp
   class Sender
-    include ::LocaleApp::ApiCall
-    include ::LocaleApp::Routes
+    include ::Localeapp::ApiCall
+    include ::Localeapp::Routes
 
     def post_translation(locale, key, options, value = nil)
       options ||= {}
@@ -19,15 +19,15 @@ module LocaleApp
     end
 
     def handle_single_translation_success(response)
-       LocaleApp.log([translations_url, response.code, @data.inspect].join(' - '))
+       Localeapp.log([translations_url, response.code, @data.inspect].join(' - '))
     end
 
     def handle_single_translation_failure(response)
-       LocaleApp.log([translations_url, response.code, @data.inspect].join(' - '))
+       Localeapp.log([translations_url, response.code, @data.inspect].join(' - '))
     end
 
     def post_missing_translations
-      to_send = LocaleApp.missing_translations.to_send
+      to_send = Localeapp.missing_translations.to_send
       return if to_send.empty?
       @data = { :translations => to_send }
       api_call :missing_translations,
@@ -39,11 +39,11 @@ module LocaleApp
     end
 
     def handle_missing_translation_success(response)
-       LocaleApp.log([translations_url, response.code, @data.inspect].join(' - '))
+       Localeapp.log([translations_url, response.code, @data.inspect].join(' - '))
     end
 
     def handle_missing_translation_failure(response)
-       LocaleApp.log([translations_url, response.code, @data.inspect].join(' - '))
+       Localeapp.log([translations_url, response.code, @data.inspect].join(' - '))
     end
   end
 end

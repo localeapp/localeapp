@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'locale_app/cli/pull'
+require 'localeapp/cli/pull'
 
-describe LocaleApp::CLI::Pull, "#execute" do
+describe Localeapp::CLI::Pull, "#execute" do
   before do
     @output = StringIO.new
-    @puller = LocaleApp::CLI::Pull.new(@output)
+    @puller = Localeapp::CLI::Pull.new(@output)
   end
 
   it "makes the api call to the translations endpoint" do
@@ -20,25 +20,25 @@ describe LocaleApp::CLI::Pull, "#execute" do
   end
 end
 
-describe LocaleApp::CLI::Pull, "#update_backend(response)" do
+describe Localeapp::CLI::Pull, "#update_backend(response)" do
   before do
     @test_data = ['test data'].to_json
     @output = StringIO.new
-    @puller = LocaleApp::CLI::Pull.new(@output)
+    @puller = Localeapp::CLI::Pull.new(@output)
   end
 
   it "calls the updater" do
     with_configuration do
-      LocaleApp.poller.stub!(:write_synchronization_data!)
-      LocaleApp.updater.should_receive(:update).with(['test data'])
+      Localeapp.poller.stub!(:write_synchronization_data!)
+      Localeapp.updater.should_receive(:update).with(['test data'])
       @puller.update_backend(@test_data)
     end
   end
 
   it "writes the synchronization data" do
     with_configuration do
-      LocaleApp.updater.stub!(:update)
-      LocaleApp.poller.should_receive(:write_synchronization_data!)
+      Localeapp.updater.stub!(:update)
+      Localeapp.poller.should_receive(:write_synchronization_data!)
       @puller.update_backend(@test_data)
     end
   end

@@ -2,9 +2,9 @@ require 'yaml'
 require 'rest-client'
 require 'time'
 
-module LocaleApp
+module Localeapp
   class Poller
-    include ::LocaleApp::ApiCall
+    include ::Localeapp::ApiCall
     
     # when we last asked the service for updates
     attr_accessor :polled_at
@@ -18,21 +18,21 @@ module LocaleApp
     end
 
     def synchronization_data
-      if File.exists?(LocaleApp.configuration.synchronization_data_file)
-        YAML.load_file(LocaleApp.configuration.synchronization_data_file)
+      if File.exists?(Localeapp.configuration.synchronization_data_file)
+        YAML.load_file(Localeapp.configuration.synchronization_data_file)
       else
         {}
       end
     end
 
     def write_synchronization_data!(polled_at, updated_at)
-      File.open(LocaleApp.configuration.synchronization_data_file, 'w+') do |f|
+      File.open(Localeapp.configuration.synchronization_data_file, 'w+') do |f|
         f.write({:polled_at => polled_at, :updated_at => updated_at}.to_yaml)
       end
     end
 
     def needs_polling?
-      synchronization_data[:polled_at] < (Time.now.to_i - LocaleApp.configuration.poll_interval)
+      synchronization_data[:polled_at] < (Time.now.to_i - Localeapp.configuration.poll_interval)
     end
 
     def needs_reloading?
@@ -50,7 +50,7 @@ module LocaleApp
 
     def handle_success(response)
       @success = true
-      LocaleApp.updater.update(JSON.parse(response))
+      Localeapp.updater.update(JSON.parse(response))
       write_synchronization_data!(Time.now.to_i, Time.parse(response.headers[:date]).to_i)
     end
 

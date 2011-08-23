@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe LocaleApp::Configuration do
+describe Localeapp::Configuration do
   before(:each) do
-    @configuration = LocaleApp::Configuration.new
+    @configuration = Localeapp::Configuration.new
   end
 
   it "sets the host by default" do
@@ -98,16 +98,16 @@ describe LocaleApp::Configuration do
   end
 end
 
-describe LocaleApp::Configuration, "#write_initial(path)" do
+describe Localeapp::Configuration, "#write_initial(path)" do
   it "creates a configuration file containing just the api key at the given path" do
-    configuration = LocaleApp::Configuration.new
+    configuration = Localeapp::Configuration.new
     configuration.api_key = "APIKEY"
     path = 'test_path'
     file = stub('file')
     file.should_receive(:write).with <<-CONTENT
-require 'locale_app/rails'
+require 'localeapp/rails'
 
-LocaleApp.configure do |config|
+Localeapp.configure do |config|
   config.api_key = 'APIKEY'
   config.host = 'api.localeapp.com'
   config.port = 80

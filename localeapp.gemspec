@@ -3,16 +3,16 @@ $:.push File.expand_path("../lib", __FILE__)
 require "locale_app/version"
 
 Gem::Specification.new do |s|
-  s.name        = "locale_app"
+  s.name        = "localeapp"
   s.version     = LocaleApp::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Christopher Dell", "Chris McGrath"]
   s.email       = ["chris@tigrish.com", "chris@octopod.info"]
-  s.homepage    = "http://rubygems.org/gems/locale_app"
-  s.summary     = %q{Add missing translation keys to LocaleApp}
-  s.description = %q{Post any unfound translation keys to the LocaleApp SaaS}
+  s.homepage    = "http://rubygems.org/gems/localeapp"
+  s.summary     = %q{Add missing translation keys to localeapp.com}
+  s.description = %q{Post any unfound translation keys to the Locale SaaS}
 
-  s.rubyforge_project = "locale_app"
+  s.rubyforge_project = "localeapp"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

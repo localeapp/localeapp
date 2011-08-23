@@ -18,7 +18,7 @@ module LocaleApp
           if I18n.default_locale.to_s != locale_app_default_code
             output.puts "WARNING: I18n.default_locale is #{I18n.default_locale}, change in config/environment.rb (Rails 2) or config/application.rb (Rails 3)"
           end
-          config_file_path = "config/initializers/locale_app.rb"
+          config_file_path = "config/initializers/localeapp.rb"
           output.puts "Writing configuration file to #{config_file_path}"
           write_configuration_file config_file_path
           true

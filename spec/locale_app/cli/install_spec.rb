@@ -36,7 +36,7 @@ describe LocaleApp::CLI::Install, '.execute(key, output = $stdout)' do
 
   it "asks the default configuration to write itself" do
     @command.stub!(:check_key).and_return([true, valid_project_data])
-    @command.should_receive(:write_configuration_file).with('config/initializers/locale_app.rb')
+    @command.should_receive(:write_configuration_file).with('config/initializers/localeapp.rb')
     @command.execute('API_KEY', @output)
   end
 end

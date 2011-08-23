@@ -1,6 +1,6 @@
 h1. Locale (http://www.localeapp.com)
 
-The locale_app gem connects your rails app to the Locale service on
+The localeapp gem connects your rails app to the Locale service on
 localeapp.com. Locale makes hand editing translation files something you don't
 have to do.
 
@@ -16,10 +16,10 @@ h2. Installation
 
 h3. Rails 3
 
-Add the locale_app gem to your Gemfile and install it:
+Add the localeapp gem to your Gemfile and install it:
 
 <pre>
-  echo "gem 'locale_app'" >> Gemfile
+  echo "gem 'localeapp'" >> Gemfile
   bundle install
 </pre>
 
@@ -30,14 +30,14 @@ Create a project on localeapp.com and get the api key. Then run:
 </pre>
 
 This will check everything looks good and create
-config/initializers/locale_app.rb for you.
+config/initializers/localeapp.rb for you.
 
 h3. Rails 2.3
 
-Define locale_app in config/environment.rb:
+Define localeapp in config/environment.rb:
 
 <pre>
-  config.gem 'locale_app'
+  config.gem 'localeapp'
 </pre>
 
 Install the gem:
@@ -74,7 +74,7 @@ by default. When a page is refreshed any missing translations will be sent to
 localeapp.com.
 
 If you want to disable sending missing translations in the development
-environment then edit config/initializers/locale_app.rb to include:
+environment then edit config/initializers/localeapp.rb to include:
 
 <pre>
   config.disabled_sending_environments << 'development'
@@ -104,7 +104,7 @@ update the translations.
 
 h4. Disabling polling
 
-Edit config/initializers/locale_app.rb to include:
+Edit config/initializers/localeapp.rb to include:
 
 <pre>
   config.disabled_polling_environments << 'development'

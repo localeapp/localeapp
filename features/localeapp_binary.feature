@@ -25,7 +25,7 @@ Feature: localeapp executable
     Project: Test Project
     Default Locale: en (English)
     """
-    And a file named "config/initializers/locale_app.rb" should exist
+    And a file named "config/initializers/localeapp.rb" should exist
     And the exit status should be 0
 
   Scenario: Running install with bad api key

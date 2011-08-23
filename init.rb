@@ -1,1 +1,1 @@
-require 'locale_app'
+require 'localeapp'

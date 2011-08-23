@@ -39,13 +39,13 @@ Feature: localeapp executable
     Checking API key: BADAPIKEY
     ERROR: Project not found
     """
-    And a file named "config/initializers/locale_app.rb" should not exist
+    And a file named "config/initializers/localeapp.rb" should not exist
     And the exit status should not be 0
 
   Scenario: Running pull
     In order to retreive my translations
     Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"
-    And a file named "config/initializers/locale_app.rb" with:
+    And a file named "config/initializers/localeapp.rb" with:
     """
     require 'locale_app/rails'
     LocaleApp.configure do |config|
@@ -68,7 +68,7 @@ Feature: localeapp executable
   Scenario: Running push
     In order to send my translations
     When I have a valid project on localeapp.com with api key "MYAPIKEY"
-    And a file named "config/initializers/locale_app.rb" with:
+    And a file named "config/initializers/localeapp.rb" with:
     """
     require 'locale_app/rails'
     LocaleApp.configure do |config|
@@ -90,7 +90,7 @@ Feature: localeapp executable
   Scenario: Running update
     In order to receive the translations that have been updated since the last check
     When I have a valid project on localeapp.com with api key "MYAPIKEY"
-    And a file named "config/initializers/locale_app.rb" with:
+    And a file named "config/initializers/localeapp.rb" with:
     """
     require 'locale_app/rails'
     LocaleApp.configure do |config|

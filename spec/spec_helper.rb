@@ -3,12 +3,13 @@ require 'localeapp'
 require 'fakeweb'
 require 'support/localeapp_integration_data'
 require 'support/localeapp_synchronization_data'
+require 'support/i18n/missing_translation'
 require 'logger'
 
 def with_configuration(options = {})
   Localeapp.configuration = nil
   Localeapp.configure do |configuration|
-    options.each do |option, value| 
+    options.each do |option, value|
       configuration.send("#{option}=", value)
     end
   end

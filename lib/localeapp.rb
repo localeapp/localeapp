@@ -13,7 +13,7 @@ rescue LoadError
   # Assume that we're in rails 2.3 and AS supplies deep_merge
 end
 
-
+require 'localeapp/i18n_shim'
 require 'localeapp/version'
 require 'localeapp/configuration'
 require 'localeapp/routes'

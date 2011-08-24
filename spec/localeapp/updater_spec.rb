@@ -81,7 +81,7 @@ JA
   it "doesn't create a new yml file if an unknown locale is passed but it has no translations" do
     do_update({
       'translations' => {},
-      'deletes' => ['foo.delete_me'],
+      'deleted' => ['foo.delete_me'],
       'locales' => ['ja']
     })
     File.exist?(File.join(@yml_dir, 'ja.yml')).should be_false

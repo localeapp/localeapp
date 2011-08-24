@@ -38,6 +38,7 @@ module Localeapp
     end
 
     def remove_child_keys!(sub_hash, keys)
+      return if sub_hash.nil?
       current_key = keys.shift
       if keys.empty?
         sub_hash.delete(current_key)

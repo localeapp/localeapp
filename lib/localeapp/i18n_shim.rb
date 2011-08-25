@@ -1,8 +1,7 @@
-i18n_major, i18n_minor, i18n_patchlevel = I18n::VERSION.split(/\./).map(&:to_i)
-if i18n_major == 0
-  if i18n_minor >= 6
-    require 'localeapp/i18n_shims/oh_point_six_and_above'
-  else
-    require 'localeapp/i18n_shims/oh_point_five_and_below'
-  end
+if defined? I18n::MissingTranslation 
+  puts "Using i18n >= 0.6.0" # temporary till we know Travis is setup properly
+  Localeapp::I18nMissingTranslationException = I18n::MissingTranslation
+else
+  puts "Using i18n <= 0.5.0" # temporary till we know Travis is setup properly
+  Localeapp::I18nMissingTranslationException = I18n::MissingTranslationData
 end

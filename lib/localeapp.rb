@@ -5,12 +5,21 @@ rescue LoadError
   # we're in 2.3 and we need to load rails to get the vendored i18n
   require 'thread' # for rubygems > 1.6.0 support
   require 'active_support'
+  # This ugliness so we can load AS in the travis env
+  @loaded_active_support = true
 end
 
 begin
   require 'i18n/core_ext/hash'
 rescue LoadError
+  # This ugliness so we can load AS in the travis env
   # Assume that we're in rails 2.3 and AS supplies deep_merge
+  # Load AS if we need to
+  unless @loaded_active_support 
+    # we're in 2.3 and we need to load rails to get the vendored i18n
+    require 'thread' # for rubygems > 1.6.0 support
+    require 'active_support'
+  end
 end
 
 require 'localeapp/i18n_shim'

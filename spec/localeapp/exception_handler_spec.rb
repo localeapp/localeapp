@@ -19,16 +19,9 @@ describe Localeapp::ExceptionHandler, '#call(exception, locale, key, options)' d
     I18n.t(['foo', 'bar'])
   end
 
-  it "handles I18n::MissingTranslationData exceptions" do
+  it "handles missing translation exception" do
     expect {
-      exception = I18n::MissingTranslationData.new(:en, 'foo', {})
-      Localeapp::ExceptionHandler.call(exception, :en, 'foo', {})
-    }.to_not raise_error
-  end
-
-  it "also handles I18n::MissingTranslation exceptions" do
-    expect {
-      exception = I18n::MissingTranslation.new(:en, 'foo', {})
+      exception = Localeapp::I18nMissingTranslationException.new(:en, 'foo', {})
       Localeapp::ExceptionHandler.call(exception, :en, 'foo', {})
     }.to_not raise_error
   end

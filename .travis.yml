@@ -1,7 +1,8 @@
 rvm:
   - 1.8.7
   - 1.9.2
-gemfiles:
+gemfile:
+  - Gemfile.i18n_037
   - Gemfile.i18n_050
   - Gemfile.i18n_060
 branches:

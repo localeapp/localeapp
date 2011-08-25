@@ -19,13 +19,11 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  s.add_dependency('i18n')
   s.add_dependency('json')
   s.add_dependency('rest-client')
   s.add_dependency('ya2yaml')
 
-  # i18n is a dev dependency as we'll use whichever version is in rails
-  # when the gem runs
-  s.add_development_dependency('i18n', '0.5.0')
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '2.5.0')
   s.add_development_dependency('yard', '0.6.7')

@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
+require 'slop'
 require 'localeapp'
 
 # Don't connect to the net if we're running under cucumber for testing
@@ -14,48 +15,122 @@ if ENV['FAKE_WEB_DURING_CUCUMBER_RUN'] && fake_data_as_json = ENV['FAKE_WEB_FAKE
   end
 end
 
-args = ARGV.dup
-
-command = args.shift.strip rescue nil
-
-unless %w{help install}.include?(command)
+def include_config_file
   unless Localeapp.include_config_file
     puts "Could not load config file"
-    exit
-  end
-end
-
-case command
-when 'install'
-  key = args.shift.strip rescue nil
-  installer = Localeapp::CLI::Install.new
-  if installer.execute(key)
-    exit 0
-  else
     exit 1
   end
-when 'pull'
-  Localeapp::CLI::Pull.new.execute
-when 'push'
-  file = args.shift.strip rescue nil
-  pusher = Localeapp::CLI::Push.new
-  pusher.execute(file)
-when 'update'
-  Localeapp::CLI::Update.new.execute
-when 'daemon'
-  while true do
-    Localeapp::CLI::Update.new.execute
-    sleep 5
-  end
-else
-puts <<-HELP
-Usage: localeapp COMMAND [ARGS]
-
-Commands:
-  install <api_key> - Creates new configuration files and confirms key works
-  pull              - Pulls all translations from localeapp.com
-  push <file>       - Pushes a translation file to localeapp.com
-  update            - Gets any changes since the last poll and updates the yml files
-  daemon            - Simple daemon that checks every 5 seconds for new translations
-HELP
 end
+slop = Slop.new(ARGV, :help => true, :strict => true) do
+  banner "Usage: localeapp COMMAND [options]"
+  description <<-COMMANDS
+    COMMAND:
+    install <api_key> - Creates new configuration files and confirms key works
+    pull              - Pulls all translations from localeapp.com
+    push <file>       - Pushes a translation file to localeapp.com
+    update            - Gets any changes since the last poll and updates the yml
+    daemon            - Simple daemon (checks every 5 seconds for new translations)
+COMMANDS
+
+  on_empty { puts self.to_s }
+end
+
+slop.command :install do
+  execute do |opts, args|
+    key = args.first
+    installer = Localeapp::CLI::Install.new
+    if installer.execute(key)
+      exit 0
+    else
+      exit 1
+    end
+  end
+end
+
+slop.command :pull do
+  execute do |opts, args|
+    include_config_file
+    Localeapp::CLI::Pull.new.execute
+  end
+end
+
+slop.command :push do
+  on_empty { puts "localeapp push requires an file to push" }
+
+  execute do |opts, args|
+    file = args.first
+    exit 1 if file.nil?
+    include_config_file
+    pusher = Localeapp::CLI::Push.new
+    pusher.execute(file)
+  end
+end
+
+slop.command :update do
+  execute do |opts, args|
+    include_config_file
+    Localeapp::CLI::Update.new.execute
+  end
+end
+
+slop.command :daemon do
+  execute do |opts, args|
+    include_config_file
+    while true do
+      Localeapp::CLI::Update.new.execute
+      sleep 5
+    end
+  end
+end
+
+begin
+  slop.parse
+rescue Slop::InvalidOptionError
+  puts slop
+end
+
+# args = ARGV.dup
+# 
+# command = args.shift.strip rescue nil
+# 
+# unless %w{help install}.include?(command)
+#   unless Localeapp.include_config_file
+#     puts "Could not load config file"
+#     exit
+#   end
+# end
+# 
+# case command
+# when 'install'
+#   key = args.shift.strip rescue nil
+#   installer = Localeapp::CLI::Install.new
+#   if installer.execute(key)
+#     exit 0
+#   else
+#     exit 1
+#   end
+# when 'pull'
+#   Localeapp::CLI::Pull.new.execute
+# when 'push'
+#   file = args.shift.strip rescue nil
+#   pusher = Localeapp::CLI::Push.new
+#   pusher.execute(file)
+# when 'update'
+#   Localeapp::CLI::Update.new.execute
+# when 'daemon'
+#   while true do
+#     Localeapp::CLI::Update.new.execute
+#     sleep 5
+#   end
+# else
+# puts <<-HELP
+# Usage: localeapp COMMAND [ARGS]
+# 
+# Commands:
+#   install <api_key> - Creates new configuration files and confirms key works
+#   pull              - Pulls all translations from localeapp.com
+#   push <file>       - Pushes a translation file to localeapp.com
+#   update            - Gets any changes since the last poll and updates the yml files
+#   daemon            - Simple daemon that checks every 5 seconds for new translations
+# HELP
+# end

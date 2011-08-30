@@ -2,14 +2,14 @@ Feature: localeapp executable
 
   Scenario: Viewing help
     In order to see what options I have
-    When I run `localeapp help`
+    When I run `localeapp --help`
     Then the output should contain:
     """
-    Usage: localeapp COMMAND [ARGS]
+    Usage: localeapp COMMAND [options]
 
-    Commands:
-      install <api_key> - Creates new configuration files and confirms key works
-      pull              - Pulls all translations from localeapp.com
+        COMMAND:
+        install <api_key> - Creates new configuration files and confirms key works
+        pull              - Pulls all translations from localeapp.com
     """
 
   Scenario: Running install

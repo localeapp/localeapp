@@ -20,14 +20,29 @@ module Localeapp
     # RAILS_ROOT
     attr_accessor :project_root
 
+    # The names of environments where notifications are sent
+    # (defaults to 'development')
+    attr_accessor :sending_environments
+
+    # The names of environments where I18n.reload is called for each request
+    # (defaults to 'development')
+    attr_accessor :reloading_environments
+
+    # The names of environments where updates aren't pulled
+    # (defaults to 'development')
+    attr_accessor :polling_environments
+
+    # DEPRECATED
     # The names of environments where notifications aren't sent (defaults to
     # 'test', 'cucumber', 'production')
     attr_accessor :disabled_sending_environments
 
+    # DEPRECATED
     # The names of environments where I18n.reload isn't called for each request
     # (defaults to 'test', 'cucumber', 'production')
     attr_accessor :disabled_reloading_environments
 
+    # DEPRECATED
     # The names of environments where updates aren't pulled (defaults to
     # 'test', 'cucumber', 'production')
     attr_accessor :disabled_polling_environments
@@ -53,6 +68,9 @@ module Localeapp
       @disabled_sending_environments   = %w(test cucumber production)
       @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)
+      @sending_environments    = %w(development)
+      @reloading_environments  = %w(development)
+      @polling_environments    = %w(development)
       @poll_interval                   = 0
       @synchronization_data_file       = File.join('log', 'localeapp.yml')
       @translation_data_directory      = File.join('config', 'locales')

@@ -31,6 +31,24 @@ describe Localeapp::Configuration do
     @configuration.translation_data_directory.should == "test"
   end
 
+  context "enabled_sending_environments" do
+    it "is only development by default" do
+      @configuration.sending_environments.should == ['development']
+    end
+  end
+
+  context "enabled_reloading_environments" do
+    it "is only development by default" do
+      @configuration.reloading_environments.should == ['development']
+    end
+  end
+
+  context "enabled_polling_environments" do
+    it "is only development by default" do
+      @configuration.polling_environments.should == ['development']
+    end
+  end
+
   context "disabled_sending_environments" do
     it "does not include development by default" do
       @configuration.environment_name = 'development'

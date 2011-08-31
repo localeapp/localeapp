@@ -109,8 +109,6 @@ require 'localeapp/rails'
 
 Localeapp.configure do |config|
   config.api_key = 'APIKEY'
-  config.host = 'api.localeapp.com'
-  config.port = 80
 end
 CONTENT
     File.should_receive(:open).with(path, 'w+').and_yield(file)

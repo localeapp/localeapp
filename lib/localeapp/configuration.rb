@@ -83,8 +83,6 @@ require 'localeapp/rails'
 
 Localeapp.configure do |config|
   config.api_key = '#{@api_key}'
-  config.host = '#{@host}'
-  config.port = #{@port}
 end
 CONTENT
       end

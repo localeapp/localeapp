@@ -77,11 +77,11 @@ If you want to disable sending missing translations in the development
 environment then edit config/initializers/localeapp.rb to include:
 
 <pre>
-  config.disabled_sending_environments << 'development'
+  config.sending_environments = []
 </pre>
 
-This is just an array, so you can configure it to match any environment you
-wish.
+This is just an array, so you can configure it to match send in any environment
+you wish.
 
 h2. Automatically pulling translations
 
@@ -107,7 +107,7 @@ h4. Disabling polling
 Edit config/initializers/localeapp.rb to include:
 
 <pre>
-  config.disabled_polling_environments << 'development'
+  config.polling_environments = []
 </pre>
 
 Run the daemon with:
@@ -121,11 +121,11 @@ new ones.
 
 h3. Disabling Reloading
 
-Automatic reloading is disabled everywhere but the development environment, and
-can be disabled there in a similar way to polling and sending:
+Automatic reloading is only enabled in the development environment by default and
+can be disabled in a similar way to polling and sending:
 
 <pre>
-  config.disabled_reloading_environments << 'development'
+  config.reloading_environments = []
 </pre>
 
 h3. Inviting other developers and translators

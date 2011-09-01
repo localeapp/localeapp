@@ -20,17 +20,44 @@ module Localeapp
     # RAILS_ROOT
     attr_accessor :project_root
 
+    # The names of environments where notifications are sent
+    # (defaults to 'development')
+    attr_accessor :sending_environments
+
+    # The names of environments where I18n.reload is called for each request
+    # (defaults to 'development')
+    attr_accessor :reloading_environments
+
+    # The names of environments where updates aren't pulled
+    # (defaults to 'development')
+    attr_accessor :polling_environments
+
+    # @deprecated Use {#sending_environments} instead. This is safer but make sure to reverse your logic if you've changed the defaults
     # The names of environments where notifications aren't sent (defaults to
     # 'test', 'cucumber', 'production')
     attr_accessor :disabled_sending_environments
+    def disabled_sending_environments=(value)
+      @deprecated_environment_config_used = true
+      @disabled_sending_environments = value
+    end
 
+    # @deprecated Use {#reloading_environments} instead. This is safer but make sure to reverse your logic if you've changed the defaults
     # The names of environments where I18n.reload isn't called for each request
     # (defaults to 'test', 'cucumber', 'production')
     attr_accessor :disabled_reloading_environments
+    def disabled_reloading_environments=(value)
+      @deprecated_environment_config_used = true
+      @disabled_reloading_environments = value
+    end
 
+    # @deprecated Use {#polling_environments} instead. This is safer but make sure to reverse your logic if you've changed the defaults
     # The names of environments where updates aren't pulled (defaults to
     # 'test', 'cucumber', 'production')
     attr_accessor :disabled_polling_environments
+    def disabled_polling_environments=(value)
+      @deprecated_environment_config_used = true
+      @disabled_polling_environments = value
+    end
 
     # The logger used by Localeapp
     attr_accessor :logger
@@ -47,12 +74,19 @@ module Localeapp
     # The complete path to the directory where translations are stored
     attr_accessor :translation_data_directory
 
+    def deprecated_environment_config_used?
+      @deprecated_environment_config_used
+    end
+
     def initialize
       @host                            = 'api.localeapp.com'
       @port                            = 80
       @disabled_sending_environments   = %w(test cucumber production)
       @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)
+      @sending_environments    = %w(development)
+      @reloading_environments  = %w(development)
+      @polling_environments    = %w(development)
       @poll_interval                   = 0
       @synchronization_data_file       = File.join('log', 'localeapp.yml')
       @translation_data_directory      = File.join('config', 'locales')
@@ -63,15 +97,30 @@ module Localeapp
     end
 
     def polling_disabled?
-      disabled_polling_environments.include?(environment_name)
+      if deprecated_environment_config_used?
+        ::Localeapp.log "DEPRECATION: disabled_polling_environments is deprecated and will be removed. Use polling_environments instead and reverse the logic if you've changed the defaults"
+        disabled_polling_environments.include?(environment_name)
+      else
+        !polling_environments.include?(environment_name)
+      end
     end
 
     def reloading_disabled?
-      disabled_reloading_environments.include?(environment_name)
+      if deprecated_environment_config_used?
+        ::Localeapp.log "DEPRECATION: disabled_reloading_environments is deprecated and will be removed. Use reloading_environments instead and reverse the logic if you've changed the defaults"
+        disabled_reloading_environments.include?(environment_name)
+      else
+        !reloading_environments.include?(environment_name)
+      end
     end
 
     def sending_disabled?
-      disabled_sending_environments.include?(environment_name)
+      if deprecated_environment_config_used?
+        ::Localeapp.log "DEPRECATION: disabled_sending_environments is deprecated and will be removed. Use sending_environments instead and reverse the logic if you've changed the defaults"
+        disabled_sending_environments.include?(environment_name)
+      else
+        !sending_environments.include?(environment_name)
+      end
     end
 
     def write_initial(path)

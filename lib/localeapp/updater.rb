@@ -1,3 +1,5 @@
+require 'fileutils'
+
 module Localeapp
   class Updater
 
@@ -53,12 +55,16 @@ module Localeapp
       end
     end
 
-    # from ActiveSupport
+    # originally from ActiveSupport
     def atomic_write(file_name, temp_dir = Dir.tmpdir)
       temp_file = Tempfile.new(File.basename(file_name), temp_dir)
       yield temp_file
       temp_file.close
-      File.rename(temp_file.path, file_name)
+      # heroku has /tmp on a different fs
+      # so move first to sure they're on the same fs
+      # so rename will work
+      FileUtils.mv(temp_file.path, "#{file_name}.tmp")
+      File.rename("#{file_name}.tmp", file_name)
     end
   end
 end

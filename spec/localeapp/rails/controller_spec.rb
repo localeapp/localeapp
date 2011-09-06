@@ -23,8 +23,7 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
 
   context "when polling is enabled" do
     before do
-      Localeapp.configuration.environment_name = 'development' # reloading enabled
-      Localeapp.configuration.disabled_reloading_environments << 'development'
+      Localeapp.configuration.environment_name = 'development'
     end
  
     it "calls poller.poll! when the synchronization file's polled_at has changed" do
@@ -41,8 +40,7 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
 
   context "when polling is disabled" do
     before do
-      Localeapp.configuration.environment_name = 'production' # reloading disabled
-      Localeapp.configuration.disabled_reloading_environments << 'production'
+      Localeapp.configuration.environment_name = 'production'
     end
 
     it "doesn't poller.poll! when the synchronization file's polled_at has changed" do
@@ -59,8 +57,8 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
  
   context "when reloading is enabled" do
     before do
-      Localeapp.configuration.environment_name = 'development' # reloading enabled
-      Localeapp.configuration.disabled_polling_environments << 'development'
+      Localeapp.configuration.environment_name = 'development'
+      Localeapp.poller.stub!(:poll!)
     end
  
     it "calls I18n.reload! when the synchronization file's updated_at has changed" do
@@ -77,8 +75,7 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
  
   context "when reloading is disabled" do
     before do
-      Localeapp.configuration.environment_name = 'production' # reloading disabled
-      Localeapp.configuration.disabled_polling_environments << 'production'
+      Localeapp.configuration.environment_name = 'production'
     end
 
     it "doesn't call I18n.reload! when the synchronization file's updated_at has changed" do

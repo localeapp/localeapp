@@ -1,8 +1,10 @@
-h1. Locale
+# Locale
+
+[![Build status](https://secure.travis-ci.org/Locale/localeapp.png)](http://travis-ci.org/Locale/localeapp)
 
 The localeapp gem connects your rails app to the Locale service on
-"localeapp.com":http://www.localeapp.com. Locale makes hand editing translation
-files something you don't have to do.
+http://www.localeapp.com. Locale makes hand editing translation files something
+you don't have to do.
 
 The gem hooks into the i18n exception mechanism to send missing translations to
 the app. When translated content has been added it's automatically pulled down
@@ -12,54 +14,42 @@ We're still in private beta but if you think Locale would be useful to you and
 are willing to provide feedback then please get in touch at info@localeapp.com
 and we'll see what we can do.
 
-h2. Installation
+## Installation
 
-h3. Rails 3
+### Rails 3
 
-Add the localeapp gem to your Gemfile and install it:
+Add the localeapp gem to your `Gemfile` and install it:
 
-<pre>
-  echo "gem 'localeapp'" >> Gemfile
-  bundle install
-</pre>
+    echo "gem 'localeapp'" >> Gemfile
+    bundle install
 
 Create a project on localeapp.com and get the api key. Then run:
 
-<pre>
-  bundle exec localeapp install <YOUR_API_KEY>
-</pre>
+    bundle exec localeapp install <YOUR_API_KEY>
 
 This will check everything looks good and create
-config/initializers/localeapp.rb for you.
+`config/initializers/localeapp.rb` for you.
 
-h3. Rails 2.3
+### Rails 2.3
 
-Define localeapp in config/environment.rb:
+Define localeapp in `config/environment.rb`:
 
-<pre>
-  config.gem 'localeapp'
-</pre>
+    config.gem 'localeapp'
 
 Install the gem:
 
-<pre>
-  rake gems:install
-</pre>
+    rake gems:install
 
 Create a project on localeapp.com and get the api key. Then run:
 
-<pre>
-  localeapp install <YOUR_API_KEY>
-</pre>
+    localeapp install <YOUR_API_KEY>
 
-h2. Importing existing content
+## Importing existing content
 
 You can import via localeapp.com or with the command line tool. To import
 existing translations do:
 
-<pre>
-  localeapp import config/locales/en.yml
-</pre>
+    localeapp import config/locales/en.yml
 
 This will queue importing the file. The projects pages on localeapp.com will
 automatically refresh so you can see the import progress.
@@ -67,81 +57,73 @@ automatically refresh so you can see the import progress.
 If you've more than one locale to import you can zip up the yml files. Both
 localeapp.com and the localeapp import command accept zip files.
 
-h2. Automatically sending missing translations
+## Automatically sending missing translations
 
 Missing translations are automatically sent only in the development environment
 by default. When a page is refreshed any missing translations will be sent to
 localeapp.com.
 
 If you want to disable sending missing translations in the development
-environment then edit config/initializers/localeapp.rb to include:
+environment then edit `config/initializers/localeapp.rb` to include:
 
-<pre>
-  config.sending_environments = []
-</pre>
+    config.sending_environments = []
 
 This is just an array, so you can configure it to match send in any environment
 you wish.
 
-h2. Automatically pulling translations
+## Automatically pulling translations
 
 There are two ways to do this, one that suits a single developer working the
 code locally and one where the translations are being pulled down to a staging
 (or live) server.
 
-h3. Single developer
+### Single developer
 
 In this mode the gem pulls any updated translations from localeapp.com at the
 beginning of each request. This is the default setting so you don't need to do
 anything special.
 
-h3. Staging server
+### Staging server
 
 In this mode you configure the individual listeners to not poll every request
 and instead run localeapp in daemon mode to fetch updated translations. This is
 useful when you have more than one listener and don't want them to race to
 update the translations.
 
-h4. Disabling polling
+#### Disabling polling
 
 Edit config/initializers/localeapp.rb to include:
 
-<pre>
-  config.polling_environments = []
-</pre>
+    config.polling_environments = []
 
 Run the daemon with:
 
-<pre>
-  localeapp daemon
-</pre>
+    localeapp daemon
 
 The listeners will automatically reload translations when they see there are
 new ones.
 
-h3. Disabling Reloading
+### Disabling Reloading
 
 Automatic reloading is only enabled in the development environment by default and
 can be disabled in a similar way to polling and sending:
 
-<pre>
-  config.reloading_environments = []
-</pre>
+    config.reloading_environments = []
 
-h3. Inviting other developers and translators
+### Inviting other developers and translators
 
 You can invite other developers and translators via localeapp.com.  Developers
 have access to all the content and all the locales. Translators are restricted
 to editing only the locales you give them access too.
 
-h3. Adding a locale
+### Adding a locale
 
 If we find an unknown locale during an import we'll add it to your project.
 You can also add a new locale to a project via localeapp.com. This will create
 missing translations for every translation key. You will need to restart any
 listeners completely to pick up the new locale.
 
-h3. Support and feedback
+### Support and feedback
 
 You can contact us via the support link at the bottom of the page, emailing
 info@localeapp.com, or on campfire at https://localeapp.campfirenow.com/d77b5

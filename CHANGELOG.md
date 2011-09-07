@@ -1,3 +1,7 @@
+# Version 0.1.1
+
+* Gem compiled with 1.8.7
+
 # Version 0.1.0
 
 * Added support for Heroku's Cedar stack

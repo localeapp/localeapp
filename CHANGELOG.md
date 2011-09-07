@@ -1,3 +1,9 @@
+# Version 0.1.2
+
+* Fix incorrect documentation
+* Display help if unrecognized command given
+* Add section on default rails translations to README
+
 # Version 0.1.1
 
 * Gem compiled with 1.8.7

@@ -57,6 +57,14 @@ automatically refresh so you can see the import progress.
 If you've more than one locale to import you can zip up the yml files. Both
 localeapp.com and the localeapp import command accept zip files.
 
+## Default Rails Translations
+
+Locale will hide default rails translations to avoid cluttering up your
+translation view with content you haven't changed. This can make it look like
+we didn't import all of your translations but we promise they're there and will
+appear again when you export. If you want to override a default translation you
+can create the key manually in Locale and we'll use your version instead.
+
 ## Automatically sending missing translations
 
 Missing translations are automatically sent only in the development environment

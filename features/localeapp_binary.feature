@@ -12,6 +12,18 @@ Feature: localeapp executable
         pull              - Pulls all translations from localeapp.com
     """
 
+  Scenario: Running a command that doesn't exist
+    In order to warn of a bad command
+    When I run `localeapp foo`
+    Then the output should contain:
+    """
+    Usage: localeapp COMMAND [options]
+
+        COMMAND:
+        install <api_key> - Creates new configuration files and confirms key works
+        pull              - Pulls all translations from localeapp.com
+    """
+
   Scenario: Running install
     In order to configure my project and check my api key is correct
     When I have a valid project on localeapp.com with api key "MYAPIKEY"

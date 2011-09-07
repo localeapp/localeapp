@@ -49,7 +49,7 @@ Create a project on localeapp.com and get the api key. Then run:
 You can import via localeapp.com or with the command line tool. To import
 existing translations do:
 
-    localeapp import config/locales/en.yml
+    localeapp push config/locales/en.yml
 
 This will queue importing the file. The projects pages on localeapp.com will
 automatically refresh so you can see the import progress.

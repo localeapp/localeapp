@@ -37,6 +37,7 @@ Feature: localeapp executable
     Project: Test Project
     Default Locale: en (English)
     """
+    And help should not be displayed
     And a file named "config/initializers/localeapp.rb" should exist
     And the exit status should be 0
 
@@ -51,6 +52,7 @@ Feature: localeapp executable
     Checking API key: BADAPIKEY
     ERROR: Project not found
     """
+    And help should not be displayed
     And a file named "config/initializers/localeapp.rb" should not exist
     And the exit status should not be 0
 
@@ -75,6 +77,7 @@ Feature: localeapp executable
     Updating backend:
     Success!
     """
+    And help should not be displayed
     And a file named "config/locales/en.yml" should exist
 
   Scenario: Running push
@@ -98,6 +101,7 @@ Feature: localeapp executable
 
     config/locales/en.yml queued for processing.
     """
+    And help should not be displayed
 
   Scenario: Running update
     In order to receive the translations that have been updated since the last check
@@ -123,6 +127,7 @@ Feature: localeapp executable
     Localeapp update: checking for translations since 120
     Found and updated new translations
     """
+    And help should not be displayed
     And a file named "config/locales/en.yml" should exist
     # check the content here
     # and the localeapp.yml file

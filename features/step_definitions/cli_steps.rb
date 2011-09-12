@@ -25,3 +25,12 @@ When /^new translations for the api key "([^"]*)" since "([^"]*)" with time "([^
   body = valid_translation_data.to_json
   add_fake_web_uri(:get, uri, ['200', 'OK'], body, 'date' => Time.at(new_time.to_i).httpdate)
 end
+
+When /^help should not be displayed$/ do
+  steps %Q{
+    And the output should not contain:
+    """
+    Usage: localeapp COMMAND [options]
+    """
+  }
+end

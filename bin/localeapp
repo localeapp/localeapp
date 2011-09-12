@@ -21,6 +21,10 @@ def include_config_file
     exit 1
   end
 end
+
+# Ugly global for now till we figure out a better way
+$recognized_command = false
+
 slop = Slop.new(ARGV, :help => true, :strict => true) do
   banner "Usage: localeapp COMMAND [options]"
   description <<-COMMANDS
@@ -37,6 +41,7 @@ end
 
 slop.command :install do
   execute do |opts, args|
+    $recognized_command = true
     key = args.first
     installer = Localeapp::CLI::Install.new
     if installer.execute(key)
@@ -49,6 +54,7 @@ end
 
 slop.command :pull do
   execute do |opts, args|
+    $recognized_command = true
     include_config_file
     Localeapp::CLI::Pull.new.execute
   end
@@ -58,6 +64,7 @@ slop.command :push do
   on_empty { puts "localeapp push requires an file to push" }
 
   execute do |opts, args|
+    $recognized_command = true
     file = args.first
     exit 1 if file.nil?
     include_config_file
@@ -68,6 +75,7 @@ end
 
 slop.command :update do
   execute do |opts, args|
+    $recognized_command = true
     include_config_file
     Localeapp::CLI::Update.new.execute
   end
@@ -75,6 +83,7 @@ end
 
 slop.command :daemon do
   execute do |opts, args|
+    $recognized_command = true
     include_config_file
     while true do
       Localeapp::CLI::Update.new.execute
@@ -84,8 +93,8 @@ slop.command :daemon do
 end
 
 begin
-  slop.parse
+  slop.parse!
 rescue Slop::InvalidOptionError
   puts slop
 end
-puts slop unless ARGV.empty?
+puts slop unless $recognized_command

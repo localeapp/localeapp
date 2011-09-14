@@ -27,11 +27,13 @@ $recognized_command = false
 
 slop = Slop.new(ARGV, :help => true, :strict => true) do
   banner "Usage: localeapp COMMAND [options]"
-  description <<-COMMANDS
+  summary <<-COMMANDS
     COMMAND:
     install <api_key> - Creates new configuration files and confirms key works
     pull              - Pulls all translations from localeapp.com
     push <file>       - Pushes a translation file to localeapp.com
+    add <key> <locale>:<content> (<locale>:<content> ...)
+                      - Sends the key and content to localeapp.com
     update            - Gets any changes since the last poll and updates the yml
     daemon            - Simple daemon (checks every 5 seconds for new translations)
 COMMANDS

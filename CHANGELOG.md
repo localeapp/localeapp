@@ -1,3 +1,7 @@
+# HEAD
+
+* Add `localeapp add` command for sending keys and translations from the command line
+
 # Version 0.1.2
 
 * Fix incorrect documentation

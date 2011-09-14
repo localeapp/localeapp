@@ -7,7 +7,7 @@ module Localeapp
         Localeapp.log("Detected missing translation for key(s) #{key.inspect}")
 
         [*key].each do |key|
-          Localeapp.missing_translations.add(locale, key, options || {})
+          Localeapp.missing_translations.add(locale, key, nil, options || {})
         end
 
         [locale, key].join(', ')

@@ -6,6 +6,7 @@ When /^I have a valid project on localeapp\.com with api key "([^"]*)"$/ do |api
   body = valid_project_data.to_json
   add_fake_web_uri(:get, uri, ['200', 'OK'], body)
   add_fake_web_uri(:post, "http://api.localeapp.com/v1/projects/#{api_key}/import/", ['202', 'OK'], '')
+  add_fake_web_uri(:post, "http://api.localeapp.com/v1/projects/#{api_key}/translations/missing.json", ["202", "OK"], '')
 end
 
 When /^I have a valid project on localeapp\.com but an incorrect api key "([^"]*)"$/ do |bad_api_key|

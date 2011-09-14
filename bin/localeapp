@@ -52,6 +52,20 @@ slop.command :install do
   end
 end
 
+slop.command :add do
+  execute do |opts, args|
+    $recognized_command = true
+    key = args.shift
+    if key.nil? || args.size.zero?
+      puts "localeapp add requires a key name and at least one translation"
+      exit 1
+    else
+      include_config_file
+      Localeapp::CLI::Add.new.execute(key, *args)
+    end
+  end
+end
+
 slop.command :pull do
   execute do |opts, args|
     $recognized_command = true

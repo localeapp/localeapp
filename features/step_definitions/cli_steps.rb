@@ -27,6 +27,18 @@ When /^new translations for the api key "([^"]*)" since "([^"]*)" with time "([^
   add_fake_web_uri(:get, uri, ['200', 'OK'], body, 'date' => Time.at(new_time.to_i).httpdate)
 end
 
+When /^an initializer file$/ do
+  steps %Q{
+    And a file named "config/initializers/localeapp.rb" with:
+    """
+    require 'localeapp/rails'
+    Localeapp.configure do |config|
+      config.api_key = 'MYAPIKEY'
+    end
+    """
+  }
+end
+
 When /^help should not be displayed$/ do
   steps %Q{
     And the output should not contain:

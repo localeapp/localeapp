@@ -6,6 +6,7 @@ When /^I have a valid project on localeapp\.com with api key "([^"]*)"$/ do |api
   body = valid_project_data.to_json
   add_fake_web_uri(:get, uri, ['200', 'OK'], body)
   add_fake_web_uri(:post, "http://api.localeapp.com/v1/projects/#{api_key}/import/", ['202', 'OK'], '')
+  add_fake_web_uri(:post, "http://api.localeapp.com/v1/projects/#{api_key}/translations/missing.json", ["202", "OK"], '')
 end
 
 When /^I have a valid project on localeapp\.com but an incorrect api key "([^"]*)"$/ do |bad_api_key|
@@ -24,6 +25,18 @@ When /^new translations for the api key "([^"]*)" since "([^"]*)" with time "([^
   uri = "http://api.localeapp.com/v1/projects/#{api_key}/translations.json?updated_at=#{update_time}"
   body = valid_translation_data.to_json
   add_fake_web_uri(:get, uri, ['200', 'OK'], body, 'date' => Time.at(new_time.to_i).httpdate)
+end
+
+When /^an initializer file$/ do
+  steps %Q{
+    And a file named "config/initializers/localeapp.rb" with:
+    """
+    require 'localeapp/rails'
+    Localeapp.configure do |config|
+      config.api_key = 'MYAPIKEY'
+    end
+    """
+  }
 end
 
 When /^help should not be displayed$/ do

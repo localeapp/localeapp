@@ -79,6 +79,15 @@ environment then edit `config/initializers/localeapp.rb` to include:
 This is just an array, so you can configure it to match send in any environment
 you wish.
 
+## Manually create translations
+
+You can create translations on the command line by running:
+
+    localeapp add key.name en:"test content" es:"spanish content"
+
+You must provide at least one translation and the locale code must already
+exist in the project.
+
 ## Automatically pulling translations
 
 There are two ways to do this, one that suits a single developer working the

@@ -10,7 +10,9 @@ end
 
 describe Localeapp::ApiCaller, "#call(object)" do
   before do
-    @api_caller = Localeapp::ApiCaller.new(:test)
+    with_configuration do
+      @api_caller = Localeapp::ApiCaller.new(:test)
+    end
     @url = 'https://example.com/test'
     @api_caller.stub!(:test_endpoint).and_return([:get, @url])
     @api_caller.stub!(:sleep_if_retrying)
@@ -18,26 +20,39 @@ describe Localeapp::ApiCaller, "#call(object)" do
 
   it "gets the method and url for the endpoint" do
     @api_caller.should_receive(:test_endpoint).with({}).and_return([:get, @url])
-    RestClient.stub!(:get).and_return(double('response', :code => 200))
+    RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
     @api_caller.call(self)
   end
 
   it "passes through any url options" do
     @api_caller.should_receive(:test_endpoint).with({:foo => :bar}).and_return([:get, @url])
     @api_caller.options[:url_options] = { :foo => :bar }
-    RestClient.stub!(:get).and_return(double('response', :code => 200))
+    RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
     @api_caller.call(self)
+  end
+
+  context "SSL Certificate Validation" do
+    it "set the HTTPClient verify_ssl to VERIFY_PEER if verify_ssl_certificates is set to true" do
+      RestClient::Request.should_receive(:execute).with(hash_including(:verify_ssl => OpenSSL::SSL::VERIFY_PEER)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+
+    it "set the HTTPClient verify_ssl to false if verify_ssl_certificates is set to false" do
+      Localeapp.configuration.verify_ssl_certificates = false
+      RestClient::Request.should_receive(:execute).with(hash_including(:verify_ssl => false)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
   end
 
   context "a GET request" do
     it "makes the call to the api" do
-      RestClient.should_receive(:get).with(@url, {}).and_return(double('response', :code => 200))
+      RestClient::Request.should_receive(:execute).with(hash_including(:url => @url, :method => :get)).and_return(double('response', :code => 200))
       @api_caller.call(self)
     end
 
-    it "adds any :request_options to the api call" do
-      RestClient.should_receive(:get).with(@url, :foo => :bar).and_return(double('response', :code => 200))
-      @api_caller.options[:request_options] = { :foo => :bar }
+    it "adds any :headers to the api call" do
+      RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :foo => :bar })).and_return(double('response', :code => 200))
+      @api_caller.options[:headers] = { :foo => :bar }
       @api_caller.call(self)
     end
   end
@@ -50,13 +65,13 @@ describe Localeapp::ApiCaller, "#call(object)" do
     end
 
     it "makes the call to the api using :payload as the payload" do
-      RestClient.should_receive(:post).with(@url, "test data", {}).and_return(double('response', :code => 200))
+      RestClient::Request.should_receive(:execute).with(hash_including(:url => @url, :payload => "test data", :method => :post)).and_return(double('response', :code => 200))
       @api_caller.call(self)
     end
 
-    it "adds any :request_options to the api call" do
-      RestClient.should_receive(:post).with(@url, "test data", :foo => :bar).and_return(double('response', :code => 200))
-      @api_caller.options[:request_options] = { :foo => :bar }
+    it "adds any :headers to the api call" do
+      RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :foo => :bar })).and_return(double('response', :code => 200))
+      @api_caller.options[:headers] = { :foo => :bar }
       @api_caller.call(self)
     end
   end

@@ -19,6 +19,14 @@ describe Localeapp::Configuration do
     expect { configuration.secure = false }.to change(configuration, :secure).to(false)
   end
 
+  it "sets verify_ssl_certificates to true by default" do
+    configuration.verify_ssl_certificates.should == true
+  end
+
+  it "allows verify_ssl_certificates setting to be overridden" do
+    expect { configuration.verify_ssl_certificates = false }.to change(configuration, :verify_ssl_certificates).to(false)
+  end
+
   it "includes http_auth_username defaulting to nil" do
     configuration.http_auth_username.should == nil
     configuration.http_auth_username = "test"

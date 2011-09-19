@@ -10,6 +10,9 @@ module Localeapp
     # Whether to use https or not (defaults to true)
     attr_accessor :secure
 
+    # Whether to verify ssl server certificates or not (defaults to true)
+    attr_accessor :verify_ssl_certificates
+
     # The port to connect to if it's not the default one
     attr_accessor :port
 
@@ -84,6 +87,7 @@ module Localeapp
     def initialize
       @host                            = 'api.localeapp.com'
       @secure                          = true
+      @verify_ssl_certificates         = true
       @disabled_sending_environments   = %w(test cucumber production)
       @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)

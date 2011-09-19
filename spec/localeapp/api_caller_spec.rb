@@ -11,7 +11,7 @@ end
 describe Localeapp::ApiCaller, "#call(object)" do
   before do
     @api_caller = Localeapp::ApiCaller.new(:test)
-    @url = 'http://example.com/test'
+    @url = 'https://example.com/test'
     @api_caller.stub!(:test_endpoint).and_return([:get, @url])
     @api_caller.stub!(:sleep_if_retrying)
   end

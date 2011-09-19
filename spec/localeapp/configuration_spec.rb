@@ -11,6 +11,14 @@ describe Localeapp::Configuration do
     expect { configuration.host = 'test.host' }.to change(configuration, :host).to('test.host')
   end
 
+  it "sets secure to true by default" do
+    configuration.secure.should == true
+  end
+
+  it "allows secure setting to be overridden" do
+    expect { configuration.secure = false }.to change(configuration, :secure).to(false)
+  end
+
   it "includes http_auth_username defaulting to nil" do
     configuration.http_auth_username.should == nil
     configuration.http_auth_username = "test"

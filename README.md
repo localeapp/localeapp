@@ -140,6 +140,20 @@ You can also add a new locale to a project via localeapp.com. This will create
 missing translations for every translation key. You will need to restart any
 listeners completely to pick up the new locale.
 
+### SSL Certificate verification
+
+localeapp.com uses https everywhere but certificate validation is turned off by
+default. This is because ruby doesn't know how to read the certs from the OSX
+keychain. You can turn verification on and tell the gem where the latest CA
+certificates are by adding:
+
+    config.ssl_verify = true
+    config.ssl_ca_file = /path/to/ca_cert.pm
+
+See [this article on Ruby Inside][1] for some more details.
+
+[1]: http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html
+
 ### Support and feedback
 
 You can contact us via the support link at the bottom of the page, emailing

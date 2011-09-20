@@ -44,6 +44,26 @@ describe Localeapp::ApiCaller, "#call(object)" do
     end
   end
 
+  context "SSL Certificate Validation" do
+    it "set the HTTPClient ca_file to the value given to ssl_ca_file if it's not nil" do
+      Localeapp.configuration.ssl_ca_file = '/tmp/test'
+      RestClient::Request.should_receive(:execute).with(hash_including(:ca_file => '/tmp/test')).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+
+    it "doesn't set the HTTPClient ca_file if ssl_ca_file is nil" do
+      Localeapp.configuration.ssl_ca_file = nil
+      RestClient::Request.should_receive(:execute).with(hash_not_including(:ca_file => nil)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+
+    it "set the HTTPClient verify_ssl to false if verify_ssl_certificates is set to false" do
+      Localeapp.configuration.verify_ssl_certificates = false
+      RestClient::Request.should_receive(:execute).with(hash_including(:verify_ssl => false)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+  end
+
   context "a GET request" do
     it "makes the call to the api" do
       RestClient::Request.should_receive(:execute).with(hash_including(:url => @url, :method => :get)).and_return(double('response', :code => 200))

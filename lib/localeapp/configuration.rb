@@ -13,6 +13,9 @@ module Localeapp
     # Whether to verify ssl server certificates or not (defaults to true)
     attr_accessor :verify_ssl_certificates
 
+    # Path to local CA certs bundle
+    attr_accessor :ssl_ca_file
+
     # The port to connect to if it's not the default one
     attr_accessor :port
 

@@ -27,6 +27,14 @@ describe Localeapp::Configuration do
     expect { configuration.verify_ssl_certificates = false }.to change(configuration, :verify_ssl_certificates).to(false)
   end
 
+  it "sets ssl_ca_file to nil by default" do
+    configuration.ssl_ca_file.should == nil
+  end
+
+  it "allows ssl_ca_file setting to be overridden" do
+    expect { configuration.ssl_ca_file = '/foo/bar' }.to change(configuration, :ssl_ca_file).to('/foo/bar')
+  end
+
   it "includes http_auth_username defaulting to nil" do
     configuration.http_auth_username.should == nil
     configuration.http_auth_username = "test"

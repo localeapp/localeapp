@@ -19,12 +19,12 @@ describe Localeapp::Configuration do
     expect { configuration.secure = false }.to change(configuration, :secure).to(false)
   end
 
-  it "sets verify_ssl_certificates to true by default" do
-    configuration.verify_ssl_certificates.should == true
+  it "sets ssl_verify to false by default" do
+    configuration.ssl_verify.should == false
   end
 
-  it "allows verify_ssl_certificates setting to be overridden" do
-    expect { configuration.verify_ssl_certificates = false }.to change(configuration, :verify_ssl_certificates).to(false)
+  it "allows ssl_verify setting to be overridden" do
+    expect { configuration.ssl_verify = true }.to change(configuration, :ssl_verify).to(true)
   end
 
   it "sets ssl_ca_file to nil by default" do

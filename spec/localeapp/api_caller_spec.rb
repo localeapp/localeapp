@@ -32,13 +32,13 @@ describe Localeapp::ApiCaller, "#call(object)" do
   end
 
   context "SSL Certificate Validation" do
-    it "set the HTTPClient verify_ssl to VERIFY_PEER if verify_ssl_certificates is set to true" do
+    it "set the HTTPClient verify_ssl to VERIFY_PEER if ssl_verify is set to true" do
+      Localeapp.configuration.ssl_verify = true
       RestClient::Request.should_receive(:execute).with(hash_including(:verify_ssl => OpenSSL::SSL::VERIFY_PEER)).and_return(double('response', :code => 200))
       @api_caller.call(self)
     end
 
-    it "set the HTTPClient verify_ssl to false if verify_ssl_certificates is set to false" do
-      Localeapp.configuration.verify_ssl_certificates = false
+    it "set the HTTPClient verify_ssl to false if ssl_verify is set to false" do
       RestClient::Request.should_receive(:execute).with(hash_including(:verify_ssl => false)).and_return(double('response', :code => 200))
       @api_caller.call(self)
     end
@@ -54,12 +54,6 @@ describe Localeapp::ApiCaller, "#call(object)" do
     it "doesn't set the HTTPClient ca_file if ssl_ca_file is nil" do
       Localeapp.configuration.ssl_ca_file = nil
       RestClient::Request.should_receive(:execute).with(hash_not_including(:ca_file => nil)).and_return(double('response', :code => 200))
-      @api_caller.call(self)
-    end
-
-    it "set the HTTPClient verify_ssl to false if verify_ssl_certificates is set to false" do
-      Localeapp.configuration.verify_ssl_certificates = false
-      RestClient::Request.should_receive(:execute).with(hash_including(:verify_ssl => false)).and_return(double('response', :code => 200))
       @api_caller.call(self)
     end
   end

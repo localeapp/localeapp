@@ -10,8 +10,8 @@ module Localeapp
     # Whether to use https or not (defaults to true)
     attr_accessor :secure
 
-    # Whether to verify ssl server certificates or not (defaults to true)
-    attr_accessor :verify_ssl_certificates
+    # Whether to verify ssl server certificates or not (defaults to false, see README)
+    attr_accessor :ssl_verify
 
     # Path to local CA certs bundle
     attr_accessor :ssl_ca_file
@@ -90,7 +90,7 @@ module Localeapp
     def initialize
       @host                            = 'api.localeapp.com'
       @secure                          = true
-      @verify_ssl_certificates         = true
+      @ssl_verify                      = false
       @disabled_sending_environments   = %w(test cucumber production)
       @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)

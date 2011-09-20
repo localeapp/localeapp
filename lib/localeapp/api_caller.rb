@@ -52,12 +52,13 @@ module Localeapp
           :url => url,
           :method => method,
           :headers => options[:headers],
-          :verify_ssl => (Localeapp.configuration.verify_ssl_certificates ? OpenSSL::SSL::VERIFY_PEER : false)
+          :verify_ssl => (Localeapp.configuration.ssl_verify ? OpenSSL::SSL::VERIFY_PEER : false)
         }
         parameters[:ca_file] = Localeapp.configuration.ssl_ca_file if Localeapp.configuration.ssl_ca_file
         if method == :post
           parameters[:payload] = options[:payload]
         end
+        RestClient.log = Logger.new($stdout)
         RestClient::Request.execute(parameters)
       rescue RestClient::ResourceNotFound,
         RestClient::NotModified,

@@ -7,6 +7,9 @@ module Localeapp
     # The host to connect to (defaults to api.localeapp.com)
     attr_accessor :host
 
+    # The proxy to connect via
+    attr_accessor :proxy
+
     # Whether to use https or not (defaults to true)
     attr_accessor :secure
 

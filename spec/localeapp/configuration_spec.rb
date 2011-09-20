@@ -11,6 +11,14 @@ describe Localeapp::Configuration do
     expect { configuration.host = 'test.host' }.to change(configuration, :host).to('test.host')
   end
 
+  it "sets proxy to nil by default" do
+    configuration.proxy.should == nil
+  end
+
+  it "allows proxy setting to be overridden" do
+    expect { configuration.proxy = 'http://localhost:8888' }.to change(configuration, :proxy).to('http://localhost:8888')
+  end
+
   it "sets secure to true by default" do
     configuration.secure.should == true
   end

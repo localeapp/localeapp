@@ -58,7 +58,7 @@ module Localeapp
         if method == :post
           parameters[:payload] = options[:payload]
         end
-        RestClient.log = Logger.new($stdout)
+        RestClient.proxy = Localeapp.configuration.proxy if Localeapp.configuration.proxy
         RestClient::Request.execute(parameters)
       rescue RestClient::ResourceNotFound,
         RestClient::NotModified,

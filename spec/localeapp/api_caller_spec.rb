@@ -31,6 +31,23 @@ describe Localeapp::ApiCaller, "#call(object)" do
     @api_caller.call(self)
   end
 
+  context "Proxy" do
+    before do
+      RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
+    end
+
+    it "sets the proxy if configured" do
+      Localeapp.configuration.proxy = "http://localhost:8888"
+      RestClient.should_receive(:proxy=).with('http://localhost:8888')
+      @api_caller.call(self)
+    end
+
+    it "doesn't set the proxy if it's not configured" do
+      RestClient.should_not_receive(:proxy=)
+      @api_caller.call(self)
+    end
+  end
+
   context "SSL Certificate Validation" do
     it "set the HTTPClient verify_ssl to VERIFY_PEER if ssl_verify is set to true" do
       Localeapp.configuration.ssl_verify = true

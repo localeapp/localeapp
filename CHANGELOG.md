@@ -2,6 +2,9 @@
 
 * Add `localeapp add` command for sending keys and translations from the command line
 * Add `secure` configuration setting for api communications. Default: true
+* Add `ssl_verify` and `ssl_ca_file` configuration settings for ssl cert verification.
+  Off by default, see the README for more details
+* Add `proxy` configuration setting
 
 # Version 0.1.2
 

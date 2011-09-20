@@ -140,6 +140,12 @@ You can also add a new locale to a project via localeapp.com. This will create
 missing translations for every translation key. You will need to restart any
 listeners completely to pick up the new locale.
 
+### Proxies
+
+If you need to go through a proxy server, you can configure it with:
+
+    config.proxy = "http://my.proxy.com:8888"
+
 ### SSL Certificate verification
 
 localeapp.com uses https everywhere but certificate validation is turned off by

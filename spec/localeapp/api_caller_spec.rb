@@ -31,6 +31,11 @@ describe Localeapp::ApiCaller, "#call(object)" do
     @api_caller.call(self)
   end
 
+  it "adds the gem version to the headers" do
+    RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :x_localeapp_gem_version => Localeapp::VERSION })).and_return(double('response', :code => 200))
+    @api_caller.call(self)
+  end
+
   context "Proxy" do
     before do
       RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
@@ -82,7 +87,7 @@ describe Localeapp::ApiCaller, "#call(object)" do
     end
 
     it "adds any :headers to the api call" do
-      RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :foo => :bar })).and_return(double('response', :code => 200))
+      RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :x_localeapp_gem_version => Localeapp::VERSION, :foo => :bar })).and_return(double('response', :code => 200))
       @api_caller.options[:headers] = { :foo => :bar }
       @api_caller.call(self)
     end
@@ -101,7 +106,7 @@ describe Localeapp::ApiCaller, "#call(object)" do
     end
 
     it "adds any :headers to the api call" do
-      RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :foo => :bar })).and_return(double('response', :code => 200))
+      RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :x_localeapp_gem_version => Localeapp::VERSION, :foo => :bar })).and_return(double('response', :code => 200))
       @api_caller.options[:headers] = { :foo => :bar }
       @api_caller.call(self)
     end

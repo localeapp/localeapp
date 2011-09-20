@@ -20,7 +20,9 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
     RestClient::Request.should_receive(:execute).with(hash_including(
       :url => @sender.translations_url,
       :payload => data.to_json,
-      :headers => { :content_type => :json },
+      :headers => {
+        :x_localeapp_gem_version => Localeapp::VERSION,
+        :content_type => :json },
       :method => :post)).and_return(double('response', :code => 200))
     @sender.post_translation('en', 'test.key', { 'foo' => 'foo', 'bar' => 'bar' }, 'test content')
   end
@@ -44,7 +46,9 @@ describe Localeapp::Sender, "#post_missing_translations" do
     RestClient::Request.should_receive(:execute).with(hash_including(
       :url => @sender.missing_translations_url,
       :payload => data.to_json,
-      :headers => { :content_type => :json },
+      :headers => {
+        :x_localeapp_gem_version => Localeapp::VERSION,
+        :content_type => :json },
       :method => :post)).and_return(double('response', :code => 200))
     @sender.post_missing_translations
   end

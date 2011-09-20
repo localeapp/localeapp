@@ -47,11 +47,11 @@ module Localeapp
       begin
         @connection_attempts += 1
         Localeapp.debug("ATTEMPT #{@connection_attempts}")
-        headers = options[:headers] || {}
+        headers = { :x_localeapp_gem_version => Localeapp::VERSION }.merge(options[:headers] || {})
         parameters = {
           :url => url,
           :method => method,
-          :headers => options[:headers],
+          :headers => headers,
           :verify_ssl => (Localeapp.configuration.ssl_verify ? OpenSSL::SSL::VERIFY_PEER : false)
         }
         parameters[:ca_file] = Localeapp.configuration.ssl_ca_file if Localeapp.configuration.ssl_ca_file

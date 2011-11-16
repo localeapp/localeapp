@@ -10,10 +10,6 @@ The gem hooks into the i18n exception mechanism to send missing translations to
 the app. When translated content has been added it's automatically pulled down
 so you can see it straight away.
 
-We're still in private beta but if you think Locale would be useful to you and
-are willing to provide feedback then please get in touch at info@localeapp.com
-and we'll see what we can do.
-
 ## Installation
 
 ### Rails 3
@@ -59,11 +55,9 @@ localeapp.com and the localeapp import command accept zip files.
 
 ## Default Rails Translations
 
-Locale will hide default rails translations to avoid cluttering up your
-translation view with content you haven't changed. This can make it look like
-we didn't import all of your translations but we promise they're there and will
-appear again when you export. If you want to override a default translation you
-can create the key manually in Locale and we'll use your version instead.
+Locale will automatically add the standard rails translations when a project is
+created. If for some reason you don't want these, you can remove them using in
+the project libraries area on localeapp.com
 
 ## Automatically sending missing translations
 

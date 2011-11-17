@@ -83,18 +83,29 @@ command :update do |c|
   end
 end
 
-desc "Simple daemon (checks every 5 seconds for new translations)"
+desc "Simple daemon (checks for new translations in the background)"
 command :daemon do |c|
+  c.desc "Interval to wait between checks"
+  c.arg_name 'interval'
+  c.default_value 5
+  c.flag [:i, :interval]
+
   c.desc "run the daemon in the background"
   c.switch [:b, 'background']
 
   c.action do |global_options, options, args|
     include_config_file
 
+    interval = options[:interval].to_i
+
+    if interval <= 0
+      exit_now! "interval must be a positive integer greater than 0", 1
+    end
+
     command = Proc.new do
       loop do
         Localeapp::CLI::Update.new.execute
-        sleep 5
+        sleep interval
       end
     end
     if options[:background]

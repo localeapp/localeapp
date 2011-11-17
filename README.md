@@ -112,7 +112,10 @@ Run the daemon with:
     localeapp daemon
 
 The listeners will automatically reload translations when they see there are
-new ones.
+new ones. The daemon has two options:
+
+  -b will run in the background and put a pid file in tmp/pids/localeapp.pid
+  -i X will change the polling interval to X from it's default five seconds.
 
 ### Disabling Reloading
 

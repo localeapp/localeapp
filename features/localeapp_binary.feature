@@ -2,14 +2,10 @@ Feature: localeapp executable
 
   Scenario: Viewing help
     In order to see what options I have
-    When I run `localeapp --help`
+    When I run `localeapp help`
     Then the output should contain:
     """
-    Usage: localeapp COMMAND [options]
-
-        COMMAND:
-        install <api_key> - Creates new configuration files and confirms key works
-        pull              - Pulls all translations from localeapp.com
+    usage: localeapp command [command options]
     """
 
   Scenario: Running a command that doesn't exist
@@ -17,11 +13,7 @@ Feature: localeapp executable
     When I run `localeapp foo`
     Then the output should contain:
     """
-    Usage: localeapp COMMAND [options]
-
-        COMMAND:
-        install <api_key> - Creates new configuration files and confirms key works
-        pull              - Pulls all translations from localeapp.com
+    error: Unknown command 'foo'. Use 'localeapp help' for a list of commands
     """
 
   Scenario: Running install

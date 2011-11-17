@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
-require 'slop'
 require 'localeapp'
 
 # Don't connect to the net if we're running under cucumber for testing
@@ -22,45 +21,30 @@ def include_config_file
   end
 end
 
-# Ugly global for now till we figure out a better way
-$recognized_command = false
+require 'gli'
+include GLI
 
-slop = Slop.new(ARGV, :help => true, :strict => true) do
-  banner "Usage: localeapp COMMAND [options]"
-  summary <<-COMMANDS
-    COMMAND:
-    install <api_key> - Creates new configuration files and confirms key works
-    pull              - Pulls all translations from localeapp.com
-    push <file>       - Pushes a translation file to localeapp.com
-    add <key> <locale>:<content> (<locale>:<content> ...)
-                      - Sends the key and content to localeapp.com
-    update            - Gets any changes since the last poll and updates the yml
-    daemon            - Simple daemon (checks every 5 seconds for new translations)
-COMMANDS
+version Localeapp::VERSION
 
-  on_empty { puts self.to_s }
-end
-
-slop.command :install do
-  execute do |opts, args|
-    $recognized_command = true
+desc "Creates new configuration files and confirms key works"
+arg_name "<api_key>"
+command :install do |c|
+  c.action do |global_options, options, args|
     key = args.first
     installer = Localeapp::CLI::Install.new
-    if installer.execute(key)
-      exit 0
-    else
-      exit 1
+    unless installer.execute(key)
+      exit_now! "", 1
     end
   end
 end
 
-slop.command :add do
-  execute do |opts, args|
-    $recognized_command = true
+desc "Sends the key and content to localeapp.com"
+arg_name "<key> <locale:content> (<locale:content> ...)"
+command :add do |c|
+  c.action do |global_options, options, args|
     key = args.shift
     if key.nil? || args.size.zero?
-      puts "localeapp add requires a key name and at least one translation"
-      exit 1
+      exit_now! "localeapp add requires a key name and at least one translation", 1
     else
       include_config_file
       Localeapp::CLI::Add.new.execute(key, *args)
@@ -68,38 +52,40 @@ slop.command :add do
   end
 end
 
-slop.command :pull do
-  execute do |opts, args|
-    $recognized_command = true
+desc "Pulls all translations from localeapp.com"
+command :pull do |c|
+  c.action do |global_options, options, args|
     include_config_file
     Localeapp::CLI::Pull.new.execute
   end
 end
 
-slop.command :push do
-  on_empty { puts "localeapp push requires an file to push" }
-
-  execute do |opts, args|
-    $recognized_command = true
-    file = args.first
-    exit 1 if file.nil?
-    include_config_file
-    pusher = Localeapp::CLI::Push.new
-    pusher.execute(file)
+desc "Pushes a translation file to localeapp.com"
+arg_name "<file>"
+command :push do |c|
+  c.action do |global_options, options, args|
+    if args.empty?
+      exit_now! "localeapp push requires an file to push", 1
+    else
+      file = args.first
+      include_config_file
+      pusher = Localeapp::CLI::Push.new
+      pusher.execute(file)
+    end
   end
 end
 
-slop.command :update do
-  execute do |opts, args|
-    $recognized_command = true
+desc "Gets any changes since the last poll and updates the yml"
+command :update do |c|
+  c.action do |global_options, options, args|
     include_config_file
     Localeapp::CLI::Update.new.execute
   end
 end
 
-slop.command :daemon do
-  execute do |opts, args|
-    $recognized_command = true
+desc "Simple daemon (checks every 5 seconds for new translations)"
+command :daemon do |c|
+  c.action do |global_options, options, args|
     include_config_file
     while true do
       Localeapp::CLI::Update.new.execute
@@ -108,9 +94,4 @@ slop.command :daemon do
   end
 end
 
-begin
-  slop.parse!
-rescue Slop::InvalidOptionError
-  puts slop
-end
-puts slop unless $recognized_command
+exit GLI.run(ARGV)

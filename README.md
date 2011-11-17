@@ -10,10 +10,6 @@ The gem hooks into the i18n exception mechanism to send missing translations to
 the app. When translated content has been added it's automatically pulled down
 so you can see it straight away.
 
-We're still in private beta but if you think Locale would be useful to you and
-are willing to provide feedback then please get in touch at info@localeapp.com
-and we'll see what we can do.
-
 ## Installation
 
 ### Rails 3
@@ -59,11 +55,9 @@ localeapp.com and the localeapp import command accept zip files.
 
 ## Default Rails Translations
 
-Locale will hide default rails translations to avoid cluttering up your
-translation view with content you haven't changed. This can make it look like
-we didn't import all of your translations but we promise they're there and will
-appear again when you export. If you want to override a default translation you
-can create the key manually in Locale and we'll use your version instead.
+Locale will automatically add the standard rails translations when a project is
+created. If for some reason you don't want these, you can remove them using in
+the project libraries area on localeapp.com
 
 ## Automatically sending missing translations
 
@@ -78,6 +72,15 @@ environment then edit `config/initializers/localeapp.rb` to include:
 
 This is just an array, so you can configure it to match send in any environment
 you wish.
+
+## Manually create translations
+
+You can create translations on the command line by running:
+
+    localeapp add key.name en:"test content" es:"spanish content"
+
+You must provide at least one translation and the locale code must already
+exist in the project.
 
 ## Automatically pulling translations
 
@@ -109,7 +112,10 @@ Run the daemon with:
     localeapp daemon
 
 The listeners will automatically reload translations when they see there are
-new ones.
+new ones. The daemon has two options:
+
+  -b will run in the background and put a pid file in tmp/pids/localeapp.pid
+  -i X will change the polling interval to X from it's default five seconds.
 
 ### Disabling Reloading
 
@@ -130,6 +136,26 @@ If we find an unknown locale during an import we'll add it to your project.
 You can also add a new locale to a project via localeapp.com. This will create
 missing translations for every translation key. You will need to restart any
 listeners completely to pick up the new locale.
+
+### Proxies
+
+If you need to go through a proxy server, you can configure it with:
+
+    config.proxy = "http://my.proxy.com:8888"
+
+### SSL Certificate verification
+
+localeapp.com uses https everywhere but certificate validation is turned off by
+default. This is because ruby doesn't know how to read the certs from the OSX
+keychain. You can turn verification on and tell the gem where the latest CA
+certificates are by adding:
+
+    config.ssl_verify = true
+    config.ssl_ca_file = /path/to/ca_cert.pm
+
+See [this article on Ruby Inside][1] for some more details.
+
+[1]: http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html
 
 ### Support and feedback
 

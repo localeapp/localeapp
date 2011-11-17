@@ -17,7 +17,13 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
       }
     }
     # have to stub RestClient here as FakeWeb doesn't support looking at the post body yet
-    RestClient.should_receive(:post).with(@sender.translations_url, data.to_json, :content_type => :json).and_return(double('response', :code => 200))
+    RestClient::Request.should_receive(:execute).with(hash_including(
+      :url => @sender.translations_url,
+      :payload => data.to_json,
+      :headers => {
+        :x_localeapp_gem_version => Localeapp::VERSION,
+        :content_type => :json },
+      :method => :post)).and_return(double('response', :code => 200))
     @sender.post_translation('en', 'test.key', { 'foo' => 'foo', 'bar' => 'bar' }, 'test content')
   end
 end
@@ -37,7 +43,13 @@ describe Localeapp::Sender, "#post_missing_translations" do
     Localeapp.missing_translations.should_receive(:to_send).and_return(missing_to_send)
     data = { :translations => missing_to_send }
     # have to stub RestClient here as FakeWeb doesn't support looking at the post body yet
-    RestClient.should_receive(:post).with(@sender.missing_translations_url, data.to_json, :content_type => :json).and_return(double('response', :code => 200))
+    RestClient::Request.should_receive(:execute).with(hash_including(
+      :url => @sender.missing_translations_url,
+      :payload => data.to_json,
+      :headers => {
+        :x_localeapp_gem_version => Localeapp::VERSION,
+        :content_type => :json },
+      :method => :post)).and_return(double('response', :code => 200))
     @sender.post_missing_translations
   end
 

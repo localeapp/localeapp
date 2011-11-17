@@ -10,34 +10,85 @@ end
 
 describe Localeapp::ApiCaller, "#call(object)" do
   before do
-    @api_caller = Localeapp::ApiCaller.new(:test)
-    @url = 'http://example.com/test'
+    with_configuration do
+      @api_caller = Localeapp::ApiCaller.new(:test)
+    end
+    @url = 'https://example.com/test'
     @api_caller.stub!(:test_endpoint).and_return([:get, @url])
     @api_caller.stub!(:sleep_if_retrying)
   end
 
   it "gets the method and url for the endpoint" do
     @api_caller.should_receive(:test_endpoint).with({}).and_return([:get, @url])
-    RestClient.stub!(:get).and_return(double('response', :code => 200))
+    RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
     @api_caller.call(self)
   end
 
   it "passes through any url options" do
     @api_caller.should_receive(:test_endpoint).with({:foo => :bar}).and_return([:get, @url])
     @api_caller.options[:url_options] = { :foo => :bar }
-    RestClient.stub!(:get).and_return(double('response', :code => 200))
+    RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
     @api_caller.call(self)
+  end
+
+  it "adds the gem version to the headers" do
+    RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :x_localeapp_gem_version => Localeapp::VERSION })).and_return(double('response', :code => 200))
+    @api_caller.call(self)
+  end
+
+  context "Proxy" do
+    before do
+      RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
+    end
+
+    it "sets the proxy if configured" do
+      Localeapp.configuration.proxy = "http://localhost:8888"
+      RestClient.should_receive(:proxy=).with('http://localhost:8888')
+      @api_caller.call(self)
+    end
+
+    it "doesn't set the proxy if it's not configured" do
+      RestClient.should_not_receive(:proxy=)
+      @api_caller.call(self)
+    end
+  end
+
+  context "SSL Certificate Validation" do
+    it "set the HTTPClient verify_ssl to VERIFY_PEER if ssl_verify is set to true" do
+      Localeapp.configuration.ssl_verify = true
+      RestClient::Request.should_receive(:execute).with(hash_including(:verify_ssl => OpenSSL::SSL::VERIFY_PEER)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+
+    it "set the HTTPClient verify_ssl to false if ssl_verify is set to false" do
+      RestClient::Request.should_receive(:execute).with(hash_including(:verify_ssl => false)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+  end
+
+  context "SSL Certificate Validation" do
+    it "set the HTTPClient ca_file to the value given to ssl_ca_file if it's not nil" do
+      Localeapp.configuration.ssl_ca_file = '/tmp/test'
+      RestClient::Request.should_receive(:execute).with(hash_including(:ca_file => '/tmp/test')).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+
+    it "doesn't set the HTTPClient ca_file if ssl_ca_file is nil" do
+      Localeapp.configuration.ssl_ca_file = nil
+      RestClient::Request.should_receive(:execute).with(hash_not_including(:ca_file => nil)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
   end
 
   context "a GET request" do
     it "makes the call to the api" do
-      RestClient.should_receive(:get).with(@url, {}).and_return(double('response', :code => 200))
+      RestClient::Request.should_receive(:execute).with(hash_including(:url => @url, :method => :get)).and_return(double('response', :code => 200))
       @api_caller.call(self)
     end
 
-    it "adds any :request_options to the api call" do
-      RestClient.should_receive(:get).with(@url, :foo => :bar).and_return(double('response', :code => 200))
-      @api_caller.options[:request_options] = { :foo => :bar }
+    it "adds any :headers to the api call" do
+      RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :x_localeapp_gem_version => Localeapp::VERSION, :foo => :bar })).and_return(double('response', :code => 200))
+      @api_caller.options[:headers] = { :foo => :bar }
       @api_caller.call(self)
     end
   end
@@ -50,13 +101,13 @@ describe Localeapp::ApiCaller, "#call(object)" do
     end
 
     it "makes the call to the api using :payload as the payload" do
-      RestClient.should_receive(:post).with(@url, "test data", {}).and_return(double('response', :code => 200))
+      RestClient::Request.should_receive(:execute).with(hash_including(:url => @url, :payload => "test data", :method => :post)).and_return(double('response', :code => 200))
       @api_caller.call(self)
     end
 
-    it "adds any :request_options to the api call" do
-      RestClient.should_receive(:post).with(@url, "test data", :foo => :bar).and_return(double('response', :code => 200))
-      @api_caller.options[:request_options] = { :foo => :bar }
+    it "adds any :headers to the api call" do
+      RestClient::Request.should_receive(:execute).with(hash_including(:headers => { :x_localeapp_gem_version => Localeapp::VERSION, :foo => :bar })).and_return(double('response', :code => 200))
+      @api_caller.options[:headers] = { :foo => :bar }
       @api_caller.call(self)
     end
   end

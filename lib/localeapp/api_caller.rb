@@ -47,12 +47,19 @@ module Localeapp
       begin
         @connection_attempts += 1
         Localeapp.debug("ATTEMPT #{@connection_attempts}")
-        request_options = options[:request_options] || {}
+        headers = { :x_localeapp_gem_version => Localeapp::VERSION }.merge(options[:headers] || {})
+        parameters = {
+          :url => url,
+          :method => method,
+          :headers => headers,
+          :verify_ssl => (Localeapp.configuration.ssl_verify ? OpenSSL::SSL::VERIFY_PEER : false)
+        }
+        parameters[:ca_file] = Localeapp.configuration.ssl_ca_file if Localeapp.configuration.ssl_ca_file
         if method == :post
-          RestClient.send(method, url, options[:payload], request_options)
-        else
-          RestClient.send(method, url, request_options)
+          parameters[:payload] = options[:payload]
         end
+        RestClient.proxy = Localeapp.configuration.proxy if Localeapp.configuration.proxy
+        RestClient::Request.execute(parameters)
       rescue RestClient::ResourceNotFound,
         RestClient::NotModified,
         RestClient::InternalServerError,

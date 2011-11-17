@@ -11,6 +11,38 @@ describe Localeapp::Configuration do
     expect { configuration.host = 'test.host' }.to change(configuration, :host).to('test.host')
   end
 
+  it "sets proxy to nil by default" do
+    configuration.proxy.should == nil
+  end
+
+  it "allows proxy setting to be overridden" do
+    expect { configuration.proxy = 'http://localhost:8888' }.to change(configuration, :proxy).to('http://localhost:8888')
+  end
+
+  it "sets secure to true by default" do
+    configuration.secure.should == true
+  end
+
+  it "allows secure setting to be overridden" do
+    expect { configuration.secure = false }.to change(configuration, :secure).to(false)
+  end
+
+  it "sets ssl_verify to false by default" do
+    configuration.ssl_verify.should == false
+  end
+
+  it "allows ssl_verify setting to be overridden" do
+    expect { configuration.ssl_verify = true }.to change(configuration, :ssl_verify).to(true)
+  end
+
+  it "sets ssl_ca_file to nil by default" do
+    configuration.ssl_ca_file.should == nil
+  end
+
+  it "allows ssl_ca_file setting to be overridden" do
+    expect { configuration.ssl_ca_file = '/foo/bar' }.to change(configuration, :ssl_ca_file).to('/foo/bar')
+  end
+
   it "includes http_auth_username defaulting to nil" do
     configuration.http_auth_username.should == nil
     configuration.http_auth_username = "test"

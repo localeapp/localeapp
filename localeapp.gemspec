@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency('json')
   s.add_dependency('rest-client')
   s.add_dependency('ya2yaml')
-  s.add_dependency('slop')
+  s.add_dependency('gli')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '2.5.0')

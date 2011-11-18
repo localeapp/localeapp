@@ -1,6 +1,6 @@
 module Localeapp
   class Configuration
-  
+
     # The API key for your project, found on the project edit form
     attr_accessor :api_key
 
@@ -83,6 +83,14 @@ module Localeapp
     # this to RAILS_ROOT/log/localeapp.yml
     attr_accessor :synchronization_data_file
 
+    # The complete path to the pid file where we store information about daemon
+    # default: RAILS_ROOT/tmp/pids/localeapp.pid
+    attr_accessor :daemon_pid_file
+
+    # The complete path to the log file where we store information about daemon actions
+    # default: RAILS_ROOT/log/localeapp_daemon.log
+    attr_accessor :daemon_log_file
+
     # The complete path to the directory where translations are stored
     attr_accessor :translation_data_directory
 
@@ -97,11 +105,13 @@ module Localeapp
       @disabled_sending_environments   = %w(test cucumber production)
       @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)
-      @sending_environments    = %w(development)
-      @reloading_environments  = %w(development)
-      @polling_environments    = %w(development)
+      @sending_environments            = %w(development)
+      @reloading_environments          = %w(development)
+      @polling_environments            = %w(development)
       @poll_interval                   = 0
       @synchronization_data_file       = File.join('log', 'localeapp.yml')
+      @daemon_pid_file                 = File.join('tmp', 'pids', 'localeapp.pid')
+      @daemon_log_file                 = File.join('log', 'localeapp_daemon.log')
       @translation_data_directory      = File.join('config', 'locales')
       if ENV['DEBUG']
         require 'logger'

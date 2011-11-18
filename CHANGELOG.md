@@ -1,4 +1,4 @@
-# HEAD
+# Version 0.2.0
 
 * Add `localeapp add` command for sending keys and translations from the command line
 * Add `secure` configuration setting for api communications. Default: true

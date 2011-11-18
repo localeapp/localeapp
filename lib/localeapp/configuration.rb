@@ -112,27 +112,27 @@ module Localeapp
     def polling_disabled?
       if deprecated_environment_config_used?
         ::Localeapp.log "DEPRECATION: disabled_polling_environments is deprecated and will be removed. Use polling_environments instead and reverse the logic if you've changed the defaults"
-        disabled_polling_environments.include?(environment_name)
+        disabled_polling_environments.map { |v| v.to_s }.include?(environment_name)
       else
-        !polling_environments.include?(environment_name)
+        !polling_environments.map { |v| v.to_s }.include?(environment_name)
       end
     end
 
     def reloading_disabled?
       if deprecated_environment_config_used?
         ::Localeapp.log "DEPRECATION: disabled_reloading_environments is deprecated and will be removed. Use reloading_environments instead and reverse the logic if you've changed the defaults"
-        disabled_reloading_environments.include?(environment_name)
+        disabled_reloading_environments.map { |v| v.to_s }.include?(environment_name)
       else
-        !reloading_environments.include?(environment_name)
+        !reloading_environments.map { |v| v.to_s }.include?(environment_name)
       end
     end
 
     def sending_disabled?
       if deprecated_environment_config_used?
         ::Localeapp.log "DEPRECATION: disabled_sending_environments is deprecated and will be removed. Use sending_environments instead and reverse the logic if you've changed the defaults"
-        disabled_sending_environments.include?(environment_name)
+        disabled_sending_environments.map { |v| v.to_s }.include?(environment_name)
       else
-        !sending_environments.include?(environment_name)
+        !sending_environments.map { |v| v.to_s }.include?(environment_name)
       end
     end
 

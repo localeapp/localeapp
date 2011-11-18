@@ -173,6 +173,12 @@ describe Localeapp::Configuration do
         configuration.environment_name = 'bar'
         configuration.should_not be_polling_disabled
       end
+
+      it "supports symbols in list of environments" do
+        configuration.disabled_polling_environments = [:foo]
+        configuration.environment_name = 'foo'
+        configuration.should be_polling_disabled
+      end
     end
 
     context "new syntax used" do
@@ -184,6 +190,12 @@ describe Localeapp::Configuration do
 
       it "is false when environment is enabled" do
         configuration.polling_environments = %w(foo)
+        configuration.environment_name = 'foo'
+        configuration.should_not be_polling_disabled
+      end
+
+      it "supports symbols in list of environments" do
+        configuration.polling_environments = [:foo]
         configuration.environment_name = 'foo'
         configuration.should_not be_polling_disabled
       end
@@ -203,6 +215,12 @@ describe Localeapp::Configuration do
         configuration.environment_name = 'bar'
         configuration.should_not be_reloading_disabled
       end
+
+      it "supports symbols in list of environments" do
+        configuration.disabled_reloading_environments = [:foo]
+        configuration.environment_name = 'foo'
+        configuration.should be_reloading_disabled
+      end
     end
 
     context "new syntax used" do
@@ -214,6 +232,12 @@ describe Localeapp::Configuration do
 
       it "is false when environment is enabled" do
         configuration.reloading_environments = %w(foo)
+        configuration.environment_name = 'foo'
+        configuration.should_not be_reloading_disabled
+      end
+
+      it "supports symbols in list of environments" do
+        configuration.reloading_environments = [:foo]
         configuration.environment_name = 'foo'
         configuration.should_not be_reloading_disabled
       end
@@ -233,6 +257,12 @@ describe Localeapp::Configuration do
         configuration.environment_name = 'bar'
         configuration.should_not be_sending_disabled
       end
+
+      it "supports symbols in the list of enviroments" do
+        configuration.disabled_sending_environments = [:foo]
+        configuration.environment_name = 'foo'
+        configuration.should be_sending_disabled
+      end
     end
 
     context "new syntax used" do
@@ -244,6 +274,12 @@ describe Localeapp::Configuration do
 
       it "is false when environment is enabled" do
         configuration.sending_environments = %w(foo)
+        configuration.environment_name = 'foo'
+        configuration.should_not be_sending_disabled
+      end
+
+      it "supports symbols in the list of environments" do
+        configuration.sending_environments = [:foo]
         configuration.environment_name = 'foo'
         configuration.should_not be_sending_disabled
       end

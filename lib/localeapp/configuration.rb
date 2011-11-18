@@ -7,7 +7,19 @@ module Localeapp
     # The host to connect to (defaults to api.localeapp.com)
     attr_accessor :host
 
-    # The port to connect to (defaults to 80)
+    # The proxy to connect via
+    attr_accessor :proxy
+
+    # Whether to use https or not (defaults to true)
+    attr_accessor :secure
+
+    # Whether to verify ssl server certificates or not (defaults to false, see README)
+    attr_accessor :ssl_verify
+
+    # Path to local CA certs bundle
+    attr_accessor :ssl_ca_file
+
+    # The port to connect to if it's not the default one
     attr_accessor :port
 
     attr_accessor :http_auth_username
@@ -80,7 +92,8 @@ module Localeapp
 
     def initialize
       @host                            = 'api.localeapp.com'
-      @port                            = 80
+      @secure                          = true
+      @ssl_verify                      = false
       @disabled_sending_environments   = %w(test cucumber production)
       @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)

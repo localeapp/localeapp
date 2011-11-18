@@ -38,22 +38,22 @@ describe Localeapp::Poller do
     
   describe "#poll!" do
     it "returns false if get returns 304 Not Modified" do
-      FakeWeb.register_uri(:get, "http://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => '', :status => ['304', 'Not Modified'])
+      FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => '', :status => ['304', 'Not Modified'])
       @poller.poll!.should == false
     end
 
     it "returns false if get returns a 50x response" do
-      FakeWeb.register_uri(:get, "http://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => '', :status => ['500', 'Internal Server Error'])
+      FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => '', :status => ['500', 'Internal Server Error'])
       @poller.poll!.should == false
     end
 
     it "returns false if get returns 200 OK" do
-      FakeWeb.register_uri(:get, "http://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => @hash.to_json, :status => ['200', 'OK'], :date => Time.now.httpdate)
+      FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => @hash.to_json, :status => ['200', 'OK'], :date => Time.now.httpdate)
       @poller.poll!.should == true
     end
 
     it "passes the data through to the Updater" do
-      FakeWeb.register_uri(:get, "http://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => @hash.to_json, :status => ['200', 'OK'], :date => Time.now.httpdate)
+      FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.json?updated_at=#{@updated_at}", :body => @hash.to_json, :status => ['200', 'OK'], :date => Time.now.httpdate)
       Localeapp.updater.should_receive(:update).with(@hash)
       @poller.poll!
     end

@@ -8,12 +8,12 @@ module Localeapp
 
     def project_url(options = {})
       options[:format] ||= 'json'
-      URI::HTTP.build(base_options.merge(:path => project_path(options[:format]))).to_s
+      http_scheme.build(base_options.merge(:path => project_path(options[:format]))).to_s
     end
 
     def translations_url(options={})
       options[:format] ||= 'json'
-      url = URI::HTTP.build(base_options.merge(:path => translations_path(options[:format])))
+      url = http_scheme.build(base_options.merge(:path => translations_path(options[:format])))
       url.query = options[:query].map { |k,v| "#{k}=#{v}" }.join('&') if options[:query]
       url.to_s
     end
@@ -32,7 +32,7 @@ module Localeapp
 
     def missing_translations_url(options={})
       options[:format] ||= 'json'
-      url = URI::HTTP.build(base_options.merge(:path => missing_translations_path(options[:format])))
+      url = http_scheme.build(base_options.merge(:path => missing_translations_path(options[:format])))
       url.query = options[:query].map { |k,v| "#{k}=#{v}" }.join('&') if options[:query]
       url.to_s
     end
@@ -42,10 +42,17 @@ module Localeapp
     end
 
     def import_url(options={})
-      URI::HTTP.build(base_options.merge(:path => import_path)).to_s
+      http_scheme.build(base_options.merge(:path => import_path)).to_s
     end
 
   private
+    def http_scheme
+      if Localeapp.configuration.secure
+        URI::HTTPS
+      else
+        URI::HTTP
+      end
+    end
 
     def base_options
       options = {:host => Localeapp.configuration.host, :port => Localeapp.configuration.port}

@@ -2,14 +2,10 @@ Feature: localeapp executable
 
   Scenario: Viewing help
     In order to see what options I have
-    When I run `localeapp --help`
+    When I run `localeapp help`
     Then the output should contain:
     """
-    Usage: localeapp COMMAND [options]
-
-        COMMAND:
-        install <api_key> - Creates new configuration files and confirms key works
-        pull              - Pulls all translations from localeapp.com
+    usage: localeapp command [command options]
     """
 
   Scenario: Running a command that doesn't exist
@@ -17,11 +13,7 @@ Feature: localeapp executable
     When I run `localeapp foo`
     Then the output should contain:
     """
-    Usage: localeapp COMMAND [options]
-
-        COMMAND:
-        install <api_key> - Creates new configuration files and confirms key works
-        pull              - Pulls all translations from localeapp.com
+    error: Unknown command 'foo'. Use 'localeapp help' for a list of commands
     """
 
   Scenario: Running install
@@ -37,6 +29,7 @@ Feature: localeapp executable
     Project: Test Project
     Default Locale: en (English)
     """
+    And help should not be displayed
     And a file named "config/initializers/localeapp.rb" should exist
     And the exit status should be 0
 
@@ -51,19 +44,47 @@ Feature: localeapp executable
     Checking API key: BADAPIKEY
     ERROR: Project not found
     """
+    And help should not be displayed
     And a file named "config/initializers/localeapp.rb" should not exist
     And the exit status should not be 0
+
+  Scenario: Running add
+    In order to add a key and translation content
+    When I have a valid project on localeapp.com with api key "MYAPIKEY"
+    And an initializer file
+    When I run `localeapp add foo.baz en:"test en content" es:"test es content"`
+    Then the output should contain:
+    """
+    Localeapp Add
+
+    Sending key: foo.baz
+    Success!
+    """
+
+  Scenario: Running add with no arguments
+    In order to add a key and translation content
+    When I have a valid project on localeapp.com with api key "MYAPIKEY"
+    And an initializer file
+    When I run `localeapp add`
+    Then the output should contain:
+    """
+    localeapp add requires a key name and at least one translation
+    """
+
+  Scenario: Running add with just a key name
+    In order to add a key and translation content
+    When I have a valid project on localeapp.com with api key "MYAPIKEY"
+    And an initializer file
+    When I run `localeapp add foo.bar`
+    Then the output should contain:
+    """
+    localeapp add requires a key name and at least one translation
+    """
 
   Scenario: Running pull
     In order to retreive my translations
     Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"
-    And a file named "config/initializers/localeapp.rb" with:
-    """
-    require 'localeapp/rails'
-    Localeapp.configure do |config|
-      config.api_key = 'MYAPIKEY'
-    end
-    """
+    And an initializer file
     And a directory named "config/locales"
     When I run `localeapp pull`
     Then the output should contain:
@@ -75,18 +96,13 @@ Feature: localeapp executable
     Updating backend:
     Success!
     """
+    And help should not be displayed
     And a file named "config/locales/en.yml" should exist
 
   Scenario: Running push
     In order to send my translations
     When I have a valid project on localeapp.com with api key "MYAPIKEY"
-    And a file named "config/initializers/localeapp.rb" with:
-    """
-    require 'localeapp/rails'
-    Localeapp.configure do |config|
-      config.api_key = 'MYAPIKEY'
-    end
-    """
+    And an initializer file
     And an empty file named "config/locales/en.yml"
     When I run `localeapp push config/locales/en.yml`
     Then the output should contain:
@@ -98,17 +114,12 @@ Feature: localeapp executable
 
     config/locales/en.yml queued for processing.
     """
+    And help should not be displayed
 
   Scenario: Running update
     In order to receive the translations that have been updated since the last check
     When I have a valid project on localeapp.com with api key "MYAPIKEY"
-    And a file named "config/initializers/localeapp.rb" with:
-    """
-    require 'localeapp/rails'
-    Localeapp.configure do |config|
-      config.api_key = 'MYAPIKEY'
-    end
-    """
+    And an initializer file
     And a file named "log/localeapp.yml" with:
     """
     ---
@@ -123,6 +134,7 @@ Feature: localeapp executable
     Localeapp update: checking for translations since 120
     Found and updated new translations
     """
+    And help should not be displayed
     And a file named "config/locales/en.yml" should exist
     # check the content here
     # and the localeapp.yml file

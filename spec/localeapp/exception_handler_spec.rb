@@ -9,13 +9,13 @@ describe Localeapp::ExceptionHandler, '#call(exception, locale, key, options)' d
   end
 
   it "adds the missing translation to the missing translation list" do
-    Localeapp.missing_translations.should_receive(:add).with(:en, 'foo', { :baz => 'bam' })
+    Localeapp.missing_translations.should_receive(:add).with(:en, 'foo', nil, { :baz => 'bam' })
     I18n.t('foo', :baz => 'bam')
   end
 
   it "handles when the key is an array of keys" do
-    Localeapp.missing_translations.should_receive(:add).with(:en, 'foo', {})
-    Localeapp.missing_translations.should_receive(:add).with(:en, 'bar', {})
+    Localeapp.missing_translations.should_receive(:add).with(:en, 'foo', nil, {})
+    Localeapp.missing_translations.should_receive(:add).with(:en, 'bar', nil, {})
     I18n.t(['foo', 'bar'])
   end
 

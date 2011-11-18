@@ -69,12 +69,34 @@ arg_name "<file>"
 command :push do |c|
   c.action do |global_options, options, args|
     if args.empty?
-      exit_now! "localeapp push requires an file to push", 1
+      exit_now! "localeapp push requires a file to push", 1
     else
       file = args.first
       initialize_config
       pusher = Localeapp::CLI::Push.new
       pusher.execute(file)
+    end
+  end
+end
+
+desc "Pushes a translation files from directory to localeapp.com"
+arg_name "<directory> <file_regexp>"
+command :push_directory do |c|
+  c.action do |global_options, options, args|
+    if args.empty? || !File.directory?(args.first)
+      exit_now! "localeapp push_directory requires a directory to push", 1
+    else
+      include_config_file
+      pusher = Localeapp::CLI::Push.new
+
+      directory = args.shift
+      file_regexp = args.shift || "*.yml"
+
+      locale_files = File.find directory, file_regexp
+      locale_files.each do |file|
+        pusher.execute(file)
+      end
+
     end
   end
 end
@@ -113,6 +135,10 @@ command :daemon do |c|
       end
     end
     if options[:background]
+
+      logfile_path ||= File.join(Dir.pwd, 'log', 'localeapp_daemon.log')
+      STDOUT.reopen(File.open(logfile_path, 'a'))
+
       pid = fork do
         command.call
       end

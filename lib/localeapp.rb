@@ -15,7 +15,7 @@ rescue LoadError
   # This ugliness so we can load AS in the travis env
   # Assume that we're in rails 2.3 and AS supplies deep_merge
   # Load AS if we need to
-  unless @loaded_active_support 
+  unless @loaded_active_support
     # we're in 2.3 and we need to load rails to get the vendored i18n
     require 'thread' # for rubygems > 1.6.0 support
     require 'active_support'
@@ -33,12 +33,14 @@ require 'localeapp/poller'
 require 'localeapp/updater'
 require 'localeapp/key_checker'
 require 'localeapp/missing_translations'
-  
+
 require 'localeapp/cli/install'
 require 'localeapp/cli/pull'
 require 'localeapp/cli/push'
 require 'localeapp/cli/update'
 require 'localeapp/cli/add'
+
+require 'localeapp/file'
 
 # AUDIT: Will this work on ruby 1.9.x
 $KCODE="UTF8" if RUBY_VERSION < '1.9'
@@ -52,7 +54,7 @@ module Localeapp
   class << self
     # An Localeapp configuration object.
     attr_accessor :configuration
-    
+
     # The sender object is responsible for delivering formatted data to the Localeapp server.
     attr_accessor :sender
 
@@ -80,7 +82,7 @@ module Localeapp
     def logger
       self.configuration && self.configuration.logger
     end
-  
+
     # @example Configuration
     # Localeapp.configure do |config|
     #   config.api_key = '1234567890abcdef'

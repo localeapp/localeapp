@@ -60,17 +60,17 @@ command :pull do |c|
   end
 end
 
-desc "Pushes a translation file to localeapp.com"
+desc "Pushes a translation file or directory to localeapp.com"
 arg_name "<file>"
 command :push do |c|
   c.action do |global_options, options, args|
     if args.empty?
-      exit_now! "localeapp push requires an file to push", 1
+      exit_now! "localeapp push requires an file or directory to push", 1
     else
-      file = args.first
       include_config_file
+      path = args.first
       pusher = Localeapp::CLI::Push.new
-      pusher.execute(file)
+      pusher.execute(path)
     end
   end
 end

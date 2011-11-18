@@ -3,6 +3,8 @@
 * Allow symbols for environment names in config file
 * `localeapp push` will now push all yaml files in a directory if it's given a
   directory instead of a file. (Thanks Bartłomiej Danek)
+* Better daemon support. `daemon_pid_file` and `daemon_log_file` configuration
+  options. (Thanks again Bartłomiej Danek)
 
 # Version 0.2.0
 

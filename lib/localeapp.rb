@@ -40,8 +40,6 @@ require 'localeapp/cli/push'
 require 'localeapp/cli/update'
 require 'localeapp/cli/add'
 
-require 'localeapp/file'
-
 # AUDIT: Will this work on ruby 1.9.x
 $KCODE="UTF8" if RUBY_VERSION < '1.9'
 

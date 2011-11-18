@@ -109,11 +109,22 @@ command :daemon do |c|
       end
     end
     if options[:background]
+
+      if File.exists? Localeapp.configuration.daemon_pid_file
+        begin
+          daemon_pid = File.read(Localeapp.configuration.daemon_pid_file)
+          Process.kill("QUIT", daemon_pid.to_i)
+        rescue Errno::ESRCH
+          File.delete(Localeapp.configuration.daemon_pid_file)
+        end
+      end
+
+      STDOUT.reopen(File.open(Localeapp.configuration.daemon_log_file, 'a'))
       pid = fork do
         command.call
       end
-      pids_directory = "tmp/pids"
-      File.open("#{File.directory?(pids_directory) ? pids_directory : "./"}/localeapp.pid", 'w') {|f| f << pid}
+
+      File.open(Localeapp.configuration.daemon_pid_file, 'w') {|f| f << pid}
     else
       command.call
     end

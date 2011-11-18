@@ -61,6 +61,22 @@ describe Localeapp::Configuration do
     configuration.translation_data_directory.should == "test"
   end
 
+  it "sets the daemon_pid_file by default" do
+    configuration.daemon_pid_file.should == 'tmp/pids/localeapp.pid'
+  end
+
+  it "allows the daemon_pid_file to be overwritten" do
+    expect { configuration.daemon_pid_file = 'foo/la.pid' }.to change(configuration, :daemon_pid_file).to('foo/la.pid')
+  end
+
+  it "sets the daemon_log_file by default" do
+    configuration.daemon_log_file.should == 'log/localeapp_daemon.log'
+  end
+
+  it "allows the daemon_log_file to be overwritten" do
+    expect { configuration.daemon_log_file = 'log/la.log' }.to change(configuration, :daemon_log_file).to('log/la.log')
+  end
+
   context "enabled_sending_environments" do
     it "is only development by default" do
       configuration.sending_environments.should == ['development']

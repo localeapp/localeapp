@@ -60,25 +60,17 @@ command :pull do |c|
   end
 end
 
-desc "Pushes a translation file or locale to localeapp.com"
-arg_name "<file|directory> <file_regexp>"
+desc "Pushes a translation file or directory to localeapp.com"
+arg_name "<file>"
 command :push do |c|
   c.action do |global_options, options, args|
     if args.empty?
-      exit_now! "localeapp push requires a file or directory to push", 1
+      exit_now! "localeapp push requires an file or directory to push", 1
     else
       include_config_file
-      file_or_directory = args.shift
+      path = args.first
       pusher = Localeapp::CLI::Push.new
-      if File.directory? file_or_directory
-        file_regexp = args.shift || "*.yml"
-        locale_files = File.find file_or_directory, file_regexp
-        locale_files.each do |file|
-          pusher.execute(file)
-        end
-      else
-        pusher.execute(file_or_directory)
-      end
+      pusher.execute(path)
     end
   end
 end

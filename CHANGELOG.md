@@ -1,5 +1,11 @@
 # HEAD
 
+* Allow symbols for environment names in config file
+* `localeapp push` will now push all yaml files in a directory if it's given a
+  directory instead of a file. (Thanks Bartłomiej Danek)
+
+# Version 0.2.0
+
 * Add `localeapp add` command for sending keys and translations from the command line
 * Add `secure` configuration setting for api communications. Default: true
 * Add `ssl_verify` and `ssl_ca_file` configuration settings for ssl cert verification.

@@ -7,15 +7,23 @@ module Localeapp
         @output = output
       end
 
-      def execute(file_path = nil)
+      def execute(path = nil)
         @output.puts "Localeapp Push"
+        if path_is_directory?(path)
+          yaml_files_in_directory(path).each do |path|
+            push_file(path)
+          end
+        else
+          push_file(path)
+        end
+      end
+
+      def push_file(file_path)
         @output.puts ""
-
-        @file_path = file_path
-
+        @file_path = file_path # for callbacks
         file = sanitize_file(file_path)
         if file
-          @output.puts "Pushing file:"
+          @output.puts "Pushing file #{File.basename(file_path)}:"
           api_call :import,
             :payload => { :file => file },
             :success => :report_success,
@@ -43,6 +51,14 @@ module Localeapp
         else
           nil
         end
+      end
+
+      def path_is_directory?(path)
+        File.directory?(path)
+      end
+
+      def yaml_files_in_directory(path)
+        Dir.glob(File.join(path, '*.yml')).sort
       end
     end
   end

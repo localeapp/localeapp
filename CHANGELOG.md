@@ -1,3 +1,7 @@
+# HEAD
+
+* Allow symbols for environment names in config file
+
 # Version 0.2.0
 
 * Add `localeapp add` command for sending keys and translations from the command line

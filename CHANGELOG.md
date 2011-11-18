@@ -1,6 +1,8 @@
 # HEAD
 
 * Allow symbols for environment names in config file
+* `localeapp push` will now push all yaml files in a directory if it's given a
+  directory instead of a file. (Thanks Bartłomiej Danek)
 
 # Version 0.2.0
 

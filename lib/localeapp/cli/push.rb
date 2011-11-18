@@ -58,7 +58,7 @@ module Localeapp
       end
 
       def yaml_files_in_directory(path)
-        Dir.glob(File.join(path, '*.yml'))
+        Dir.glob(File.join(path, '*.yml')).sort
       end
     end
   end

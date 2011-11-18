@@ -89,7 +89,7 @@ describe Localeapp::Configuration do
 
   context "disabled_sending_environments" do
     it "sets deprecated_environment_config_used flag to true" do
-      configuration.disabled_sending_environments = %(foo bar)
+      configuration.disabled_sending_environments = %w(foo bar)
       configuration.deprecated_environment_config_used?.should be_true
     end
 
@@ -116,7 +116,7 @@ describe Localeapp::Configuration do
 
   context "disabled_reloading_environments" do
     it "sets deprecated_environment_config_used flag to true" do
-      configuration.disabled_reloading_environments = %(foo bar)
+      configuration.disabled_reloading_environments = %w(foo bar)
       configuration.deprecated_environment_config_used?.should be_true
     end
 
@@ -143,7 +143,7 @@ describe Localeapp::Configuration do
   
   context "disabled_polling_environments" do
     it "sets deprecated_environment_config_used flag to true" do
-      configuration.disabled_polling_environments = %(foo bar)
+      configuration.disabled_polling_environments = %w(foo bar)
       configuration.deprecated_environment_config_used?.should be_true
     end
 
@@ -171,13 +171,13 @@ describe Localeapp::Configuration do
   describe "polling_disabled?" do
     context "deprecated syntax used" do
       it "is true when environment is disabled" do
-        configuration.disabled_polling_environments = %(foo)
+        configuration.disabled_polling_environments = %w(foo)
         configuration.environment_name = 'foo'
         configuration.should be_polling_disabled
       end
 
       it "is false when environment is not disabled" do
-        configuration.disabled_polling_environments = %(foo)
+        configuration.disabled_polling_environments = %w(foo)
         configuration.environment_name = 'bar'
         configuration.should_not be_polling_disabled
       end
@@ -185,13 +185,13 @@ describe Localeapp::Configuration do
 
     context "new syntax used" do
       it "is true when environment is not enabled" do
-        configuration.polling_environments = %(foo)
+        configuration.polling_environments = %w(foo)
         configuration.environment_name = 'bar'
         configuration.should be_polling_disabled
       end
 
       it "is false when environment is enabled" do
-        configuration.polling_environments = %(foo)
+        configuration.polling_environments = %w(foo)
         configuration.environment_name = 'foo'
         configuration.should_not be_polling_disabled
       end
@@ -201,13 +201,13 @@ describe Localeapp::Configuration do
   describe "reloading_disabled?" do
     context "deprecated syntax used" do
       it "is true when environment is disabled" do
-        configuration.disabled_reloading_environments = %(foo)
+        configuration.disabled_reloading_environments = %w(foo)
         configuration.environment_name = 'foo'
         configuration.should be_reloading_disabled
       end
 
       it "is false when environment is not disabled" do
-        configuration.disabled_reloading_environments = %(foo)
+        configuration.disabled_reloading_environments = %w(foo)
         configuration.environment_name = 'bar'
         configuration.should_not be_reloading_disabled
       end
@@ -215,13 +215,13 @@ describe Localeapp::Configuration do
 
     context "new syntax used" do
       it "is true when environment is not enabled" do
-        configuration.reloading_environments = %(foo)
+        configuration.reloading_environments = %w(foo)
         configuration.environment_name = 'bar'
         configuration.should be_reloading_disabled
       end
 
       it "is false when environment is enabled" do
-        configuration.reloading_environments = %(foo)
+        configuration.reloading_environments = %w(foo)
         configuration.environment_name = 'foo'
         configuration.should_not be_reloading_disabled
       end
@@ -231,13 +231,13 @@ describe Localeapp::Configuration do
   describe "sending_disabled?" do
     context "deprecated syntax used" do
       it "is true when environment is disabled" do
-        configuration.disabled_sending_environments = %(foo)
+        configuration.disabled_sending_environments = %w(foo)
         configuration.environment_name = 'foo'
         configuration.should be_sending_disabled
       end
 
       it "is false when environment is not disabled" do
-        configuration.disabled_sending_environments = %(foo)
+        configuration.disabled_sending_environments = %w(foo)
         configuration.environment_name = 'bar'
         configuration.should_not be_sending_disabled
       end
@@ -245,13 +245,13 @@ describe Localeapp::Configuration do
 
     context "new syntax used" do
       it "is true when environment is not enabled" do
-        configuration.sending_environments = %(foo)
+        configuration.sending_environments = %w(foo)
         configuration.environment_name = 'bar'
         configuration.should be_sending_disabled
       end
 
       it "is false when environment is enabled" do
-        configuration.sending_environments = %(foo)
+        configuration.sending_environments = %w(foo)
         configuration.environment_name = 'foo'
         configuration.should_not be_sending_disabled
       end

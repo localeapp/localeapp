@@ -1,4 +1,4 @@
-# HEAD
+# Version 0.3.1
 
 * Handle SocketError so we don't cause errors in client apps when they're not
   connected to the network

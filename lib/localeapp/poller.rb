@@ -19,7 +19,7 @@ module Localeapp
 
     def synchronization_data
       if File.exists?(Localeapp.configuration.synchronization_data_file)
-        YAML.load_file(Localeapp.configuration.synchronization_data_file)
+        YAML.load_file(Localeapp.configuration.synchronization_data_file) || {}
       else
         {}
       end

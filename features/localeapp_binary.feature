@@ -5,7 +5,7 @@ Feature: localeapp executable
     When I run `localeapp help`
     Then the output should contain:
     """
-    usage: localeapp command [command options]
+    usage: localeapp [global options] command [command options]
     """
 
   Scenario: Running a command that doesn't exist

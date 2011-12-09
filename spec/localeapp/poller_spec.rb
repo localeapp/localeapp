@@ -24,6 +24,21 @@ describe Localeapp::Poller do
     end
   end
 
+  describe "#synchronization_data" do
+    before do
+      @original_configuration_file = Localeapp.configuration.synchronization_data_file
+      Localeapp.configuration.synchronization_data_file = "#{File.dirname(__FILE__)}/../fixtures/empty_log.yml"
+    end
+
+    it "returns an empty hash if there is a yml file that is empty" do
+      @poller.synchronization_data.should == {}
+    end
+
+    after do
+      Localeapp.configuration.synchronization_data_file = @original_configuration_file
+    end
+  end
+
   describe "#write_synchronization_data!(polled_at, updated_at)" do
     it "updates polled_at in the synchronization file" do
       polled_at = lambda { @poller.synchronization_data[:polled_at] }

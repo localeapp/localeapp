@@ -2,6 +2,7 @@
 
 * Handle SocketError so we don't cause errors in client apps when they're not
   connected to the network
+* Fix bug with empty log file (Thanks Robin Mehner)
 
 # Version 0.3.0
 

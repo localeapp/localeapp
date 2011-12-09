@@ -199,7 +199,14 @@ describe Localeapp::ApiCaller, "#call(object)" do
     end
 
     it "handles ECONNREFUSED" do
-      RestClient.stub(:send).and_raise(Errno::ECONNREFUSED)
+      RestClient::Request.stub(:execute).and_raise(Errno::ECONNREFUSED)
+      @api_caller.options[:failure] = :fail
+      @object.should_receive(:fail)
+      @api_caller.call(@object)
+    end
+
+    it "handles SocketError" do
+      RestClient::Request.stub(:execute).and_raise(SocketError)
       @api_caller.options[:failure] = :fail
       @object.should_receive(:fail)
       @api_caller.call(@object)

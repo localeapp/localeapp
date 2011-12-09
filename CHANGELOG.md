@@ -1,3 +1,8 @@
+# HEAD
+
+* Handle SocketError so we don't cause errors in client apps when they're not
+  connected to the network
+
 # Version 0.3.0
 
 * Allow symbols for environment names in config file

@@ -70,6 +70,9 @@ module Localeapp
       rescue Errno::ECONNREFUSED => error
         Localeapp.debug("ERROR: Connection Refused")
         return NonHTTPResponse.new(-1)
+      rescue SocketError => error
+        Localeapp.debug("ERROR: Socket Error #{error.message}")
+        return NonHTTPResponse.new(-1)
       end
     end
 

@@ -41,9 +41,9 @@ describe Localeapp::Routes do
   end
 
   describe "#translations_url" do
-    it "it extends the project_url and defaults to json" do
+    it "it extends the project_url and defaults to yml" do
       with_configuration(@config) do
-        @routes.translations_url.should == "https://test.host/v1/projects/API_KEY/translations.json"
+        @routes.translations_url.should == "https://test.host/v1/projects/API_KEY/translations.yml"
       end
     end
 
@@ -57,7 +57,7 @@ describe Localeapp::Routes do
 
     it "can be changed to another content type" do
       with_configuration(@config) do
-        @routes.translations_url(:format => :yml).should == 'https://test.host/v1/projects/API_KEY/translations.yml'
+        @routes.translations_url(:format => :json).should == 'https://test.host/v1/projects/API_KEY/translations.json'
       end
     end
   end

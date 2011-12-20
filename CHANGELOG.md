@@ -1,3 +1,8 @@
+# HEAD
+
+* Use yml rather than json when making api calls to localeapp.com. This avoids
+  symbols turning into strings and breaking parts of rails.
+
 # Version 0.3.1
 
 * Handle SocketError so we don't cause errors in client apps when they're not

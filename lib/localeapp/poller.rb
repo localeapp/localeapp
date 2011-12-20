@@ -50,7 +50,7 @@ module Localeapp
 
     def handle_success(response)
       @success = true
-      Localeapp.updater.update(JSON.parse(response))
+      Localeapp.updater.update(YAML.load(response))
       write_synchronization_data!(Time.now.to_i, Time.parse(response.headers[:date]).to_i)
     end
 

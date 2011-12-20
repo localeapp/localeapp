@@ -1,4 +1,4 @@
-# HEAD
+# Version 0.3.2
 
 * Use yml rather than json when making api calls to localeapp.com. This avoids
   symbols turning into strings and breaking parts of rails.

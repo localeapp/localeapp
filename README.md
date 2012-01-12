@@ -159,5 +159,5 @@ See [this article on Ruby Inside][1] for some more details.
 
 ### Support and feedback
 
-You can contact us via the support link at the bottom of the page, emailing
-info@localeapp.com, or on campfire at https://localeapp.campfirenow.com/d77b5
+You can contact us via the support link at the bottom of the page or emailing
+info@localeapp.com

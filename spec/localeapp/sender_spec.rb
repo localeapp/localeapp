@@ -12,7 +12,7 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
       :translation => {
         :key => "test.key",
         :locale => "en",
-        :substitutions => ['foo', 'bar'],
+        :substitutions => ['bar', 'foo'],
         :description => "test content"
       }
     }

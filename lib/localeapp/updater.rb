@@ -58,7 +58,7 @@ module Localeapp
     # originally from ActiveSupport
     def atomic_write(file_name, temp_dir = Dir.tmpdir)
       target_dir = File.dirname(file_name)
-      unless Dir.exists?(target_dir)
+      unless File.directory?(target_dir)
         raise "Could not write locale file, please make sure that #{target_dir} exists and is writeable"
       end
 

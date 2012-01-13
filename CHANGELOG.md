@@ -1,3 +1,7 @@
+# HEAD
+
+* Report when the directory to write the yml to doesn't exist (Thanks Robin Mehner)
+
 # Version 0.3.2
 
 * Use yml rather than json when making api calls to localeapp.com. This avoids

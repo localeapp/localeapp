@@ -14,8 +14,8 @@ if ENV['FAKE_WEB_DURING_CUCUMBER_RUN'] && fake_data_as_json = ENV['FAKE_WEB_FAKE
   end
 end
 
-def include_config_file
-  unless Localeapp.include_config_file
+def initialize_config
+  unless Localeapp.initialize_config
     puts "Could not load config file"
     exit 1
   end
@@ -46,7 +46,7 @@ command :add do |c|
     if key.nil? || args.size.zero?
       exit_now! "localeapp add requires a key name and at least one translation", 1
     else
-      include_config_file
+      initialize_config
       Localeapp::CLI::Add.new.execute(key, *args)
     end
   end
@@ -55,7 +55,7 @@ end
 desc "Pulls all translations from localeapp.com"
 command :pull do |c|
   c.action do |global_options, options, args|
-    include_config_file
+    initialize_config
     Localeapp::CLI::Pull.new.execute
   end
 end
@@ -67,8 +67,8 @@ command :push do |c|
     if args.empty?
       exit_now! "localeapp push requires an file or directory to push", 1
     else
-      include_config_file
       path = args.first
+      initialize_config
       pusher = Localeapp::CLI::Push.new
       pusher.execute(path)
     end
@@ -78,7 +78,7 @@ end
 desc "Gets any changes since the last poll and updates the yml"
 command :update do |c|
   c.action do |global_options, options, args|
-    include_config_file
+    initialize_config
     Localeapp::CLI::Update.new.execute
   end
 end
@@ -94,7 +94,7 @@ command :daemon do |c|
   c.switch [:b, 'background']
 
   c.action do |global_options, options, args|
-    include_config_file
+    initialize_config
 
     interval = options[:interval].to_i
 

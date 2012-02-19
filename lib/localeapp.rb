@@ -95,7 +95,7 @@ module Localeapp
     end
 
     # requires the Localeapp configuration
-    def include_config_file(file_path=nil)
+    def initialize_config(file_path=nil)
       file_path ||= File.join(Dir.pwd, 'config', 'initializers', 'localeapp')
       begin
         require file_path

@@ -25,13 +25,22 @@ module Localeapp
 
         if translations[short_code]
           atomic_write(filename) do |file|
-            file.write translations.ya2yaml[5..-1]
+            file.write generate_yaml(translations)
           end
         end
       end
     end
 
     private
+
+    def generate_yaml(translations)
+      if defined? Psych
+        Psych.dump(translations)[4..-1]
+      else
+        translations.ya2yaml[5..-1]
+      end
+    end
+
     def remove_flattened_key!(hash, locale, key)
       keys = I18n.normalize_keys(locale, key, '').map(&:to_s)
       current_key = keys.shift

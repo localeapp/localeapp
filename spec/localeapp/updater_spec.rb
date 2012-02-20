@@ -21,7 +21,7 @@ describe Localeapp::Updater, ".update(data)" do
     do_update({
       'translations' => {
         'en' => {
-          'foo' => { 'monkey' => 'hello', 'night' => 'night' }
+          'foo' => { 'monkey' => 'hello', 'night' => 'the night' }
         },
         'es' => {
           'foo' => { 'monkey' => 'hola', 'night' => 'noche' }
@@ -34,18 +34,21 @@ describe Localeapp::Updater, ".update(data)" do
       ],
       'locales' => %w{en es}
     })
-    File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
+    if defined? Psych
+      File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
+en:
+  foo:
+    monkey: hello
+    night: the night
+EN
+    else
+      File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en: 
   foo: 
     monkey: hello
-    night: night
+    night: "the night"
 EN
-    File.read(File.join(@yml_dir, 'es.yml')).should == <<-ES
-es: 
-  foo: 
-    monkey: hola
-    night: noche
-ES
+    end
   end
 
   it "deletes keys in the yml files when updates are empty" do
@@ -58,11 +61,19 @@ ES
       ],
       'locales' => %w{es}
     })
-    File.read(File.join(@yml_dir, 'es.yml')).should == <<-ES
+    if defined? Psych
+      File.read(File.join(@yml_dir, 'es.yml')).should == <<-ES
+es:
+  foo:
+    monkey: Mono
+ES
+    else
+      File.read(File.join(@yml_dir, 'es.yml')).should == <<-ES
 es: 
   foo: 
     monkey: Mono
 ES
+    end
   end
 
   it "creates a new yml file if an unknown locale is passed" do
@@ -72,10 +83,17 @@ ES
       },
       'locales' => ['ja']
     })
-    File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
+    if defined? Psych
+      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
+ja:
+  foo: bar
+JA
+    else
+      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
 ja: 
   foo: bar
 JA
+    end
   end
 
   it "doesn't create a new yml file if an unknown locale is passed but it has no translations" do

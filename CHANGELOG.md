@@ -1,7 +1,9 @@
 # HEAD
 
-* Use Psych to generate the yaml if it's available
-* Report when the directory to write the yml to doesn't exist (Thanks Robin Mehner)
+* Use Psych to generate the yaml if it's available (This will completely change
+  your yaml the first time you do a localeapp pull and Psych is available)
+* Report when the directory to write the yml to doesn't exist (Thanks Robin
+  Mehner)
 
 # Version 0.3.2
 

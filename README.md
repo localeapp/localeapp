@@ -145,7 +145,7 @@ You can also add a new locale to a project via localeapp.com. This will create
 missing translations for every translation key. You will need to restart any
 listeners completely to pick up the new locale.
 
-## Syck, Psych, and creating YAML
+### Syck, Psych, and creating YAML
 
 Since ruby 1.9.3-p0 Psych has been the default YAML engine in Ruby. Psych is
 based on libyaml and fixes a number of issues with the previous YAML library,

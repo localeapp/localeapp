@@ -1,6 +1,12 @@
 module Localeapp
   module CLI
     class Install
+      attr_accessor :config_type
+
+      def initialize
+        @config_type = :rails
+      end
+
       def execute(key, output = $stdout)
         output.puts "Localeapp Install"
         output.puts ""
@@ -15,12 +21,24 @@ module Localeapp
           output.puts "Project: #{project_data['name']}"
           localeapp_default_code = project_data['default_locale']['code']
           output.puts "Default Locale: #{localeapp_default_code} (#{project_data['default_locale']['name']})"
-          if I18n.default_locale.to_s != localeapp_default_code
-            output.puts "WARNING: I18n.default_locale is #{I18n.default_locale}, change in config/environment.rb (Rails 2) or config/application.rb (Rails 3)"
+
+          if config_type == :rails
+            if I18n.default_locale.to_s != localeapp_default_code
+              output.puts "WARNING: I18n.default_locale is #{I18n.default_locale}, change in config/environment.rb (Rails 2) or config/application.rb (Rails 3)"
+            end
+            config_file_path = "config/initializers/localeapp.rb"
+            data_directory   = "config/locales"
+          else
+            output.puts "NOTICE: you probably want to add .localeapp to your .gitignore file"
+            config_file_path = ".localeapp/config.rb"
+            data_directory   = "locales"
           end
-          config_file_path = "config/initializers/localeapp.rb"
           output.puts "Writing configuration file to #{config_file_path}"
           write_configuration_file config_file_path
+
+          unless Dir.exist?(data_directory)
+            output.puts "WARNING: please create the #{data_directory} directory. Your translation data will be stored there."
+          end
           true
         else
           output.puts "ERROR: Project not found"
@@ -34,7 +52,11 @@ module Localeapp
       end
 
       def write_configuration_file(path)
-        Localeapp.configuration.write_initial(path)
+        if config_type == :rails
+          Localeapp.configuration.write_rails_configuration(path)
+        else
+          Localeapp.configuration.write_dot_file_configuration(path)
+        end
       end
     end
   end

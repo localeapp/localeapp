@@ -39,4 +39,26 @@ describe Localeapp::CLI::Install, '.execute(key, output = $stdout)' do
     @command.should_receive(:write_configuration_file).with('config/initializers/localeapp.rb')
     @command.execute('API_KEY', @output)
   end
+
+  it "asks the configuration to write itself to .localeapp when the --not-rails switch is set" do
+    @command.stub!(:check_key).and_return([true, valid_project_data])
+    @command.config_type = :dot_file
+    @command.should_receive(:write_configuration_file).with('.localeapp/config.rb')
+    @command.execute('API_KEY', @output)
+  end
+
+  it "displays warning if config.translation_data_directory doesn't exist" do
+    @command.stub!(:check_key).and_return([true, valid_project_data])
+    @command.stub!(:write_configuration_file)
+    @command.execute('API_KEY', @output)
+    @output.string.should match(/Your translation data will be stored there./)
+  end
+
+  it "doesn't display a warning if translation_data_directory exists" do
+    @command.stub!(:check_key).and_return([true, valid_project_data])
+    @command.stub!(:write_configuration_file)
+    Dir.should_receive(:exist?).and_return(true)
+    @command.execute('API_KEY', @output)
+    @output.string.should_not match(/Your translation data will be stored there./)
+  end
 end

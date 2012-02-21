@@ -86,6 +86,9 @@ module Localeapp
     # The complete path to the directory where translations are stored
     attr_accessor :translation_data_directory
 
+    # The directory where localeapp.pid is stored
+    attr_accessor :pids_directory
+
     def deprecated_environment_config_used?
       @deprecated_environment_config_used
     end
@@ -97,12 +100,13 @@ module Localeapp
       @disabled_sending_environments   = %w(test cucumber production)
       @disabled_reloading_environments = %w(test cucumber production)
       @disabled_polling_environments   = %w(test cucumber production)
-      @sending_environments    = %w(development)
-      @reloading_environments  = %w(development)
-      @polling_environments    = %w(development)
+      @sending_environments            = %w(development)
+      @reloading_environments          = %w(development)
+      @polling_environments            = %w(development)
       @poll_interval                   = 0
       @synchronization_data_file       = File.join('log', 'localeapp.yml')
       @translation_data_directory      = File.join('config', 'locales')
+      @pids_directory                  = File.join('tmp', 'pids')
       if ENV['DEBUG']
         require 'logger'
         @logger = Logger.new(STDOUT)

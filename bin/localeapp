@@ -112,8 +112,8 @@ command :daemon do |c|
       pid = fork do
         command.call
       end
-      pids_directory = "tmp/pids"
-      File.open("#{File.directory?(pids_directory) ? pids_directory : "./"}/localeapp.pid", 'w') {|f| f << pid}
+      pids_directory = File.directory?(Localeapp.configuration.pids_directory) ? Localeapp.configuration.pids_directory : './'
+      File.open("#{pids_directory}/localeapp.pid", 'w') {|f| f << pid}
     else
       command.call
     end

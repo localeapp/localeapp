@@ -61,6 +61,14 @@ describe Localeapp::Configuration do
     configuration.translation_data_directory.should == "test"
   end
 
+  it "sets pids_directory to tmp/pids by default" do
+    configuration.pids_directory.should == 'tmp/pids'
+  end
+
+  it "allows pids_directory setting to be overwritten" do
+    expect { configuration.pids_directory = '/foo/bar' }.to change(configuration, :pids_directory).to('/foo/bar')
+  end
+
   context "enabled_sending_environments" do
     it "is only development by default" do
       configuration.sending_environments.should == ['development']

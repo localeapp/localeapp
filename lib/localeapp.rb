@@ -96,13 +96,19 @@ module Localeapp
 
     # requires the Localeapp configuration
     def initialize_config(file_path=nil)
-      file_path ||= File.join(Dir.pwd, 'config', 'initializers', 'localeapp')
-      begin
-        require file_path
-        true
-      rescue
-        false
+      file_paths = [ File.join(Dir.pwd, '.localeapp', 'config.rb'),
+                     File.join(Dir.pwd, 'config', 'initializers', 'localeapp.rb') ]
+      file_paths << file_path if file_path
+      file_paths.each do |path|
+        next unless File.exists? path
+        begin
+          require path
+          return true
+        rescue
+        end
       end
+      false
     end
+
   end
 end

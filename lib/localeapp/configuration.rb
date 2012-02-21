@@ -146,7 +146,7 @@ module Localeapp
       end
     end
 
-    def write_initial(path)
+    def write_rails_configuration(path)
       dir = File.dirname(path)
       FileUtils.mkdir_p(dir)
       File.open(path, 'w+') do |file|
@@ -159,5 +159,21 @@ end
 CONTENT
       end
     end
+
+    def write_dot_file_configuration(path)
+      dir = File.dirname(path)
+      FileUtils.mkdir_p(dir)
+      File.open(path, 'w+') do |file|
+        file.write <<-CONTENT
+Localeapp.configure do |config|
+  config.api_key                    = '#{@api_key}'
+  config.translation_data_directory = 'locales'
+  config.synchronization_data_file  = '.localeapp/log.yml'
+  config.pids_directory             = '.localeapp'
+end
+CONTENT
+      end
+    end
+
   end
 end

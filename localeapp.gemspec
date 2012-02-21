@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Christopher Dell", "Chris McGrath"]
   s.email       = ["chris@tigrish.com", "chris@octopod.info"]
-  s.homepage    = "http://rubygems.org/gems/localeapp"
-  s.summary     = %q{Add missing translation keys to localeapp.com}
-  s.description = %q{Post any unfound translation keys to the Locale SaaS}
+  s.homepage    = "http://www.localeapp.com"
+  s.summary     = %q{Easy i18n translation management with localeapp.com}
+  s.description = %q{Synchronizes i18n translation keys and content with localeapp.com so you don't have to manage translations by hand.}
 
   s.rubyforge_project = "localeapp"
 

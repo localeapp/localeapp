@@ -1,4 +1,4 @@
-# HEAD
+# Version 0.4.0
 
 * Use Psych to generate the yaml if it's available (This will completely change
   your yaml the first time you do a localeapp pull and Psych is available)

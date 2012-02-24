@@ -303,7 +303,7 @@ describe Localeapp::Configuration do
   end
 end
 
-describe Localeapp::Configuration, "#write_initial(path)" do
+describe Localeapp::Configuration, "#write_rails_configuration(path)" do
   it "creates a configuration file containing just the api key at the given path" do
     configuration = Localeapp::Configuration.new
     configuration.api_key = "APIKEY"
@@ -317,6 +317,26 @@ Localeapp.configure do |config|
 end
 CONTENT
     File.should_receive(:open).with(path, 'w+').and_yield(file)
-    configuration.write_initial(path)
+    configuration.write_rails_configuration(path)
+  end
+end
+
+
+describe Localeapp::Configuration, "#write_dot_file_configuration(path)" do
+  it "creates a configuration file containing the dot file configuration at the given path" do
+    configuration = Localeapp::Configuration.new
+    configuration.api_key = "APIKEY"
+    path = 'test_path'
+    file = stub('file')
+    file.should_receive(:write).with <<-CONTENT
+Localeapp.configure do |config|
+  config.api_key                    = 'APIKEY'
+  config.translation_data_directory = 'locales'
+  config.synchronization_data_file  = '.localeapp/log.yml'
+  config.daemon_pid_file            = '.localeapp/localeapp.pid'
+end
+CONTENT
+    File.should_receive(:open).with(path, 'w+').and_yield(file)
+    configuration.write_dot_file_configuration(path)
   end
 end

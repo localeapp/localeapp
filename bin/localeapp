@@ -30,12 +30,12 @@ desc "Creates new configuration files and confirms key works"
 arg_name "<api_key>"
 command :install do |c|
   c.desc "install configuration files in .localeapp/"
-  c.switch [:d, 'not-rails']
+  c.switch [:s, 'standalone']
 
   c.action do |global_options, options, args|
     key = args.first
     installer = Localeapp::CLI::Install.new
-    installer.config_type = options[:'not-rails'] ? :dot_file : :rails
+    installer.config_type = options[:standalone] ? :dot_file : :rails
     unless installer.execute(key)
       exit_now! "", 1
     end

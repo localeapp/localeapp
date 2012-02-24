@@ -44,7 +44,7 @@ Create a project on localeapp.com and get the api key. Then run:
 
 Install the gem and run:
 
-    localeapp install <YOUR_API_KEY> --not-rails
+    localeapp install --standalone <YOUR_API_KEY>
     
 This will create a `.localeapp` directory for your configuration files.
 

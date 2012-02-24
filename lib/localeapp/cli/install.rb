@@ -36,7 +36,7 @@ module Localeapp
           output.puts "Writing configuration file to #{config_file_path}"
           write_configuration_file config_file_path
 
-          unless Dir.exist?(data_directory)
+          unless File.directory?(data_directory)
             output.puts "WARNING: please create the #{data_directory} directory. Your translation data will be stored there."
           end
           true

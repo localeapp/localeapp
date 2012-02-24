@@ -57,7 +57,7 @@ describe Localeapp::CLI::Install, '.execute(key, output = $stdout)' do
   it "doesn't display a warning if translation_data_directory exists" do
     @command.stub!(:check_key).and_return([true, valid_project_data])
     @command.stub!(:write_configuration_file)
-    Dir.should_receive(:exist?).and_return(true)
+    File.should_receive(:directory?).and_return(true)
     @command.execute('API_KEY', @output)
     @output.string.should_not match(/Your translation data will be stored there./)
   end

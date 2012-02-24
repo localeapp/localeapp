@@ -333,7 +333,7 @@ Localeapp.configure do |config|
   config.api_key                    = 'APIKEY'
   config.translation_data_directory = 'locales'
   config.synchronization_data_file  = '.localeapp/log.yml'
-  config.pids_directory             = '.localeapp'
+  config.daemon_pid_file            = '.localeapp/localeapp.pid'
 end
 CONTENT
     File.should_receive(:open).with(path, 'w+').and_yield(file)

@@ -160,7 +160,7 @@ CONTENT
       end
     end
 
-    def write_dot_file_configuration(path)
+    def write_standalone_configuration(path)
       dir = File.dirname(path)
       FileUtils.mkdir_p(dir)
       File.open(path, 'w+') do |file|

@@ -55,7 +55,7 @@ module Localeapp
         if config_type == :rails
           Localeapp.configuration.write_rails_configuration(path)
         else
-          Localeapp.configuration.write_dot_file_configuration(path)
+          Localeapp.configuration.write_standalone_configuration(path)
         end
       end
     end

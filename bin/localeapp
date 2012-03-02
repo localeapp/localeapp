@@ -35,7 +35,7 @@ command :install do |c|
   c.action do |global_options, options, args|
     key = args.first
     installer = Localeapp::CLI::Install.new
-    installer.config_type = options[:standalone] ? :dot_file : :rails
+    installer.config_type = options[:standalone] ? :standalone : :rails
     unless installer.execute(key)
       exit_now! "", 1
     end

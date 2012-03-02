@@ -42,7 +42,7 @@ describe Localeapp::CLI::Install, '.execute(key, output = $stdout)' do
 
   it "asks the configuration to write itself to .localeapp when the --standalone switch is set" do
     @command.stub!(:check_key).and_return([true, valid_project_data])
-    @command.config_type = :dot_file
+    @command.config_type = :standalone
     @command.should_receive(:write_configuration_file).with('.localeapp/config.rb')
     @command.execute('API_KEY', @output)
   end

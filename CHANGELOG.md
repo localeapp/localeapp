@@ -1,5 +1,6 @@
 # HEAD
 
+* Ignore HUP when backgrounded. (Thanks @xijo)
 * Add --standalone option to install to generate a .localeapp/ config
   directory. This enables usage outside of rails.
 

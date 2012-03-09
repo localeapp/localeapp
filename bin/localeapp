@@ -125,8 +125,10 @@ command :daemon do |c|
 
       STDOUT.reopen(File.open(Localeapp.configuration.daemon_log_file, 'a'))
       pid = fork do
+        Signal.trap('HUP', 'IGNORE')
         command.call
       end
+      Process.detach(pid)
 
       File.open(Localeapp.configuration.daemon_pid_file, 'w') {|f| f << pid}
     else

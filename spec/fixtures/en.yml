@@ -4,3 +4,8 @@ en:
   foo:
     delete_me: Delete
     monkey: Monkey
+  space: 
+  blank: ''
+  tilde: ~
+  scalar1: !null
+  scalar2: !!null

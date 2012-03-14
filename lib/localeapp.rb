@@ -110,5 +110,34 @@ module Localeapp
       false
     end
 
+    def load_yaml(contents)
+      if defined? Psych
+        Psych.load(contents)
+      else
+        normalize_results(YAML.load(contents))
+      end
+    end
+
+    def load_yaml_file(filename)
+      load_yaml(File.read(filename))
+    end
+
+    private
+
+    def normalize_results(results)
+      if results.is_a?(YAML::PrivateType) && results.type_id == 'null'
+        nil
+      elsif results.is_a?(Array)
+        results.each_with_index do |value, i|
+          results[i] = normalize_results(value)
+        end
+      elsif results.is_a?(Hash)
+        results.each_pair do |key, value|
+          results[key] = normalize_results(value)
+        end
+      else
+        results
+      end
+    end
   end
 end

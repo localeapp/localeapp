@@ -40,13 +40,23 @@ en:
   foo:
     monkey: hello
     night: the night
+  space: 
+  blank: ''
+  tilde: 
+  scalar1: 
+  scalar2: 
 EN
     else
       File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en: 
+  blank: ""
   foo: 
     monkey: hello
     night: "the night"
+  scalar1: ~
+  scalar2: ~
+  space: ~
+  tilde: ~
 EN
     end
   end

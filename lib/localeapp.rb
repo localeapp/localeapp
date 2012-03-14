@@ -110,5 +110,16 @@ module Localeapp
       false
     end
 
+    def load_yaml(contents)
+      if defined? Psych
+        Psych.load(contents)
+      else
+        YAML.load(contents)
+      end
+    end
+
+    def load_yaml_file(filename)
+      load_yaml(File.read(filename))
+    end
   end
 end

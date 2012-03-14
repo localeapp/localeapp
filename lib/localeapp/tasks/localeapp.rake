@@ -3,7 +3,7 @@ namespace :localeapp do
   task :import => :environment do
     require 'flatten'
     include I18n::Backend::Flatten
-    yml = YAML.load_file(ENV['LOCALE_FILE'])
+    yml = Locale.load_yaml_file(ENV['LOCALE_FILE'])
 
     yml.each do |locale, translations|
       flatten_translations(

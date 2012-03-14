@@ -8,7 +8,7 @@ module Localeapp
         filename = File.join(Localeapp.configuration.translation_data_directory, "#{short_code}.yml")
 
         if File.exist?(filename)
-          translations = YAML.load(File.read(filename))
+          translations = Localeapp.load_yaml_file(filename)
           if data['translations'] && data['translations'][short_code]
             new_data = { short_code => data['translations'][short_code] }
             translations.deep_merge!(new_data)

@@ -19,7 +19,7 @@ module Localeapp
 
     def synchronization_data
       if File.exists?(Localeapp.configuration.synchronization_data_file)
-        YAML.load_file(Localeapp.configuration.synchronization_data_file) || {}
+        Localeapp.load_yaml_file(Localeapp.configuration.synchronization_data_file) || {}
       else
         {}
       end
@@ -50,7 +50,7 @@ module Localeapp
 
     def handle_success(response)
       @success = true
-      Localeapp.updater.update(YAML.load(response))
+      Localeapp.updater.update(Localeapp.load_yaml(response))
       write_synchronization_data!(Time.now.to_i, Time.parse(response.headers[:date]).to_i)
     end
 

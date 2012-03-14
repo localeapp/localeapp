@@ -1,4 +1,7 @@
 require 'fileutils'
+require 'yaml'
+
+YAML::ENGINE.yamler = 'psych' if defined? Psych
 
 module Localeapp
   class Updater

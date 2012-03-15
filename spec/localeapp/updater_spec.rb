@@ -34,8 +34,22 @@ describe Localeapp::Updater, ".update(data)" do
       ],
       'locales' => %w{en es}
     })
+
     if defined? Psych
-      File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
+      if Psych::VERSION == '1.0.0'
+        File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
+en:
+  foo:
+    monkey: hello
+    night: the night
+  space: !!null 
+  blank: ''
+  tilde: !!null 
+  scalar1: !!null 
+  scalar2: !!null 
+EN
+      else
+        File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en:
   foo:
     monkey: hello
@@ -46,6 +60,7 @@ en:
   scalar1: 
   scalar2: 
 EN
+      end
     else
       File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en: 

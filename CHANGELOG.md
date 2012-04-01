@@ -1,5 +1,9 @@
 # HEAD
 
+# Version 0.4.2
+
+* Make sure Psych is fully loaded before using it (Thanks @tenderlove) 
+
 # Version 0.4.1
 
 * Improve compatibility of Psych with ruby 1.9.2 (Thanks @ardpac)

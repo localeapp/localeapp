@@ -24,7 +24,28 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
         :x_localeapp_gem_version => Localeapp::VERSION,
         :content_type => :json },
       :method => :post)).and_return(double('response', :code => 200))
-    @sender.post_translation('en', 'test.key', { 'foo' => 'foo', 'bar' => 'bar' }, 'test content')
+    @sender.post_translation('en', 'test.key', { 'foo' => 'foo', 'bar' => 'bar', :default => 'default', :scope => 'scope' }, 'test content')
+  end
+
+  it "posts default translation data to the backend" do
+    data = {
+      :translation => {
+        :key => 'absolutely.missing',
+        :locale => 'en',
+        :substitutions => ['bar', 'foo'],
+        :description => 'a sensible default'
+      }
+    }
+
+    RestClient::Request.should_receive(:execute).with(hash_including(
+      :url => @sender.translations_url,
+      :payload => data.to_json,
+      :headers => {
+        :x_localeapp_gem_version => Localeapp::VERSION,
+        :content_type => :json },
+      :method => :post)).and_return(double('response', :code => 200))
+
+    I18n.t('absolutely.missing', { 'foo' => 'foo', 'bar' => 'bar', :default => 'a sensible default' })
   end
 end
 

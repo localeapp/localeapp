@@ -28,8 +28,6 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
   end
 
   it "posts default translation data to the backend" do
-    # I18n::Backend::Base.default('en', 'test', 'default', {})
-
     data = {
       :translation => {
         :key => 'absolutely.missing',
@@ -48,8 +46,6 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
       :method => :post)).and_return(double('response', :code => 200))
 
     I18n.t('absolutely.missing', { 'foo' => 'foo', 'bar' => 'bar', :default => 'a sensible default' })
-
-    # I18n.t('fofofo5446.bar', :default => 'sth')
   end
 end
 

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil)" do
   before(:each) do
-    with_configuration(:api_key => "TEST_KEY") do
+    with_configuration(:api_key => "TEST_KEY", :sending_environments => ['my_env'], :environment_name => 'my_env') do
       @sender = Localeapp::Sender.new
     end
   end

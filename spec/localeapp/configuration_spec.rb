@@ -340,3 +340,20 @@ CONTENT
     configuration.write_standalone_configuration(path)
   end
 end
+
+
+describe Localeapp::Configuration, "#write_github_configuration(path, project_data)" do
+  let(:configuration) { Localeapp::Configuration.new }
+  let(:project_data) { {"name"=>"Test Project", "default_locale"=>{"name"=>"English", "code"=>"en"}} }
+  let(:path) { '.localeapp/config.rb' }
+
+  it "writes github configuration files" do
+    configuration.should_receive(:write_standalone_configuration).with(path)
+    file = stub('file')
+    file.should_receive(:write).exactly(2).times.and_return('content')
+    FileUtils.should_receive(:mkdir_p).with('locales')
+    File.should_receive(:open).with('.gitignore', 'a+').and_yield(file)
+    File.should_receive(:open).with('README.md', 'w+').and_yield(file)
+    configuration.write_github_configuration(path, project_data)
+  end
+end

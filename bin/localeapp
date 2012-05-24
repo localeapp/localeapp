@@ -31,11 +31,16 @@ arg_name "<api_key>"
 command :install do |c|
   c.desc "install configuration files in .localeapp/"
   c.switch [:s, 'standalone']
+  
+  c.desc "install a skeleton project suitable for Github"
+  c.switch [:g, 'github']
 
   c.action do |global_options, options, args|
     key = args.first
     installer = Localeapp::CLI::Install.new
-    installer.config_type = options[:standalone] ? :standalone : :rails
+    installer.config_type = :standalone if options[:standalone]
+    installer.config_type = :github if options[:github]
+    installer.config_type ||= :rails
     unless installer.execute(key)
       exit_now! "", 1
     end

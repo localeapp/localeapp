@@ -35,7 +35,7 @@ module Localeapp
 
     def generate_yaml(translations)
       if defined? Psych
-        Psych.dump(translations)[4..-1]
+        Psych.dump(translations, :line_width => -1)[4..-1]
       else
         translations.ya2yaml[5..-1]
       end

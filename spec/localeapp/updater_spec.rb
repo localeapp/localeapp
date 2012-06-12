@@ -129,4 +129,17 @@ JA
     })
     File.exist?(File.join(@yml_dir, 'ja.yml')).should be_false
   end
+
+  if defined? Psych
+    it "doesn't try to wrap long lines in the output" do
+      do_update({
+        'translations' => {
+          'en' => { 'foo' => ('bar ' * 30) }
+         },
+         'locales' => ['en'],
+         'deleted' => []
+      })
+      File.read(File.join(@yml_dir, 'en.yml')).should match(/foo: ! 'bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar '/m)
+    end
+  end
 end

@@ -48,6 +48,18 @@ Install the gem and run:
     
 This will create a `.localeapp` directory for your configuration files.
 
+### Public projects
+
+Install the gem and run:
+
+    localeapp install --github <YOUR_API_KEY>
+
+This will create a skeleton project you can push to `<your_gem>-i18n` on
+github.  You get a `.localeapp` directory for your configuration files, a
+`locales` directory for the yaml, a `.gitignore` file that ignores `.localeapp`
+and a `README.md` explaining to translators how to find the project on
+localeapp.com.
+
 ## Importing existing content
 
 You can import via localeapp.com or with the command line tool. To import

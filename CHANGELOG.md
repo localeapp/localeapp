@@ -1,4 +1,4 @@
-# HEAD
+# Version 0.5.0
 
 * Post translations with default values
 * Change how Psych outputs yaml (for Psych versions >= 1.1.0)

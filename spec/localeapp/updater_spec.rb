@@ -130,7 +130,7 @@ JA
     File.exist?(File.join(@yml_dir, 'ja.yml')).should be_false
   end
 
-  if defined? Psych
+  if defined?(Psych) && Psych::VERSION >= "1.1.0"
     it "doesn't try to wrap long lines in the output" do
       do_update({
         'translations' => {

@@ -1,12 +1,19 @@
 # HEAD
 
-# Version 0.4.2
+* Post translations with default values
+* Change how Psych outputs yaml (for Psych versions >= 1.1.0)
+* Add a --github option when installing to help setup public projects
+
+# Version 0.4.3
 
 * Make sure Psych is fully loaded before using it (Thanks @tenderlove) 
 
-# Version 0.4.1
+# Version 0.4.2
 
 * Improve compatibility of Psych with ruby 1.9.2 (Thanks @ardpac)
+
+# Version 0.4.1
+
 * Ignore HUP when backgrounded. (Thanks @xijo)
 * Add --standalone option to install to generate a .localeapp/ config
   directory. This enables usage outside of rails.

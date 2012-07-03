@@ -61,4 +61,11 @@ describe Localeapp::CLI::Install, '.execute(key, output = $stdout)' do
     @command.execute('API_KEY', @output)
     @output.string.should_not match(/Your translation data will be stored there./)
   end
+
+  it "asks the github configuration to write itself" do
+    @command.stub!(:check_key).and_return([true, valid_project_data])
+    @command.config_type = :github
+    @command.should_receive(:write_github_configuration_file).with('.localeapp/config.rb', valid_project_data)
+    @command.execute('API_KEY', @output)
+  end
 end

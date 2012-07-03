@@ -29,12 +29,19 @@ module Localeapp
             config_file_path = "config/initializers/localeapp.rb"
             data_directory   = "config/locales"
           else
-            output.puts "NOTICE: you probably want to add .localeapp to your .gitignore file"
+            if config_type == :standalone
+              output.puts "NOTICE: you probably want to add .localeapp to your .gitignore file"
+            end
             config_file_path = ".localeapp/config.rb"
             data_directory   = "locales"
           end
+
           output.puts "Writing configuration file to #{config_file_path}"
-          write_configuration_file config_file_path
+          if config_type == :github
+            write_github_configuration_file config_file_path, project_data
+          else
+            write_configuration_file config_file_path
+          end
 
           unless File.directory?(data_directory)
             output.puts "WARNING: please create the #{data_directory} directory. Your translation data will be stored there."
@@ -57,6 +64,10 @@ module Localeapp
         else
           Localeapp.configuration.write_standalone_configuration(path)
         end
+      end
+
+      def write_github_configuration_file(path, project_data)
+          Localeapp.configuration.write_github_configuration(path, project_data)
       end
     end
   end

@@ -175,5 +175,28 @@ CONTENT
       end
     end
 
+    def write_github_configuration(path, project_data)
+      write_standalone_configuration(path)
+      FileUtils.mkdir_p('locales')
+      File.open('.gitignore', 'a+') do |file|
+        file.write ".localeapp"
+      end
+      File.open('README.md', 'w+') do |file|
+        file.write <<-CONTENT
+# #{project_data['name']}
+
+A ruby translation project managed on [Locale](http://www.localeapp.com/) that's open to all!
+
+## Contributing to #{project_data['name']}
+
+- Edit the translations directly on the [#{project_data['name']}](http://www.localeapp.com/projects/public?search=#{project_data['name']}) project on Locale.
+- **That's it!**
+- The maintainer will then pull translations from the Locale project and push to Github.
+
+Happy translating!
+CONTENT
+      end
+    end
+
   end
 end

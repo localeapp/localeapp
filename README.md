@@ -191,4 +191,4 @@ See [this article on Ruby Inside][1] for some more details.
 ### Support and feedback
 
 You can contact us via the support link at the bottom of the page or emailing
-info@localeapp.com
+support@localeapp.com

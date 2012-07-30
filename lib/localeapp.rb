@@ -126,7 +126,7 @@ module Localeapp
     private
 
     def normalize_results(results)
-      if results.is_a?(YAML::PrivateType) && results.type_id == 'null'
+      if (results.is_a?(YAML::PrivateType) || results.is_a?(YAML::Yecht::PrivateType)) && results.type_id == 'null'
         nil
       elsif results.is_a?(Array)
         results.each_with_index do |value, i|

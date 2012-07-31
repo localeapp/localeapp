@@ -125,8 +125,16 @@ module Localeapp
 
     private
 
+    def private_null_type(results)
+      return true if results.is_a?(YAML::PrivateType) && results.type_id == 'null'
+      if RUBY_PLATFORM == 'java'
+        return true if results.is_a?(YAML::Yecht::PrivateType) && results.type_id == 'null'
+      end
+      false
+    end
+
     def normalize_results(results)
-      if (results.is_a?(YAML::PrivateType) || results.is_a?(YAML::Yecht::PrivateType)) && results.type_id == 'null'
+      if private_null_type(results)
         nil
       elsif results.is_a?(Array)
         results.each_with_index do |value, i|

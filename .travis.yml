@@ -2,6 +2,8 @@ rvm:
   - 1.8.7
   - 1.9.2
   - 1.9.3
+  - jruby-18mode
+  - jruby-19mode
 gemfile:
   - Gemfile.i18n_037
   - Gemfile.i18n_050

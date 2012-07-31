@@ -37,7 +37,20 @@ describe Localeapp::Updater, ".update(data)" do
 
     if defined? Psych
       if Psych::VERSION == '1.0.0'
-        File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
+        if RUBY_ENGINE == 'jruby'
+          File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
+en:
+  foo:
+    monkey: hello
+    night: the night
+  space:
+  blank: ''
+  tilde:
+  scalar1:
+  scalar2:
+EN
+        else
+          File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en:
   foo:
     monkey: hello
@@ -48,6 +61,7 @@ en:
   scalar1: !!null 
   scalar2: !!null 
 EN
+        end
       else
         File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en:

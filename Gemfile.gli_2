@@ -1,8 +1,0 @@
-source :rubyforge
-gemspec
-
-gem 'gli', '>= 2.0.0'
-
-platform :jruby do
-  gem 'jruby-openssl'
-end

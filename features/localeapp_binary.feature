@@ -5,7 +5,7 @@ Feature: localeapp executable
     When I run `localeapp help`
     Then the output should contain:
     """
-    usage: localeapp [global options] command [command options]
+    localeapp [global options] command [command options]
     """
 
   Scenario: Running a command that doesn't exist
@@ -13,7 +13,7 @@ Feature: localeapp executable
     When I run `localeapp foo`
     Then the output should contain:
     """
-    error: Unknown command 'foo'. Use 'localeapp help' for a list of commands
+    error: Unknown command 'foo'
     """
 
   Scenario: Running Rails install

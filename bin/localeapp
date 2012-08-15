@@ -22,7 +22,13 @@ def initialize_config
 end
 
 require 'gli'
-include GLI
+gli2 = GLI::VERSION >= '2.0.0'
+
+if gli2
+  include GLI::App
+else
+  include GLI
+end
 
 version Localeapp::VERSION
 
@@ -142,4 +148,8 @@ command :daemon do |c|
   end
 end
 
-exit GLI.run(ARGV)
+if gli2
+  exit run(ARGV)
+else
+  exit GLI.run(ARGV)
+end

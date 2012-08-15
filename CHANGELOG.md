@@ -1,3 +1,9 @@
+# Version 0.5.1
+
+* Fix bug with encoding of response from http_client
+* Test on Jruby
+* Compatibility with gli 2.0.0
+
 # Version 0.5.0
 
 * Post translations with default values

@@ -1,3 +1,7 @@
+# Version 0.5.2
+
+* Fix bug with pulling translations changing file permissions
+
 # Version 0.5.1
 
 * Fix bug with encoding of response from http_client

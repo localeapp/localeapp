@@ -156,4 +156,29 @@ JA
       File.read(File.join(@yml_dir, 'en.yml')).should match(/foo: ! 'bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar '/m)
     end
   end
+
+  it "doesn't change a yml file's permissions" do
+    filepath = File.join(@yml_dir, 'en.yml')
+    File.chmod(0777, filepath)
+    permissions = lambda { File.stat(filepath).mode.to_s(8) }
+    expect {
+      do_update(
+        'translations' => {
+          'en' => { 'foo' => 'bar'}
+        },
+        'locales' => ['en']
+      )
+    }.to_not change(permissions, :call)
+  end
+
+  it "creates new yml files chmodded with 644" do
+    do_update({
+      'translations' => {
+        'ja' => { 'foo' => 'bar'}
+      },
+      'locales' => ['ja']
+    })
+    mode = File.stat(File.join(@yml_dir, 'ja.yml')).mode # octal
+    mode.to_s(8)[3, 3].should == "644"
+  end
 end

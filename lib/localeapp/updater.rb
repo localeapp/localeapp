@@ -71,6 +71,8 @@ module Localeapp
         raise "Could not write locale file, please make sure that #{target_dir} exists and is writeable"
       end
 
+      permissions = File.stat(file_name).mode if File.exist?(file_name)
+
       temp_file = Tempfile.new(File.basename(file_name), temp_dir)
       yield temp_file
       temp_file.close
@@ -79,6 +81,10 @@ module Localeapp
       # so rename will work
       FileUtils.mv(temp_file.path, "#{file_name}.tmp")
       File.rename("#{file_name}.tmp", file_name)
+
+      # chmod the file to its previous permissions
+      # or set default permissions to 644
+      File.chmod(permissions ? permissions : 0644 , file_name)
     end
   end
 end

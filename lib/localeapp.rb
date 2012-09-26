@@ -98,8 +98,7 @@ module Localeapp
 
     # requires the Localeapp configuration
     def initialize_config(file_path=nil)
-      file_paths = [ File.join(Dir.pwd, '.localeapp', 'config.rb'),
-                     File.join(Dir.pwd, 'config', 'initializers', 'localeapp.rb') ]
+      file_paths = default_config_file_paths
       file_paths << file_path if file_path
       file_paths.each do |path|
         next unless File.exists? path
@@ -110,6 +109,10 @@ module Localeapp
         end
       end
       false
+    end
+
+    def has_config_file?
+      default_config_file_paths.any? { |path| File.exists?(path) }
     end
 
     def load_yaml(contents)
@@ -125,6 +128,13 @@ module Localeapp
     end
 
     private
+
+    def default_config_file_paths
+      [
+        File.join(Dir.pwd, '.localeapp', 'config.rb'),
+        File.join(Dir.pwd, 'config', 'initializers', 'localeapp.rb')
+      ]
+    end
 
     def private_null_type(results)
       return true if results.is_a?(YAML::PrivateType) && results.type_id == 'null'

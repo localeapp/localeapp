@@ -35,6 +35,7 @@ require 'localeapp/key_checker'
 require 'localeapp/missing_translations'
 require 'localeapp/default_value_handler'
 
+require 'localeapp/cli/command'
 require 'localeapp/cli/install'
 require 'localeapp/cli/pull'
 require 'localeapp/cli/push'

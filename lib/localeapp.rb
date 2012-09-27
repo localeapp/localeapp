@@ -96,32 +96,15 @@ module Localeapp
       @missing_translations = MissingTranslations.new
     end
 
-    # requires the Localeapp configuration
-    def initialize_config(args = {})
-      configure # load defaults
-      load_config_file
-      set_command_line_arguments(args)
-    end
-
-    def set_command_line_arguments(args = {})
-      sanitized_args = {}
-      if args[:k]
-        sanitized_args[:api_key] = args[:k]
-      end
-      sanitized_args.each do |setting, value|
-        self.configuration.send("#{setting}=", value)
-      end
-    end
-
-    def load_config_file
-      default_config_file_paths.each do |path|
-        next unless File.exists? path
-        require path
-      end
-    end
-
     def has_config_file?
       default_config_file_paths.any? { |path| File.exists?(path) }
+    end
+
+    def default_config_file_paths
+      [
+        File.join(Dir.pwd, '.localeapp', 'config.rb'),
+        File.join(Dir.pwd, 'config', 'initializers', 'localeapp.rb')
+      ]
     end
 
     def load_yaml(contents)
@@ -137,13 +120,6 @@ module Localeapp
     end
 
     private
-
-    def default_config_file_paths
-      [
-        File.join(Dir.pwd, '.localeapp', 'config.rb'),
-        File.join(Dir.pwd, 'config', 'initializers', 'localeapp.rb')
-      ]
-    end
 
     def private_null_type(results)
       return true if results.is_a?(YAML::PrivateType) && results.type_id == 'null'

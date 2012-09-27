@@ -87,7 +87,7 @@ command :push do |c|
       exit_now! "localeapp push requires an file or directory to push", 1
     else
       path = args.first
-      pusher = Localeapp::CLI::Push.new
+      pusher = Localeapp::CLI::Push.new(global_options)
       pusher.execute(path)
     end
   end

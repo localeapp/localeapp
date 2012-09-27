@@ -4,7 +4,7 @@ require 'localeapp/cli/update'
 describe Localeapp::CLI::Update, "#execute" do
   before do
     @output = StringIO.new
-    @updater = Localeapp::CLI::Update.new(@output)
+    @updater = Localeapp::CLI::Update.new(:output => @output)
   end
 
   it "creates a Poller and calls poll! on it" do

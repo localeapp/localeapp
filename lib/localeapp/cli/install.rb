@@ -3,7 +3,7 @@ module Localeapp
     class Install < Command
       attr_accessor :config_type
 
-      def initialize(output = $stdout)
+      def initialize(args = {})
         super
         @config_type = :rails
       end

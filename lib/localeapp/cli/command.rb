@@ -1,9 +1,9 @@
 module Localeapp
   module CLI
     class Command
-      def initialize(output = $stdout)
+      def initialize(args = {})
         Localeapp.initialize_config
-        @output = output
+        @output = args[:output] || $stdout
       end
     end
   end

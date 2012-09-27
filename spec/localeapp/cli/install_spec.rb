@@ -4,7 +4,7 @@ require 'localeapp/cli/install'
 describe Localeapp::CLI::Install, '.execute(key, output = $stdout)' do
   before(:each) do
     @output = StringIO.new
-    @command = Localeapp::CLI::Install.new(@output)
+    @command = Localeapp::CLI::Install.new(:output => @output)
   end
 
   it "displays error if key is nil" do

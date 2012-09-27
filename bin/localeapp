@@ -24,12 +24,16 @@ else
 end
 
 pre do |global_options, command, options, args|
-  unless Localeapp.has_config_file?
-    puts "Could not load config file"
+  if Localeapp.has_config_file? || !global_options[:k].nil?
+    true
+  else
+    puts "Could not load config file and no key specified"
     exit 1
   end
-  true
 end
+
+desc "API Key (for when there is no configuration file)"
+flag [:k, 'api-key']
 
 version Localeapp::VERSION
 
@@ -63,7 +67,7 @@ command :add do |c|
     if key.nil? || args.size.zero?
       exit_now! "localeapp add requires a key name and at least one translation", 1
     else
-      Localeapp::CLI::Add.new.execute(key, *args)
+      Localeapp::CLI::Add.new(global_options).execute(key, *args)
     end
   end
 end

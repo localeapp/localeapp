@@ -89,7 +89,7 @@ module Localeapp
     # end
     def configure
       self.configuration ||= Configuration.new
-      yield(configuration)
+      yield(configuration) if block_given?
       self.sender  = Sender.new
       self.poller  = Poller.new
       self.updater = Updater.new
@@ -97,16 +97,27 @@ module Localeapp
     end
 
     # requires the Localeapp configuration
-    def initialize_config
+    def initialize_config(args = {})
+      configure # load defaults
+      load_config_file
+      set_command_line_arguments(args)
+    end
+
+    def set_command_line_arguments(args = {})
+      sanitized_args = {}
+      if args[:k]
+        sanitized_args[:api_key] = args[:k]
+      end
+      sanitized_args.each do |setting, value|
+        self.configuration.send("#{setting}=", value)
+      end
+    end
+
+    def load_config_file
       default_config_file_paths.each do |path|
         next unless File.exists? path
-        begin
-          require path
-          return true
-        rescue
-        end
+        require path
       end
-      false
     end
 
     def has_config_file?

@@ -44,33 +44,6 @@ module Localeapp
     # (defaults to 'development')
     attr_accessor :polling_environments
 
-    # @deprecated Use {#sending_environments} instead. This is safer but make sure to reverse your logic if you've changed the defaults
-    # The names of environments where notifications aren't sent (defaults to
-    # 'test', 'cucumber', 'production')
-    attr_accessor :disabled_sending_environments
-    def disabled_sending_environments=(value)
-      @deprecated_environment_config_used = true
-      @disabled_sending_environments = value
-    end
-
-    # @deprecated Use {#reloading_environments} instead. This is safer but make sure to reverse your logic if you've changed the defaults
-    # The names of environments where I18n.reload isn't called for each request
-    # (defaults to 'test', 'cucumber', 'production')
-    attr_accessor :disabled_reloading_environments
-    def disabled_reloading_environments=(value)
-      @deprecated_environment_config_used = true
-      @disabled_reloading_environments = value
-    end
-
-    # @deprecated Use {#polling_environments} instead. This is safer but make sure to reverse your logic if you've changed the defaults
-    # The names of environments where updates aren't pulled (defaults to
-    # 'test', 'cucumber', 'production')
-    attr_accessor :disabled_polling_environments
-    def disabled_polling_environments=(value)
-      @deprecated_environment_config_used = true
-      @disabled_polling_environments = value
-    end
-
     # The logger used by Localeapp
     attr_accessor :logger
 
@@ -94,17 +67,10 @@ module Localeapp
     # The complete path to the directory where translations are stored
     attr_accessor :translation_data_directory
 
-    def deprecated_environment_config_used?
-      @deprecated_environment_config_used
-    end
-
     def initialize
       @host                            = 'api.localeapp.com'
       @secure                          = true
       @ssl_verify                      = false
-      @disabled_sending_environments   = %w(test cucumber production)
-      @disabled_reloading_environments = %w(test cucumber production)
-      @disabled_polling_environments   = %w(test cucumber production)
       @sending_environments            = %w(development)
       @reloading_environments          = %w(development)
       @polling_environments            = %w(development)
@@ -120,30 +86,15 @@ module Localeapp
     end
 
     def polling_disabled?
-      if deprecated_environment_config_used?
-        ::Localeapp.log "DEPRECATION: disabled_polling_environments is deprecated and will be removed. Use polling_environments instead and reverse the logic if you've changed the defaults"
-        disabled_polling_environments.map { |v| v.to_s }.include?(environment_name)
-      else
-        !polling_environments.map { |v| v.to_s }.include?(environment_name)
-      end
+      !polling_environments.map { |v| v.to_s }.include?(environment_name)
     end
 
     def reloading_disabled?
-      if deprecated_environment_config_used?
-        ::Localeapp.log "DEPRECATION: disabled_reloading_environments is deprecated and will be removed. Use reloading_environments instead and reverse the logic if you've changed the defaults"
-        disabled_reloading_environments.map { |v| v.to_s }.include?(environment_name)
-      else
-        !reloading_environments.map { |v| v.to_s }.include?(environment_name)
-      end
+      !reloading_environments.map { |v| v.to_s }.include?(environment_name)
     end
 
     def sending_disabled?
-      if deprecated_environment_config_used?
-        ::Localeapp.log "DEPRECATION: disabled_sending_environments is deprecated and will be removed. Use sending_environments instead and reverse the logic if you've changed the defaults"
-        disabled_sending_environments.map { |v| v.to_s }.include?(environment_name)
-      else
-        !sending_environments.map { |v| v.to_s }.include?(environment_name)
-      end
+      !sending_environments.map { |v| v.to_s }.include?(environment_name)
     end
 
     def write_rails_configuration(path)

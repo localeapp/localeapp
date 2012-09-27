@@ -68,21 +68,30 @@ module Localeapp
     attr_accessor :translation_data_directory
 
     def initialize
-      @host                            = 'api.localeapp.com'
-      @secure                          = true
-      @ssl_verify                      = false
-      @sending_environments            = %w(development)
-      @reloading_environments          = %w(development)
-      @polling_environments            = %w(development)
-      @poll_interval                   = 0
-      @synchronization_data_file       = File.join('log', 'localeapp.yml')
-      @daemon_pid_file                 = File.join('tmp', 'pids', 'localeapp.pid')
-      @daemon_log_file                 = File.join('log', 'localeapp_daemon.log')
-      @translation_data_directory      = File.join('config', 'locales')
+      defaults.each do |setting, value|
+        send("#{setting}=", value)
+      end
+    end
+
+    def defaults
+      defaults = {
+        :host                       => 'api.localeapp.com',
+        :secure                     => true,
+        :ssl_verify                 => false,
+        :sending_environments       => %w(development),
+        :reloading_environments     => %w(development),
+        :polling_environments       => %w(development),
+        :poll_interval              => 0,
+        :synchronization_data_file  => File.join('log', 'localeapp.yml'),
+        :daemon_pid_file            => File.join('tmp', 'pids', 'localeapp.pid'),
+        :daemon_log_file            => File.join('log', 'localeapp_daemon.log'),
+        :translation_data_directory => File.join('config', 'locales'),
+      }
       if ENV['DEBUG']
         require 'logger'
-        @logger = Logger.new(STDOUT)
+        defaults[:logger] = Logger.new(STDOUT)
       end
+      defaults
     end
 
     def polling_disabled?

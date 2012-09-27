@@ -75,7 +75,7 @@ end
 desc "Pulls all translations from localeapp.com"
 command :pull do |c|
   c.action do |global_options, options, args|
-    Localeapp::CLI::Pull.new.execute
+    Localeapp::CLI::Pull.new(global_options).execute
   end
 end
 

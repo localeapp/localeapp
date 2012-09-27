@@ -97,10 +97,8 @@ module Localeapp
     end
 
     # requires the Localeapp configuration
-    def initialize_config(file_path=nil)
-      file_paths = default_config_file_paths
-      file_paths << file_path if file_path
-      file_paths.each do |path|
+    def initialize_config
+      default_config_file_paths.each do |path|
         next unless File.exists? path
         begin
           require path

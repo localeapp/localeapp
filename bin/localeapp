@@ -111,40 +111,7 @@ command :daemon do |c|
   c.switch [:b, 'background']
 
   c.action do |global_options, options, args|
-    interval = options[:interval].to_i
-
-    if interval <= 0
-      exit_now! "interval must be a positive integer greater than 0", 1
-    end
-
-    command = Proc.new do
-      loop do
-        Localeapp::CLI::Update.new.execute
-        sleep interval
-      end
-    end
-    if options[:background]
-
-      if File.exists? Localeapp.configuration.daemon_pid_file
-        begin
-          daemon_pid = File.read(Localeapp.configuration.daemon_pid_file)
-          Process.kill("QUIT", daemon_pid.to_i)
-        rescue Errno::ESRCH
-          File.delete(Localeapp.configuration.daemon_pid_file)
-        end
-      end
-
-      STDOUT.reopen(File.open(Localeapp.configuration.daemon_log_file, 'a'))
-      pid = fork do
-        Signal.trap('HUP', 'IGNORE')
-        command.call
-      end
-      Process.detach(pid)
-
-      File.open(Localeapp.configuration.daemon_pid_file, 'w') {|f| f << pid}
-    else
-      command.call
-    end
+    Localeapp::CLI::Daemon.new(global_options).execute(options)
   end
 end
 

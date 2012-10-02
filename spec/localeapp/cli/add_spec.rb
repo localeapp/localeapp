@@ -8,7 +8,7 @@ describe Localeapp::CLI::Add, "#execute(key, *translations)" do
 
   before(:each) do
     @output = StringIO.new
-    @command = Localeapp::CLI::Add.new(@output)
+    @command = Localeapp::CLI::Add.new(:output => @output)
   end
 
   it "adds the translations to missing_translations" do

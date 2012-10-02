@@ -14,13 +14,6 @@ if ENV['FAKE_WEB_DURING_CUCUMBER_RUN'] && fake_data_as_json = ENV['FAKE_WEB_FAKE
   end
 end
 
-def initialize_config
-  unless Localeapp.initialize_config
-    puts "Could not load config file"
-    exit 1
-  end
-end
-
 require 'gli'
 gli2 = GLI::VERSION >= '2.0.0'
 
@@ -30,9 +23,22 @@ else
   include GLI
 end
 
+pre do |global_options, command, options, args|
+  if Localeapp.has_config_file? || !global_options[:k].nil?
+    true
+  else
+    puts "Could not load config file and no key specified"
+    exit 1
+  end
+end
+
+desc "API Key (for when there is no configuration file)"
+flag [:k, 'api-key']
+
 version Localeapp::VERSION
 
 desc "Creates new configuration files and confirms key works"
+skips_pre
 arg_name "<api_key>"
 command :install do |c|
   c.desc "install configuration files in .localeapp/"
@@ -61,8 +67,7 @@ command :add do |c|
     if key.nil? || args.size.zero?
       exit_now! "localeapp add requires a key name and at least one translation", 1
     else
-      initialize_config
-      Localeapp::CLI::Add.new.execute(key, *args)
+      Localeapp::CLI::Add.new(global_options).execute(key, *args)
     end
   end
 end
@@ -70,8 +75,7 @@ end
 desc "Pulls all translations from localeapp.com"
 command :pull do |c|
   c.action do |global_options, options, args|
-    initialize_config
-    Localeapp::CLI::Pull.new.execute
+    Localeapp::CLI::Pull.new(global_options).execute
   end
 end
 
@@ -83,8 +87,7 @@ command :push do |c|
       exit_now! "localeapp push requires an file or directory to push", 1
     else
       path = args.first
-      initialize_config
-      pusher = Localeapp::CLI::Push.new
+      pusher = Localeapp::CLI::Push.new(global_options)
       pusher.execute(path)
     end
   end
@@ -93,8 +96,7 @@ end
 desc "Gets any changes since the last poll and updates the yml"
 command :update do |c|
   c.action do |global_options, options, args|
-    initialize_config
-    Localeapp::CLI::Update.new.execute
+    Localeapp::CLI::Update.new(global_options).execute
   end
 end
 
@@ -109,42 +111,7 @@ command :daemon do |c|
   c.switch [:b, 'background']
 
   c.action do |global_options, options, args|
-    initialize_config
-
-    interval = options[:interval].to_i
-
-    if interval <= 0
-      exit_now! "interval must be a positive integer greater than 0", 1
-    end
-
-    command = Proc.new do
-      loop do
-        Localeapp::CLI::Update.new.execute
-        sleep interval
-      end
-    end
-    if options[:background]
-
-      if File.exists? Localeapp.configuration.daemon_pid_file
-        begin
-          daemon_pid = File.read(Localeapp.configuration.daemon_pid_file)
-          Process.kill("QUIT", daemon_pid.to_i)
-        rescue Errno::ESRCH
-          File.delete(Localeapp.configuration.daemon_pid_file)
-        end
-      end
-
-      STDOUT.reopen(File.open(Localeapp.configuration.daemon_log_file, 'a'))
-      pid = fork do
-        Signal.trap('HUP', 'IGNORE')
-        command.call
-      end
-      Process.detach(pid)
-
-      File.open(Localeapp.configuration.daemon_pid_file, 'w') {|f| f << pid}
-    else
-      command.call
-    end
+    Localeapp::CLI::Daemon.new(global_options).execute(options)
   end
 end
 

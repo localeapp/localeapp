@@ -4,7 +4,7 @@ require 'localeapp/cli/pull'
 describe Localeapp::CLI::Pull, "#execute" do
   before do
     @output = StringIO.new
-    @puller = Localeapp::CLI::Pull.new(@output)
+    @puller = Localeapp::CLI::Pull.new(:output => @output)
   end
 
   it "makes the api call to the translations endpoint" do
@@ -24,7 +24,7 @@ describe Localeapp::CLI::Pull, "#update_backend(response)" do
   before do
     @test_data = ['test data'].to_json
     @output = StringIO.new
-    @puller = Localeapp::CLI::Pull.new(@output)
+    @puller = Localeapp::CLI::Pull.new(:output => @output)
   end
 
   it "calls the updater" do

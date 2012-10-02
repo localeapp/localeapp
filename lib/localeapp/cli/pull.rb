@@ -1,11 +1,7 @@
 module Localeapp
   module CLI
-    class Pull
+    class Pull < Command
       include ::Localeapp::ApiCall
-
-      def initialize(output = $stdout)
-        @output = output
-      end
 
       def execute
         @output.puts "Localeapp Pull"

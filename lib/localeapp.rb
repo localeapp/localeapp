@@ -35,11 +35,13 @@ require 'localeapp/key_checker'
 require 'localeapp/missing_translations'
 require 'localeapp/default_value_handler'
 
+require 'localeapp/cli/command'
 require 'localeapp/cli/install'
 require 'localeapp/cli/pull'
 require 'localeapp/cli/push'
 require 'localeapp/cli/update'
 require 'localeapp/cli/add'
+require 'localeapp/cli/daemon'
 
 # AUDIT: Will this work on ruby 1.9.x
 $KCODE="UTF8" if RUBY_VERSION < '1.9'
@@ -88,27 +90,22 @@ module Localeapp
     # end
     def configure
       self.configuration ||= Configuration.new
-      yield(configuration)
+      yield(configuration) if block_given?
       self.sender  = Sender.new
       self.poller  = Poller.new
       self.updater = Updater.new
       @missing_translations = MissingTranslations.new
     end
 
-    # requires the Localeapp configuration
-    def initialize_config(file_path=nil)
-      file_paths = [ File.join(Dir.pwd, '.localeapp', 'config.rb'),
-                     File.join(Dir.pwd, 'config', 'initializers', 'localeapp.rb') ]
-      file_paths << file_path if file_path
-      file_paths.each do |path|
-        next unless File.exists? path
-        begin
-          require path
-          return true
-        rescue
-        end
-      end
-      false
+    def has_config_file?
+      default_config_file_paths.any? { |path| File.exists?(path) }
+    end
+
+    def default_config_file_paths
+      [
+        File.join(Dir.pwd, '.localeapp', 'config.rb'),
+        File.join(Dir.pwd, 'config', 'initializers', 'localeapp.rb')
+      ]
     end
 
     def load_yaml(contents)

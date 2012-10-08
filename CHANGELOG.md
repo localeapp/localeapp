@@ -1,3 +1,8 @@
+# master
+
+* Support passing -k or --api-key option to commands
+* Fix performance bug when :default specified in I18n.t call
+
 # Version 0.5.2
 
 * Fix bug with pulling translations changing file permissions

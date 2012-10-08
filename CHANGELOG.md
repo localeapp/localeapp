@@ -1,6 +1,7 @@
-# master
+# Version 0.6.0
 
 * Support passing -k or --api-key option to commands
+* Remove deprecated disabled_* configuration options
 * Fix performance bug when :default specified in I18n.t call
 
 # Version 0.5.2
@@ -85,10 +86,3 @@
 * Removed some unnecessary default options from config files generated with 
   `localeapp install`
 * Fixed `localeapp push` with no arguments
-
-## NOTICE
-
-If you've added disabled_polling_environments, 
-disabled_reloading_environments or disabled_sending_environments to your 
-initializer you should change these to polling_environments, 
-reloading_environments and sending_environments and configure as per the README

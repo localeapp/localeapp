@@ -1,3 +1,7 @@
+# Version 0.6.1
+
+* Fix bug where default handler was sending array rather than resolved content
+
 # Version 0.6.0
 
 * Support passing -k or --api-key option to commands

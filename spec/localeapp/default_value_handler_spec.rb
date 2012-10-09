@@ -13,4 +13,20 @@ describe I18n::Backend::Base, '#default' do
       klass.default(:en, 'foo', 'bar', :baz => 'bam')
     end
   end
+
+  describe "when subject is an array" do
+    it "uses result of default call instead of array" do
+      with_configuration(:sending_environments => ['my_env'], :environment_name => 'my_env' ) do
+        Localeapp.missing_translations.should_receive(:add).with(:en, 'foo', 'not missing', :baz => 'bam')
+        I18n.stub!(:translate) do |subject, _|
+          if subject == :not_missing
+            "not missing"
+          else
+            nil
+          end
+        end
+        klass.default(:en, 'foo', [:missing, :not_missing], :baz => 'bam')
+      end
+    end
+  end
 end

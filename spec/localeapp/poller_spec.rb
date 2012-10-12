@@ -52,25 +52,60 @@ describe Localeapp::Poller do
   end
     
   describe "#poll!" do
-    it "returns false if get returns 304 Not Modified" do
-      FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => '', :status => ['304', 'Not Modified'])
-      @poller.poll!.should == false
+    describe "when response is 304 Not Modified" do
+      before do
+        FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => '', :status => ['304', 'Not Modified'], :date => Time.now.httpdate)
+      end
+
+      it "returns false" do
+        @poller.poll!.should == false
+      end
+
+      it "updates the synchronization data" do
+        @poller.should_receive(:write_synchronization_data!)
+        @poller.poll!
+      end
+
+      it "updates the synchronization data" do
+        @poller.should_receive(:write_synchronization_data!)
+        @poller.poll!
+      end
     end
 
-    it "returns false if get returns a 50x response" do
-      FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => '', :status => ['500', 'Internal Server Error'])
-      @poller.poll!.should == false
+    describe "when response is 50x" do
+      before do
+        FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => '', :status => ['500', 'Internal Server Error'])
+      end
+
+      it "returns false" do
+        @poller.poll!.should == false
+      end
+
+      it "doesn't update the synchronization data" do
+        @poller.should_not_receive(:write_synchronization_data!)
+        @poller.poll!
+      end
     end
 
-    it "returns false if get returns 200 OK" do
-      FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => @hash.to_yaml, :status => ['200', 'OK'], :date => Time.now.httpdate)
-      @poller.poll!.should == true
-    end
+    describe "when response is 200" do
+      before do
+        FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => @hash.to_yaml, :status => ['200', 'OK'], :date => Time.now.httpdate)
+      end
 
-    it "passes the data through to the Updater" do
-      FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => @hash.to_yaml, :status => ['200', 'OK'], :date => Time.now.httpdate)
-      Localeapp.updater.should_receive(:update).with(@hash)
-      @poller.poll!
+      it "returns true" do
+        @poller.poll!.should == true
+      end
+
+      it "updates the synchronization data" do
+        @poller.should_receive(:write_synchronization_data!)
+        @poller.poll!
+      end
+
+      it "passes the data through to the Updater" do
+        FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => @hash.to_yaml, :status => ['200', 'OK'], :date => Time.now.httpdate)
+        Localeapp.updater.should_receive(:update).with(@hash)
+        @poller.poll!
+      end
     end
   end
 end

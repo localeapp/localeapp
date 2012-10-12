@@ -57,7 +57,11 @@ module Localeapp
 
     def handle_failure(response)
       Localeapp.log "#{Time.now.to_i} - poll failure"
-      Localeapp.log response.inspect
+      if response.code == 304
+        Localeapp.log "No new data"
+        # Nothing new, update synchronization files
+        write_synchronization_data!(Time.now.to_i, Time.parse(response.headers[:date]).to_i)
+      end
       @success = false
     end
   end

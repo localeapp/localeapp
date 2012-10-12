@@ -27,7 +27,7 @@ module Localeapp
 
     def write_synchronization_data!(polled_at, updated_at)
       File.open(Localeapp.configuration.synchronization_data_file, 'w+') do |f|
-        f.write({:polled_at => polled_at, :updated_at => updated_at}.to_yaml)
+        f.write({:polled_at => polled_at.to_i, :updated_at => updated_at.to_i}.to_yaml)
       end
     end
 
@@ -49,18 +49,17 @@ module Localeapp
     end
 
     def handle_success(response)
-      Localeapp.log "#{Time.now.to_i} - poll success"
+      Localeapp.log_with_time "poll success"
       @success = true
       Localeapp.updater.update(Localeapp.load_yaml(response))
-      write_synchronization_data!(current_time.to_i, Time.parse(response.headers[:date]).to_i)
+      write_synchronization_data!(current_time, Time.parse(response.headers[:date]))
     end
 
     def handle_failure(response)
-      Localeapp.log "#{Time.now.to_i} - poll failure"
       if response.code == 304
-        Localeapp.log "No new data"
+        Localeapp.log_with_time "No new data"
         # Nothing new, update synchronization files
-        write_synchronization_data!(current_time.to_i, updated_at.to_i)
+        write_synchronization_data!(current_time, updated_at)
       end
       @success = false
     end

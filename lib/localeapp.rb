@@ -75,6 +75,10 @@ module Localeapp
       logger.info LOG_PREFIX + message if logger
     end
 
+    def log_with_time(message)
+      log [Time.now.to_i, message].join(' - ')
+    end
+
     def debug(message)
       logger.debug(LOG_PREFIX + message) if logger
     end

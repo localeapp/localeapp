@@ -50,19 +50,23 @@ describe Localeapp::Poller do
       expect { @poller.write_synchronization_data!(01234, 56789) }.to change(updated_at, :call).to(56789)
     end
   end
-    
+
   describe "#poll!" do
+    let(:polled_at_time) { Time.now }
+    let(:updated_at_time) { Time.now - 60 }
+
     describe "when response is 304 Not Modified" do
       before do
-        FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => '', :status => ['304', 'Not Modified'], :date => Time.now.httpdate)
+        FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => '', :status => ['304', 'Not Modified'], :date => updated_at_time.httpdate)
       end
 
       it "returns false" do
         @poller.poll!.should == false
       end
 
-      it "updates the synchronization data" do
-        @poller.should_receive(:write_synchronization_data!)
+      it "updates the polled_at but not the updated_at synchronization data" do
+        @poller.stub!(:current_time).and_return(polled_at_time)
+        @poller.should_receive(:write_synchronization_data!).with(polled_at_time.to_i, @updated_at.to_i)
         @poller.poll!
       end
 
@@ -89,15 +93,16 @@ describe Localeapp::Poller do
 
     describe "when response is 200" do
       before do
-        FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => @hash.to_yaml, :status => ['200', 'OK'], :date => Time.now.httpdate)
+        FakeWeb.register_uri(:get, "https://api.localeapp.com/v1/projects/TEST_KEY/translations.yml?updated_at=#{@updated_at}", :body => @hash.to_yaml, :status => ['200', 'OK'], :date => updated_at_time.httpdate)
       end
 
       it "returns true" do
         @poller.poll!.should == true
       end
 
-      it "updates the synchronization data" do
-        @poller.should_receive(:write_synchronization_data!)
+      it "updates the polled_at and the updated_at synchronization data" do
+        @poller.stub!(:current_time).and_return(polled_at_time)
+        @poller.should_receive(:write_synchronization_data!).with(polled_at_time.to_i, updated_at_time.to_i)
         @poller.poll!
       end
 

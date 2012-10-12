@@ -52,7 +52,7 @@ module Localeapp
       Localeapp.log "#{Time.now.to_i} - poll success"
       @success = true
       Localeapp.updater.update(Localeapp.load_yaml(response))
-      write_synchronization_data!(Time.now.to_i, Time.parse(response.headers[:date]).to_i)
+      write_synchronization_data!(current_time.to_i, Time.parse(response.headers[:date]).to_i)
     end
 
     def handle_failure(response)
@@ -60,9 +60,14 @@ module Localeapp
       if response.code == 304
         Localeapp.log "No new data"
         # Nothing new, update synchronization files
-        write_synchronization_data!(Time.now.to_i, Time.parse(response.headers[:date]).to_i)
+        write_synchronization_data!(current_time.to_i, updated_at.to_i)
       end
       @success = false
+    end
+
+    private
+    def current_time
+      Time.now
     end
   end
 end

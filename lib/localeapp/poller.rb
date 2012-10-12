@@ -49,12 +49,15 @@ module Localeapp
     end
 
     def handle_success(response)
+      Localeapp.log "#{Time.now.to_i} - poll success"
       @success = true
       Localeapp.updater.update(Localeapp.load_yaml(response))
       write_synchronization_data!(Time.now.to_i, Time.parse(response.headers[:date]).to_i)
     end
 
     def handle_failure(response)
+      Localeapp.log "#{Time.now.to_i} - poll failure"
+      Localeapp.log response.inspect
       @success = false
     end
   end

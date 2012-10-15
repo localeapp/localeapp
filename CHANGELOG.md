@@ -1,3 +1,7 @@
+# Version 0.6.2
+
+* Fix bug updating synchronization files that caused polling_interval to be ignored
+
 # Version 0.6.1
 
 * Fix bug where default handler was sending array rather than resolved content

@@ -5,24 +5,21 @@ module Localeapp
 
       def initialize(args = {})
         super
-        @config_type = :rails
+        @config_type = :default
       end
 
       def execute(key = nil)
-        configurator = case config_type
-                       when :heroku; HerokuConfigurator.new(@output, key)
-                       when :github; GithubConfigurator.new(@output, key)
-                       when :standalone; StandaloneConfigurator.new(@output, key)
-                       else DefaultConfigurator.new(@output, key)
-                       end
+        configurator("#{config_type.to_s.capitalize}Configurator").execute(key)
+      end
 
-        configurator.execute(key)
+      def configurator(configurator_class)
+        self.class.const_get(configurator_class).new(@output)
       end
 
       class DefaultConfigurator
         attr_reader :valid_key, :project_data, :config_file_path, :data_directory
 
-        def initialize(output, key = nil)
+        def initialize(output)
           @output = output
         end
 
@@ -37,7 +34,6 @@ module Localeapp
             check_data_directory_exists
             true
           else
-            @output.puts "ERROR: Project not found"
             false
           end
         end
@@ -59,6 +55,8 @@ module Localeapp
           if @valid_key
             @output.puts "Success!"
             @output.puts "Project: #{project_data['name']}"
+          else
+            @output.puts "ERROR: Project not found"
           end
         end
 

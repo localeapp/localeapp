@@ -17,6 +17,7 @@ module Localeapp
           key = get_heroku_api_key
           if key.nil?
             @output.puts "ERROR: No api key found in heroku config, have you installed the localeapp addon?"
+            return
           else
             @output.puts "API Key: #{key}"
           end
@@ -76,12 +77,19 @@ module Localeapp
         if ENV['CUCUMBER_HEROKU_TEST_API_KEY']
           ENV['CUCUMBER_HEROKU_TEST_API_KEY']
         else
-          `heroku config -s --remote production`.lines.grep(/LOCALEAPP_API_KEY/).first.sub('LOCALEAPP_API_KEY=', '').chomp
+          @output.puts `pwd`
+          config_lines = `heroku config -s`
+          if $? == 0
+            config_line = config_lines.lines.grep(/LOCALEAPP_API_KEY/).first.chomp
+            config_line.sub('LOCALEAPP_API_KEY=', '')
+          else
+            nil
+          end
         end
       end
 
       def write_configuration_file(path)
-        if config_type == :rails
+        if config_type == :rails || config_type == :heroku
           Localeapp.configuration.write_rails_configuration(path)
         else
           Localeapp.configuration.write_standalone_configuration(path)

@@ -8,22 +8,34 @@ module Localeapp
         @config_type = :rails
       end
 
-      def execute(key)
+      def execute(key = nil)
         @output.puts "Localeapp Install"
         @output.puts ""
+
+        if config_type == :heroku
+          @output.puts "Getting API key from heroku config"
+          key = get_heroku_api_key
+          if key.nil?
+            @output.puts "ERROR: No api key found in heroku config, have you installed the localeapp addon?"
+          else
+            @output.puts "API Key: #{key}"
+          end
+        end
+
         @output.puts "Checking API key: #{key}"
         if key.nil?
           @output.puts "ERROR: You must supply an API key"
           return
         end
         valid_key, project_data = check_key(key)
+
         if valid_key
           @output.puts "Success!"
           @output.puts "Project: #{project_data['name']}"
           localeapp_default_code = project_data['default_locale']['code']
           @output.puts "Default Locale: #{localeapp_default_code} (#{project_data['default_locale']['name']})"
 
-          if config_type == :rails
+          if config_type == :rails || config_type == :heroku
             if I18n.default_locale.to_s != localeapp_default_code
               @output.puts "WARNING: I18n.default_locale is #{I18n.default_locale}, change in config/environment.rb (Rails 2) or config/application.rb (Rails 3)"
             end
@@ -57,6 +69,15 @@ module Localeapp
       private
       def check_key(key)
         Localeapp::KeyChecker.new.check(key)
+      end
+
+      # AUDIT: Need to find a less hacky way of doing this
+      def get_heroku_api_key
+        if ENV['CUCUMBER_HEROKU_TEST_API_KEY']
+          ENV['CUCUMBER_HEROKU_TEST_API_KEY']
+        else
+          `heroku config -s --remote production`.lines.grep(/LOCALEAPP_API_KEY/).first.sub('LOCALEAPP_API_KEY=', '').chomp
+        end
       end
 
       def write_configuration_file(path)

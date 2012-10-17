@@ -7,6 +7,16 @@ describe Localeapp::CLI::Install, '.execute(key, output = $stdout)' do
     @command = Localeapp::CLI::Install.new(:output => @output)
   end
 
+  context "heroku install" do
+    it "gets the api key from the heroku config" do
+      @command.config_type = :heroku
+      @command.should_receive(:get_heroku_api_key).and_return('MYAPIKEY')
+      @command.stub!(:check_key).and_return([true, valid_project_data])
+      @command.stub!(:write_configuration_file)
+      @command.execute
+    end
+  end
+
   it "displays error if key is nil" do
     @command.execute(nil)
     @output.string.should match(/You must supply an API key/)

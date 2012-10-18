@@ -112,21 +112,21 @@ CONTENT
       end
 
       class HerokuInstaller < DefaultInstaller
-        def validate_key(key)
+        def validate_key(_)
           @output.puts "Getting API key from heroku config"
-          key = get_heroku_api_key
+          get_heroku_api_key
           if key.nil?
             @output.puts "ERROR: No api key found in heroku config, have you installed the localeapp addon?"
             return
           else
             @output.puts "API Key: #{key}"
           end
-          super
+          super key
         end
 
         # AUDIT: Need to find a less hacky way of doing this
         def get_heroku_api_key
-          if ENV['CUCUMBER_HEROKU_TEST_API_KEY']
+          self.key = if ENV['CUCUMBER_HEROKU_TEST_API_KEY']
             ENV['CUCUMBER_HEROKU_TEST_API_KEY']
           else
             @output.puts `pwd`

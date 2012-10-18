@@ -73,6 +73,7 @@ Feature: Installation
     """
     And help should not be displayed
     And a file named "config/initializers/localeapp.rb" should exist
+    And the file "config/initializers/localeapp.rb" should contain "config.api_key = 'MYAPIKEY'"
     And the exit status should be 0
 
   Scenario: Running install with bad api key

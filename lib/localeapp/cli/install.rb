@@ -141,8 +141,7 @@ CONTENT
         end
 
         def write_config_file
-          dir = File.dirname(config_file_path)
-          FileUtils.mkdir_p(dir)
+          dir = create_config_dir
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT
 Localeapp.configure do |config|
@@ -154,14 +153,52 @@ end
 CONTENT
           end
         end
+
+        private
+        def create_config_dir
+          dir = File.dirname(config_file_path)
+          FileUtils.mkdir_p(dir)
+          dir
+        end
       end
 
       class GithubInstaller < StandaloneInstaller
         def write_config_file
-          Localeapp.configuration.write_github_configuration(config_file_path, project_data)
+          super
+          create_data_directory
+          create_gitignore
+          create_readme
+        end
+
+        private
+        def create_data_directory
+          FileUtils.mkdir_p(data_directory)
+        end
+
+        def create_gitignore
+          File.open('.gitignore', 'a+') do |file|
+            file.write File.dirname(config_file_path)
+          end
+        end
+
+        def create_readme
+          File.open('README.md', 'w+') do |file|
+            file.write <<-CONTENT
+# #{project_data['name']}
+
+A ruby translation project managed on [Locale](http://www.localeapp.com/) that's open to all!
+
+## Contributing to #{project_data['name']}
+
+- Edit the translations directly on the [#{project_data['name']}](http://www.localeapp.com/projects/public?search=#{project_data['name']}) project on Locale.
+- **That's it!**
+- The maintainer will then pull translations from the Locale project and push to Github.
+
+Happy translating!
+CONTENT
+          end
         end
       end
-
     end
   end
 end

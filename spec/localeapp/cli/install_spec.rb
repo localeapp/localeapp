@@ -221,6 +221,7 @@ describe Localeapp::CLI::Install::StandaloneInstaller, '#write_config_file' do
   let(:installer) { Localeapp::CLI::Install::StandaloneInstaller.new(output) }
 
   it "creates a configuration file containing the dot file configuration at the given path" do
+    installer.stub!(:create_config_dir).and_return(File.dirname(path))
     installer.stub(:key).and_return(key)
     installer.stub(:config_file_path).and_return(path)
     installer.stub(:data_directory).and_return(data_directory)
@@ -240,13 +241,48 @@ end
 
 describe Localeapp::CLI::Install::GithubInstaller, '#write_config_file' do
   let(:output) { StringIO.new }
-  let(:path) { 'path' }
+  let(:key) { 'APIKEY' }
+  let(:path) { '.localeapp/config.rb' }
+  let(:data_directory) { 'locales' }
   let(:installer) { Localeapp::CLI::Install::GithubInstaller.new(output) }
 
-  it "writes a github configuration file" do
+  before do
+    installer.stub!(:key).and_return(key)
     installer.stub!(:config_file_path).and_return(path)
-    installer.stub!(:project_data).and_return(valid_project_data)
-    Localeapp.configuration.should_receive(:write_github_configuration).with(path, valid_project_data)
+    installer.stub!(:data_directory).and_return(data_directory)
+    installer.stub!(:create_config_dir).and_return(File.dirname(path))
+    File.stub!(:open).with(path, 'w+').and_yield(stub.as_null_object)
+    installer.stub!(:create_data_directory)
+    installer.stub!(:create_gitignore)
+    installer.stub!(:create_readme)
+  end
+
+  it "creates a configuration file containing the dot file configuration at the given path" do
+    file = stub('file')
+    file.should_receive(:write).with <<-CONTENT
+Localeapp.configure do |config|
+  config.api_key                    = 'APIKEY'
+  config.translation_data_directory = 'locales'
+  config.synchronization_data_file  = '.localeapp/log.yml'
+  config.daemon_pid_file            = '.localeapp/localeapp.pid'
+end
+CONTENT
+    File.should_receive(:open).with(path, 'w+').and_yield(file)
+    installer.write_config_file
+  end
+
+  it "creates the data_directory" do
+    installer.should_receive(:create_data_directory)
+    installer.write_config_file
+  end
+
+  it "creates the .gitignore file" do
+    installer.should_receive(:create_gitignore)
+    installer.write_config_file
+  end
+
+  it "creates the READMI file" do
+    installer.should_receive(:create_readme)
     installer.write_config_file
   end
 end

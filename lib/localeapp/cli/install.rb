@@ -139,6 +139,27 @@ CONTENT
             end
           end
         end
+
+        def write_rails_config
+          File.open(config_file_path, 'w+') do |file|
+            file.write <<-CONTENT
+require 'localeapp/rails'
+
+Localeapp.configure do |config|
+  config.api_key = '#{key}'
+  config.poll_interval = 300 if Rails.env.staging?
+  config.polling_environments = [:development, :staging]
+  config.reloading_environments = [:development, :staging]
+  config.sending_environments = [:development, :staging]
+end
+
+# Pull latest when dyno restarts on staging
+if Rails.env.staging?
+  Localeapp::CLI::Pull.new.execute
+end
+CONTENT
+          end
+        end
       end
 
       class StandaloneInstaller < DefaultInstaller

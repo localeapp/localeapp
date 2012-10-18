@@ -185,6 +185,36 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#check_data_directory_exist
   end
 end
 
+describe Localeapp::CLI::Install::HerokuInstaller, '#write_config_file' do
+  let(:output) { StringIO.new }
+  let(:config_file_path) { 'config/initializers/localeapp.rb' }
+  let(:key) { 'APIKEY' }
+  let(:installer) { Localeapp::CLI::Install::HerokuInstaller.new(output) }
+
+  it "creates a configuration file setup for staging / production on heroku" do
+    installer.key = key
+    installer.config_file_path = config_file_path
+    file = stub('file')
+    file.should_receive(:write).with <<-CONTENT
+require 'localeapp/rails'
+
+Localeapp.configure do |config|
+  config.api_key = 'APIKEY'
+  config.poll_interval = 300 if Rails.env.staging?
+  config.polling_environments = [:development, :staging]
+  config.reloading_environments = [:development, :staging]
+  config.sending_environments = [:development, :staging]
+end
+
+# Pull latest when dyno restarts on staging
+if Rails.env.staging?
+  Localeapp::CLI::Pull.new.execute
+end
+CONTENT
+    File.should_receive(:open).with(config_file_path, 'w+').and_yield(file)
+    installer.write_config_file
+  end
+end
 describe Localeapp::CLI::Install::StandaloneInstaller, '#check_default_locale' do
   let(:output) { StringIO.new }
   let(:installer) { Localeapp::CLI::Install::StandaloneInstaller.new(output) }

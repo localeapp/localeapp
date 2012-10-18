@@ -97,6 +97,11 @@ CONTENT
         def check_key(key)
           Localeapp::KeyChecker.new.check(key)
         end
+
+        private
+        def config_dir
+          File.dirname(config_file_path)
+        end
       end
 
       class HerokuInstaller < DefaultInstaller
@@ -141,25 +146,23 @@ CONTENT
         end
 
         def write_config_file
-          dir = create_config_dir
-          write_standalone_config(dir)
+          create_config_dir
+          write_standalone_config
         end
 
         private
         def create_config_dir
-          dir = File.dirname(config_file_path)
-          FileUtils.mkdir_p(dir)
-          dir
+          FileUtils.mkdir_p(config_dir)
         end
 
-        def write_standalone_config(dir)
+        def write_standalone_config
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT
 Localeapp.configure do |config|
   config.api_key                    = '#{key}'
   config.translation_data_directory = '#{data_directory}'
-  config.synchronization_data_file  = '#{dir}/log.yml'
-  config.daemon_pid_file            = '#{dir}/localeapp.pid'
+  config.synchronization_data_file  = '#{config_dir}/log.yml'
+  config.daemon_pid_file            = '#{config_dir}/localeapp.pid'
 end
 CONTENT
           end
@@ -181,7 +184,7 @@ CONTENT
 
         def create_gitignore
           File.open('.gitignore', 'a+') do |file|
-            file.write File.dirname(config_file_path)
+            file.write config_dir
           end
         end
 

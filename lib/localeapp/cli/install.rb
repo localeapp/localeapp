@@ -9,14 +9,14 @@ module Localeapp
       end
 
       def execute(key = nil)
-        configurator("#{config_type.to_s.capitalize}Configurator").execute(key)
+        installer("#{config_type.to_s.capitalize}Installer").execute(key)
       end
 
-      def configurator(configurator_class)
-        self.class.const_get(configurator_class).new(@output)
+      def installer(installer_class)
+        self.class.const_get(installer_class).new(@output)
       end
 
-      class DefaultConfigurator
+      class DefaultInstaller
         attr_reader :valid_key, :project_data, :config_file_path, :data_directory
 
         def initialize(output)
@@ -88,7 +88,7 @@ module Localeapp
         end
       end
 
-      class HerokuConfigurator < DefaultConfigurator
+      class HerokuInstaller < DefaultInstaller
         def validate_key(key)
           @output.puts "Getting API key from heroku config"
           key = get_heroku_api_key
@@ -118,7 +118,7 @@ module Localeapp
         end
       end
 
-      class GithubConfigurator < DefaultConfigurator
+      class GithubInstaller < DefaultInstaller
         def set_config_paths
           @config_file_path = ".localeapp/config.rb"
           @data_directory   = "locales"
@@ -129,7 +129,7 @@ module Localeapp
         end
       end
 
-      class StandaloneConfigurator < DefaultConfigurator
+      class StandaloneInstaller < DefaultInstaller
         def check_default_locale
           # do nothing standalone
         end

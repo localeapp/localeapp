@@ -156,25 +156,6 @@ describe Localeapp::Configuration do
   end
 end
 
-describe Localeapp::Configuration, "#write_rails_configuration(path)" do
-  it "creates a configuration file containing just the api key at the given path" do
-    configuration = Localeapp::Configuration.new
-    configuration.api_key = "APIKEY"
-    path = 'test_path'
-    file = stub('file')
-    file.should_receive(:write).with <<-CONTENT
-require 'localeapp/rails'
-
-Localeapp.configure do |config|
-  config.api_key = 'APIKEY'
-end
-CONTENT
-    File.should_receive(:open).with(path, 'w+').and_yield(file)
-    configuration.write_rails_configuration(path)
-  end
-end
-
-
 describe Localeapp::Configuration, "#write_standalone_configuration(path)" do
   it "creates a configuration file containing the dot file configuration at the given path" do
     configuration = Localeapp::Configuration.new

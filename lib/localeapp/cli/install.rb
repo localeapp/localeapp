@@ -75,7 +75,17 @@ module Localeapp
         end
 
         def write_config_file
-          Localeapp.configuration.write_rails_configuration(config_file_path)
+          dir = File.dirname(config_file_path)
+          FileUtils.mkdir_p(dir)
+          File.open(config_file_path, 'w+') do |file|
+            file.write <<-CONTENT
+require 'localeapp/rails'
+
+Localeapp.configure do |config|
+  config.api_key = '#{key}'
+end
+CONTENT
+          end
         end
 
         def check_data_directory_exists

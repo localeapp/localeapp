@@ -106,20 +106,6 @@ module Localeapp
       !sending_environments.map { |v| v.to_s }.include?(environment_name)
     end
 
-    def write_rails_configuration(path)
-      dir = File.dirname(path)
-      FileUtils.mkdir_p(dir)
-      File.open(path, 'w+') do |file|
-        file.write <<-CONTENT
-require 'localeapp/rails'
-
-Localeapp.configure do |config|
-  config.api_key = '#{@api_key}'
-end
-CONTENT
-      end
-    end
-
     def write_standalone_configuration(path)
       dir = File.dirname(path)
       FileUtils.mkdir_p(dir)

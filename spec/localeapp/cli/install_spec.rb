@@ -145,11 +145,21 @@ end
 describe Localeapp::CLI::Install::DefaultInstaller, '#write_config_file' do
   let(:output) { StringIO.new }
   let(:path) { 'path' }
+  let(:key) { 'APIKEY' }
   let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
 
-  it "writes a rails configuration file" do
-    installer.stub!(:config_file_path).and_return(path)
-    Localeapp.configuration.should_receive(:write_rails_configuration).with(path)
+  it "creates a configuration file containing just the api key" do
+    installer.stub(:key).and_return(key)
+    installer.stub(:config_file_path).and_return(path)
+    file = stub('file')
+    file.should_receive(:write).with <<-CONTENT
+require 'localeapp/rails'
+
+Localeapp.configure do |config|
+  config.api_key = 'APIKEY'
+end
+CONTENT
+    File.should_receive(:open).with(path, 'w+').and_yield(file)
     installer.write_config_file
   end
 end

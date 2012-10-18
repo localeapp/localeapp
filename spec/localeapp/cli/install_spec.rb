@@ -251,23 +251,14 @@ describe Localeapp::CLI::Install::GithubInstaller, '#write_config_file' do
     installer.stub!(:config_file_path).and_return(path)
     installer.stub!(:data_directory).and_return(data_directory)
     installer.stub!(:create_config_dir).and_return(File.dirname(path))
-    File.stub!(:open).with(path, 'w+').and_yield(stub.as_null_object)
+    installer.stub!(:write_standalone_config)
     installer.stub!(:create_data_directory)
     installer.stub!(:create_gitignore)
     installer.stub!(:create_readme)
   end
 
-  it "creates a configuration file containing the dot file configuration at the given path" do
-    file = stub('file')
-    file.should_receive(:write).with <<-CONTENT
-Localeapp.configure do |config|
-  config.api_key                    = 'APIKEY'
-  config.translation_data_directory = 'locales'
-  config.synchronization_data_file  = '.localeapp/log.yml'
-  config.daemon_pid_file            = '.localeapp/localeapp.pid'
-end
-CONTENT
-    File.should_receive(:open).with(path, 'w+').and_yield(file)
+  it "creates a standalone configuration file" do
+    installer.should_receive(:write_standalone_config)
     installer.write_config_file
   end
 

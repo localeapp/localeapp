@@ -142,6 +142,17 @@ CONTENT
 
         def write_config_file
           dir = create_config_dir
+          write_standalone_config(dir)
+        end
+
+        private
+        def create_config_dir
+          dir = File.dirname(config_file_path)
+          FileUtils.mkdir_p(dir)
+          dir
+        end
+
+        def write_standalone_config(dir)
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT
 Localeapp.configure do |config|
@@ -152,13 +163,6 @@ Localeapp.configure do |config|
 end
 CONTENT
           end
-        end
-
-        private
-        def create_config_dir
-          dir = File.dirname(config_file_path)
-          FileUtils.mkdir_p(dir)
-          dir
         end
       end
 

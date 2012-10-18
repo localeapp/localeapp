@@ -24,9 +24,9 @@ module Localeapp
         end
 
         def execute(key = nil)
-          @key = key
+          self.key = key
           print_header
-          if validate_key(key)
+          if validate_key
             check_default_locale
             set_config_paths
             @output.puts "Writing configuration file to #{config_file_path}"
@@ -43,7 +43,7 @@ module Localeapp
           @output.puts ""
         end
 
-        def validate_key(key)
+        def validate_key
           @output.puts "Checking API key: #{key}"
           if key.nil?
             @output.puts "ERROR: You must supply an API key"
@@ -112,7 +112,7 @@ CONTENT
       end
 
       class HerokuInstaller < DefaultInstaller
-        def validate_key(_)
+        def validate_key
           @output.puts "Getting API key from heroku config"
           get_heroku_api_key
           if key.nil?
@@ -121,7 +121,7 @@ CONTENT
           else
             @output.puts "API Key: #{key}"
           end
-          super key
+          super
         end
 
         # AUDIT: Need to find a less hacky way of doing this

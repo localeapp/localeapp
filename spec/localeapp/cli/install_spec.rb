@@ -36,7 +36,8 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#execute(key = nil)' do
   end
 
   it "validates the key" do
-    installer.should_receive(:validate_key).with(key)
+    installer.should_receive(:key=).with(key)
+    installer.should_receive(:validate_key)
     installer.execute(key)
   end
 
@@ -86,20 +87,25 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#validate_key(key)' do
   let(:key) { 'MYAPIKEY' }
   let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
 
+  before do
+    installer.key = key
+  end
+
   it "displays error if key is nil" do
-    installer.validate_key(nil)
+    installer.key = nil
+    installer.validate_key
     output.string.should match(/You must supply an API key/)
   end
 
   it "displays error if the key is there but isn't valid on localeapp.com" do
     installer.stub!(:check_key).and_return([false, {}])
-    installer.validate_key(key)
+    installer.validate_key
     output.string.should match(/Project not found/)
   end
 
   it "displays project name if the key is there and valid on localeapp.com" do
     installer.stub!(:check_key).and_return([true, valid_project_data])
-    installer.validate_key(key)
+    installer.validate_key
     output.string.should match(/Test Project/)
   end
 end

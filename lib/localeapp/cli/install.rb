@@ -75,8 +75,7 @@ module Localeapp
         end
 
         def write_config_file
-          dir = File.dirname(config_file_path)
-          FileUtils.mkdir_p(dir)
+          create_config_dir
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT
 require 'localeapp/rails'
@@ -101,6 +100,10 @@ CONTENT
         private
         def config_dir
           File.dirname(config_file_path)
+        end
+
+        def create_config_dir
+          FileUtils.mkdir_p(config_dir)
         end
       end
 
@@ -151,10 +154,6 @@ CONTENT
         end
 
         private
-        def create_config_dir
-          FileUtils.mkdir_p(config_dir)
-        end
-
         def write_standalone_config
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT

@@ -203,10 +203,17 @@ describe Localeapp::Updater, ".dump(data)" do
   it "replaces the content of an existing yml file" do
     filepath = File.join(@yml_dir, 'en.yml')
     content = lambda { File.read(filepath) }
-    expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to <<-EN
+    if defined? Psych
+      expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to <<-EN
 en:
   updated: content
 EN
+    else
+      expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to <<-EN
+en: 
+  updated: content
+EN
+    end
   end
 
   it "creates a new yml file if an unknown locale is passed" do

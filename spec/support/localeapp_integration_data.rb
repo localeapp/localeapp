@@ -32,15 +32,12 @@ module LocaleappIntegrationData
   end
 
   def valid_export_data
-    <<YAML
-en:
-  foo:
-    monkey: hello
-    night: night
-es:
-  foo:
-    monkey: hola
-    night: noche
-YAML
+    { 'en' => {
+        'foo' => {'monkey' => 'hello', 'night' => 'night'}
+      },
+      'es' => {
+        'foo' => {'monkey' => 'hola', 'night' => 'noche'}
+      }
+    }
   end
 end

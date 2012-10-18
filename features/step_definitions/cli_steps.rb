@@ -17,7 +17,7 @@ end
 
 When /^I have a translations on localeapp\.com for the project with api key "([^"]*)"$/ do |api_key|
   uri = "https://api.localeapp.com/v1/projects/#{api_key}/translations/all.yml"
-  body = valid_export_data
+  body = valid_export_data.to_yaml
   add_fake_web_uri(:get, uri, ['200', 'OK'], body)
 end
 

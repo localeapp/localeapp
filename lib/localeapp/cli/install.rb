@@ -76,6 +76,10 @@ module Localeapp
 
         def write_config_file
           create_config_dir
+          write_rails_config
+        end
+
+        def write_rails_config
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT
 require 'localeapp/rails'

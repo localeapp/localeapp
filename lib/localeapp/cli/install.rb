@@ -17,7 +17,7 @@ module Localeapp
       end
 
       class DefaultInstaller
-        attr_reader :valid_key, :project_data, :config_file_path, :data_directory
+        attr_reader :project_data, :config_file_path, :data_directory
 
         def initialize(output)
           @output = output
@@ -25,8 +25,7 @@ module Localeapp
 
         def execute(key = nil)
           print_header
-          validate_key(key)
-          if valid_key
+          if validate_key(key)
             check_default_locale
             set_config_paths
             @output.puts "Writing configuration file to #{config_file_path}"
@@ -47,16 +46,17 @@ module Localeapp
           @output.puts "Checking API key: #{key}"
           if key.nil?
             @output.puts "ERROR: You must supply an API key"
-            @valid_key = false
-            return
+            return false
           end
 
-          @valid_key, @project_data = check_key(key)
-          if @valid_key
+          valid_key, @project_data = check_key(key)
+          if valid_key
             @output.puts "Success!"
             @output.puts "Project: #{project_data['name']}"
+            true
           else
             @output.puts "ERROR: Project not found"
+            false
           end
         end
 

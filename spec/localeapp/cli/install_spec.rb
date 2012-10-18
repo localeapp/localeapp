@@ -28,7 +28,7 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#execute(key = nil)' do
   before do
     installer.stub!(:print_header)
     installer.stub!(:validate_key)
-    installer.stub!(:valid_key).and_return(false)
+    installer.stub!(:validate_key).and_return(false)
   end
 
   it "prints the header" do
@@ -49,7 +49,7 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#execute(key = nil)' do
 
   context "When key validation is successful" do
     before do
-      installer.stub!(:valid_key).and_return(true)
+      installer.stub!(:validate_key).and_return(true)
       installer.stub!(:check_default_locale)
       installer.stub!(:set_config_paths)
       installer.stub!(:write_config_file)

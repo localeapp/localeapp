@@ -16,8 +16,8 @@ When /^I have a valid project on localeapp\.com but an incorrect api key "([^"]*
 end
 
 When /^I have a translations on localeapp\.com for the project with api key "([^"]*)"$/ do |api_key|
-  uri = "https://api.localeapp.com/v1/projects/#{api_key}/translations.yml"
-  body = valid_translation_data.to_yaml
+  uri = "https://api.localeapp.com/v1/projects/#{api_key}/translations/all.yml"
+  body = valid_export_data.to_yaml
   add_fake_web_uri(:get, uri, ['200', 'OK'], body)
 end
 

@@ -26,6 +26,17 @@ module Localeapp
       [:post, translations_url(options)]
     end
 
+    def export_endpoint(options = {})
+      [:get, export_url(options)]
+    end
+
+    def export_url(options = {})
+      options[:format] ||= 'yml'
+      url = http_scheme.build(base_options.merge(:path => export_path(options[:format])))
+      url.query = options[:query].map { |k,v| "#{k}=#{v}" }.join('&') if options[:query]
+      url.to_s
+    end
+
     def missing_translations_endpoint(options = {})
       [:post, missing_translations_url(options)]
     end
@@ -70,6 +81,12 @@ module Localeapp
 
     def translations_path(format = nil)
       path = project_path << '/translations'
+      path << ".#{format}" if format
+      path
+    end
+
+    def export_path(format = nil)
+      path = project_path << '/translations/all'
       path << ".#{format}" if format
       path
     end

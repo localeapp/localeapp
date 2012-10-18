@@ -47,7 +47,8 @@ Feature: Installation
     Checking API key: MYAPIKEY
     Success!
     Project: Test Project
-    Default Locale: en (English)
+    NOTICE: you probably want to add .localeapp to your .gitignore file
+    Writing configuration file to .localeapp/config.rb
     """
     And help should not be displayed
     And a file named ".localeapp/config.rb" should exist

@@ -238,23 +238,6 @@ CONTENT
   end
 end
 
-describe Localeapp::CLI::Install::GithubInstaller, '#set_config_paths' do
-  let(:output) { StringIO.new }
-  let(:installer) { Localeapp::CLI::Install::GithubInstaller.new(output) }
-
-  before do
-    installer.set_config_paths
-  end
-
-  it "sets the initializer path for a standalone app" do
-    installer.config_file_path.should == ".localeapp/config.rb"
-  end
-
-  it "sets the data directory for a standalone app" do
-    installer.data_directory.should == "locales"
-  end
-end
-
 describe Localeapp::CLI::Install::GithubInstaller, '#write_config_file' do
   let(:output) { StringIO.new }
   let(:path) { 'path' }

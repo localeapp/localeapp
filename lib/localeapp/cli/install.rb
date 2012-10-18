@@ -129,17 +129,6 @@ CONTENT
         end
       end
 
-      class GithubInstaller < DefaultInstaller
-        def set_config_paths
-          @config_file_path = ".localeapp/config.rb"
-          @data_directory   = "locales"
-        end
-
-        def write_config_file
-          Localeapp.configuration.write_github_configuration(config_file_path, project_data)
-        end
-      end
-
       class StandaloneInstaller < DefaultInstaller
         def check_default_locale
           # do nothing standalone
@@ -166,6 +155,13 @@ CONTENT
           end
         end
       end
+
+      class GithubInstaller < StandaloneInstaller
+        def write_config_file
+          Localeapp.configuration.write_github_configuration(config_file_path, project_data)
+        end
+      end
+
     end
   end
 end

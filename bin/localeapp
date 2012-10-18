@@ -44,7 +44,7 @@ command :install do |c|
   c.desc "install configuration files in .localeapp/"
   c.switch [:s, 'standalone']
 
-  c.desc "create configuration when using localeapp via a heroku addon"
+  c.desc "create configuration when using localeapp via a heroku addon (PRE ALPHA)"
   c.switch [:h, 'heroku']
 
   c.desc "install a skeleton project suitable for Github"

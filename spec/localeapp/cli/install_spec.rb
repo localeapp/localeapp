@@ -132,7 +132,7 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#set_config_paths' do
     installer.set_config_paths
   end
 
-  it "sets the initializer path for a rails app" do
+  it "sets the initializer config_file_path for a rails app" do
     installer.config_file_path.should == "config/initializers/localeapp.rb"
   end
 
@@ -143,13 +143,13 @@ end
 
 describe Localeapp::CLI::Install::DefaultInstaller, '#write_config_file' do
   let(:output) { StringIO.new }
-  let(:path) { 'path' }
+  let(:config_file_path) { 'config/initializers/localeapp.rb' }
   let(:key) { 'APIKEY' }
   let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
 
   it "creates a configuration file containing just the api key" do
     installer.key = key
-    installer.config_file_path = path
+    installer.config_file_path = config_file_path
     file = stub('file')
     file.should_receive(:write).with <<-CONTENT
 require 'localeapp/rails'
@@ -158,28 +158,28 @@ Localeapp.configure do |config|
   config.api_key = 'APIKEY'
 end
 CONTENT
-    File.should_receive(:open).with(path, 'w+').and_yield(file)
+    File.should_receive(:open).with(config_file_path, 'w+').and_yield(file)
     installer.write_config_file
   end
 end
 
 describe Localeapp::CLI::Install::DefaultInstaller, '#check_data_directory_exists' do
   let(:output) { StringIO.new }
-  let(:path) { 'locales' }
+  let(:data_directory) { 'locales' }
   let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
 
   before do
-    installer.stub!(:data_directory).and_return(path)
+    installer.data_directory = data_directory
   end
 
   it "displays warning if config.translation_data_directory doesn't exist" do
-    File.stub(:directory?).with(path).and_return(false)
+    File.stub(:directory?).with(data_directory).and_return(false)
     installer.check_data_directory_exists
     output.string.should match(/Your translation data will be stored there./)
   end
 
   it "doesn't display a warning if translation_data_directory exists" do
-    File.stub(:directory?).with(path).and_return(true)
+    File.stub(:directory?).with(data_directory).and_return(true)
     installer.check_data_directory_exists
     output.string.should == ''
   end
@@ -203,7 +203,7 @@ describe Localeapp::CLI::Install::StandaloneInstaller, '#set_config_paths' do
     installer.set_config_paths
   end
 
-  it "sets the initializer path for a standalone app" do
+  it "sets the initializer config_file_path for a standalone app" do
     installer.config_file_path.should == ".localeapp/config.rb"
   end
 
@@ -215,14 +215,14 @@ end
 describe Localeapp::CLI::Install::StandaloneInstaller, '#write_config_file' do
   let(:output) { StringIO.new }
   let(:key) { 'APIKEY' }
-  let(:path) { '.localeapp/config.rb' }
+  let(:config_file_path) { '.localeapp/config.rb' }
   let(:data_directory) { 'locales' }
   let(:installer) { Localeapp::CLI::Install::StandaloneInstaller.new(output) }
 
-  it "creates a configuration file containing the dot file configuration at the given path" do
-    installer.stub!(:create_config_dir).and_return(File.dirname(path))
+  it "creates a configuration file containing the dot file configuration at the given config_file_path" do
+    installer.stub!(:create_config_dir).and_return(File.dirname(config_file_path))
     installer.key = key
-    installer.config_file_path = path
+    installer.config_file_path = config_file_path
     installer.data_directory = data_directory
     file = stub('file')
     file.should_receive(:write).with <<-CONTENT
@@ -233,7 +233,7 @@ Localeapp.configure do |config|
   config.daemon_pid_file            = '.localeapp/localeapp.pid'
 end
 CONTENT
-    File.should_receive(:open).with(path, 'w+').and_yield(file)
+    File.should_receive(:open).with(config_file_path, 'w+').and_yield(file)
     installer.write_config_file
   end
 end
@@ -241,15 +241,15 @@ end
 describe Localeapp::CLI::Install::GithubInstaller, '#write_config_file' do
   let(:output) { StringIO.new }
   let(:key) { 'APIKEY' }
-  let(:path) { '.localeapp/config.rb' }
+  let(:config_file_path) { '.localeapp/config.rb' }
   let(:data_directory) { 'locales' }
   let(:installer) { Localeapp::CLI::Install::GithubInstaller.new(output) }
 
   before do
     installer.key = key
-    installer.config_file_path = path
+    installer.config_file_path = config_file_path
     installer.data_directory = data_directory
-    installer.stub!(:create_config_dir).and_return(File.dirname(path))
+    installer.stub!(:create_config_dir).and_return(File.dirname(config_file_path))
     installer.stub!(:write_standalone_config)
     installer.stub!(:create_data_directory)
     installer.stub!(:create_gitignore)

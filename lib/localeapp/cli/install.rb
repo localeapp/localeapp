@@ -152,7 +152,18 @@ CONTENT
         end
 
         def write_config_file
-          Localeapp.configuration.write_standalone_configuration(config_file_path)
+          dir = File.dirname(config_file_path)
+          FileUtils.mkdir_p(dir)
+          File.open(config_file_path, 'w+') do |file|
+            file.write <<-CONTENT
+Localeapp.configure do |config|
+  config.api_key                    = '#{key}'
+  config.translation_data_directory = '#{data_directory}'
+  config.synchronization_data_file  = '#{dir}/log.yml'
+  config.daemon_pid_file            = '#{dir}/localeapp.pid'
+end
+CONTENT
+          end
         end
       end
     end

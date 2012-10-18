@@ -215,12 +215,25 @@ end
 
 describe Localeapp::CLI::Install::StandaloneInstaller, '#write_config_file' do
   let(:output) { StringIO.new }
-  let(:path) { 'path' }
+  let(:key) { 'APIKEY' }
+  let(:path) { '.localeapp/config.rb' }
+  let(:data_directory) { 'locales' }
   let(:installer) { Localeapp::CLI::Install::StandaloneInstaller.new(output) }
 
-  it "writes a standalone configuration file" do
-    installer.stub!(:config_file_path).and_return(path)
-    Localeapp.configuration.should_receive(:write_standalone_configuration).with(path)
+  it "creates a configuration file containing the dot file configuration at the given path" do
+    installer.stub(:key).and_return(key)
+    installer.stub(:config_file_path).and_return(path)
+    installer.stub(:data_directory).and_return(data_directory)
+    file = stub('file')
+    file.should_receive(:write).with <<-CONTENT
+Localeapp.configure do |config|
+  config.api_key                    = 'APIKEY'
+  config.translation_data_directory = 'locales'
+  config.synchronization_data_file  = '.localeapp/log.yml'
+  config.daemon_pid_file            = '.localeapp/localeapp.pid'
+end
+CONTENT
+    File.should_receive(:open).with(path, 'w+').and_yield(file)
     installer.write_config_file
   end
 end

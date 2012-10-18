@@ -27,7 +27,6 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#execute(key = nil)' do
 
   before do
     installer.stub!(:print_header)
-    installer.stub!(:validate_key)
     installer.stub!(:validate_key).and_return(false)
   end
 
@@ -149,8 +148,8 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#write_config_file' do
   let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
 
   it "creates a configuration file containing just the api key" do
-    installer.stub(:key).and_return(key)
-    installer.stub(:config_file_path).and_return(path)
+    installer.key = key
+    installer.config_file_path = path
     file = stub('file')
     file.should_receive(:write).with <<-CONTENT
 require 'localeapp/rails'
@@ -222,9 +221,9 @@ describe Localeapp::CLI::Install::StandaloneInstaller, '#write_config_file' do
 
   it "creates a configuration file containing the dot file configuration at the given path" do
     installer.stub!(:create_config_dir).and_return(File.dirname(path))
-    installer.stub(:key).and_return(key)
-    installer.stub(:config_file_path).and_return(path)
-    installer.stub(:data_directory).and_return(data_directory)
+    installer.key = key
+    installer.config_file_path = path
+    installer.data_directory = data_directory
     file = stub('file')
     file.should_receive(:write).with <<-CONTENT
 Localeapp.configure do |config|
@@ -247,9 +246,9 @@ describe Localeapp::CLI::Install::GithubInstaller, '#write_config_file' do
   let(:installer) { Localeapp::CLI::Install::GithubInstaller.new(output) }
 
   before do
-    installer.stub!(:key).and_return(key)
-    installer.stub!(:config_file_path).and_return(path)
-    installer.stub!(:data_directory).and_return(data_directory)
+    installer.key = key
+    installer.config_file_path = path
+    installer.data_directory = data_directory
     installer.stub!(:create_config_dir).and_return(File.dirname(path))
     installer.stub!(:write_standalone_config)
     installer.stub!(:create_data_directory)

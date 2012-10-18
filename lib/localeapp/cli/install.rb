@@ -17,7 +17,7 @@ module Localeapp
       end
 
       class DefaultInstaller
-        attr_reader :key, :project_data, :config_file_path, :data_directory
+        attr_accessor :key, :project_data, :config_file_path, :data_directory
 
         def initialize(output)
           @output = output

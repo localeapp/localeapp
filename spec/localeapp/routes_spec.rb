@@ -82,6 +82,38 @@ describe Localeapp::Routes do
     end
   end
 
+  describe "#export_url" do
+    it "it extends the project_url and defaults to yml" do
+      with_configuration(@config) do
+        @routes.export_url.should == "https://test.host/v1/projects/API_KEY/translations/all.yml"
+      end
+    end
+
+    it "adds query parameters on to the url" do
+      with_configuration(@config) do
+        url = @routes.export_url(:query => {:updated_at => '2011-04-19', :foo => :bar})
+        url.should match(/\?.*updated_at=2011-04-19/)
+        url.should match(/\?.*foo=bar/)
+      end
+    end
+
+    it "can be changed to another content type" do
+      with_configuration(@config) do
+        @routes.export_url(:format => :json).should == 'https://test.host/v1/projects/API_KEY/translations/all.json'
+      end
+    end
+  end
+
+  describe "#export_endpoint(options = {})" do
+    it "returns :get and the export url for the options" do
+      with_configuration(@config) do
+        options = { :foo => :bar }
+        @routes.should_receive(:export_url).with(options).and_return('url')
+        @routes.export_endpoint(options).should == [:get, 'url']
+      end
+    end
+  end
+
   describe "#missing_translations_endpoint(options = {})" do
     it "returns :post and the missing_translations url for the options" do
       with_configuration(@config) do

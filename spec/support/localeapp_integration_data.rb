@@ -30,4 +30,17 @@ module LocaleappIntegrationData
       'locales' => %w{en es}
     }
   end
+
+  def valid_export_data
+    <<YAML
+en:
+  foo:
+    monkey: hello
+    night: night
+es:
+  foo:
+    monkey: hola
+    night: noche
+YAML
+  end
 end

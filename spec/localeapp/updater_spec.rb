@@ -182,3 +182,58 @@ JA
     mode.to_s(8)[3, 3].should == "644"
   end
 end
+
+describe Localeapp::Updater, ".dump(data)" do
+  before(:each) do
+    @yml_dir = Dir.mktmpdir
+    Dir.glob(File.join(File.dirname(__FILE__), '..', 'fixtures', '*.yml')).each { |f| FileUtils.cp f, @yml_dir }
+    with_configuration(:translation_data_directory => @yml_dir) do
+      @updater = Localeapp::Updater.new
+    end
+  end
+
+  after(:each) do
+    FileUtils.rm_rf @yml_dir
+  end
+
+  def do_dump(data)
+    @updater.dump(data)
+  end
+
+  it "replaces the content of an existing yml file" do
+    filepath = File.join(@yml_dir, 'en.yml')
+    content = lambda { File.read(filepath) }
+    expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to <<-EN
+en:
+  updated: content
+EN
+  end
+
+  it "creates a new yml file if an unknown locale is passed" do
+    do_dump({'ja' => { 'foo' => 'bar'} })
+    if defined? Psych
+      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
+ja:
+  foo: bar
+JA
+    else
+      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
+ja: 
+  foo: bar
+JA
+    end
+  end
+
+  it "doesn't change a yml file's permissions" do
+    filepath = File.join(@yml_dir, 'en.yml')
+    File.chmod(0777, filepath)
+    permissions = lambda { File.stat(filepath).mode.to_s(8) }
+    expect { do_dump({'en' => { 'foo' => 'bar'} }) }.to_not change(permissions, :call)
+  end
+
+  it "creates new yml files chmodded with 644" do
+    do_dump({'ja' => { 'foo' => 'bar'} })
+    mode = File.stat(File.join(@yml_dir, 'ja.yml')).mode # octal
+    mode.to_s(8)[3, 3].should == "644"
+  end
+end

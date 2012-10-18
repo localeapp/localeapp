@@ -17,13 +17,14 @@ module Localeapp
       end
 
       class DefaultInstaller
-        attr_reader :project_data, :config_file_path, :data_directory
+        attr_reader :key, :project_data, :config_file_path, :data_directory
 
         def initialize(output)
           @output = output
         end
 
         def execute(key = nil)
+          @key = key
           print_header
           if validate_key(key)
             check_default_locale

@@ -1,3 +1,8 @@
+# Version 0.6.3
+
+* Pulling translations now completely replaces the contents of the yaml
+  files instead of selectively updating certain translations.
+
 # Version 0.6.2
 
 * Fix bug updating synchronization files that caused polling_interval to be ignored

@@ -1,3 +1,8 @@
+# Version 0.6.4
+
+* Don't send defaults if they're an array as this was causing gems that
+  supply a lookup chain to be sending unwanted translations.
+
 # Version 0.6.3
 
 * Pulling translations now completely replaces the contents of the yaml

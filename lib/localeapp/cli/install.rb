@@ -119,7 +119,9 @@ CONTENT
             @output.puts "ERROR: No api key found in heroku config, have you installed the localeapp addon?"
             return
           else
-            @output.puts "API Key: #{key}"
+            @output.puts "Add the following line to your .env file for Foreman"
+            @output.puts "LOCALEAPP_API_KEY=#{key}"
+            @output.puts '^' * 80
           end
           super
         end
@@ -146,7 +148,7 @@ CONTENT
 require 'localeapp/rails'
 
 Localeapp.configure do |config|
-  config.api_key = '#{key}'
+  config.api_key = ENV['LOCALEAPP_API_KEY']
   config.poll_interval = 300 if Rails.env.staging?
   config.polling_environments = [:development, :staging]
   config.reloading_environments = [:development, :staging]

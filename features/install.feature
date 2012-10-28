@@ -65,7 +65,9 @@ Feature: Installation
     Localeapp Install
 
     Getting API key from heroku config
-    API Key: MYAPIKEY
+    Add the following line to your .env file for Foreman
+    LOCALEAPP_API_KEY=MYAPIKEY
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     Checking API key: MYAPIKEY
     Success!
     Project: Test Project
@@ -73,7 +75,7 @@ Feature: Installation
     """
     And help should not be displayed
     And a file named "config/initializers/localeapp.rb" should exist
-    And the file "config/initializers/localeapp.rb" should contain "config.api_key = 'MYAPIKEY'"
+    And the file "config/initializers/localeapp.rb" should contain "config.api_key = ENV['LOCALEAPP_API_KEY']"
     And the exit status should be 0
 
   Scenario: Running install with bad api key

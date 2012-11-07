@@ -82,6 +82,24 @@ describe Localeapp::Routes do
     end
   end
 
+  describe "#remove_endpoint(options = {})" do
+    it "returns :delete and the remove url for the options" do
+      with_configuration(@config) do
+        options = { :key => 'foo.bar' }
+        @routes.should_receive(:remove_url).with(options).and_return('url')
+        @routes.remove_endpoint(options).should == [:delete, 'url']
+      end
+    end
+  end
+
+  describe "#remove_url(options = {})" do
+    it "it extends the project_url and includes the escaped key name" do
+      with_configuration(@config) do
+        @routes.remove_url(:key => 'test.key').should == "https://test.host/v1/projects/API_KEY/translations/test%2Ekey"
+      end
+    end
+  end
+
   describe "#export_url" do
     it "it extends the project_url and defaults to yml" do
       with_configuration(@config) do

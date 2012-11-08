@@ -19,6 +19,14 @@ describe Localeapp::Configuration do
     expect { configuration.proxy = 'http://localhost:8888' }.to change(configuration, :proxy).to('http://localhost:8888')
   end
 
+  it "sets timeout to 60 by default" do
+    configuration.timeout.should == 60
+  end
+
+  it "allows timeout setting to be overridden" do
+    expect { configuration.timeout = 120 }.to change(configuration, :timeout).to(120)
+  end
+
   it "sets secure to true by default" do
     configuration.secure.should == true
   end

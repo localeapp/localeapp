@@ -10,6 +10,9 @@ module Localeapp
     # The proxy to connect via
     attr_accessor :proxy
 
+    # The request timeout
+    attr_accessor :timeout
+
     # Whether to use https or not (defaults to true)
     attr_accessor :secure
 
@@ -76,6 +79,7 @@ module Localeapp
     def defaults
       defaults = {
         :host                       => 'api.localeapp.com',
+        :timeout                    => 60,
         :secure                     => true,
         :ssl_verify                 => false,
         :sending_environments       => %w(development),

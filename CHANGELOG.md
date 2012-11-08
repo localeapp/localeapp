@@ -1,4 +1,8 @@
-# Version 0.6.4
+# Version 0.6.6
+
+* Add a timeout configuration setting
+
+# Version 0.6.5
 
 * Build gem with 1.8.7 to fix gemspec errors
 

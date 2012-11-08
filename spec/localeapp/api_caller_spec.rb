@@ -96,6 +96,14 @@ describe Localeapp::ApiCaller, "#call(object)" do
     end
   end
 
+  context "Timeout" do
+    it "sets the timeout to the configured timeout" do
+      Localeapp.configuration.timeout = 120
+      RestClient::Request.should_receive(:execute).with(hash_including(:timeout => 120)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+  end
+
   context "a GET request" do
     it "makes the call to the api" do
       RestClient::Request.should_receive(:execute).with(hash_including(:url => @url, :method => :get)).and_return(double('response', :code => 200))

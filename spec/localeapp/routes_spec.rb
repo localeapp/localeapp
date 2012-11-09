@@ -100,6 +100,24 @@ describe Localeapp::Routes do
     end
   end
 
+  describe "#rename_endpoint(options = {})" do
+    it "returns :post and the rename url for the options" do
+      with_configuration(@config) do
+        options = { :current_name => 'foo.bar' }
+        @routes.should_receive(:rename_url).with(options).and_return('url')
+        @routes.rename_endpoint(options).should == [:post, 'url']
+      end
+    end
+  end
+
+  describe "#rename_url(options = {})" do
+    it "it extends the project_url and includes the escaped key name" do
+      with_configuration(@config) do
+        @routes.rename_url(:current_name => 'test.key').should == "https://test.host/v1/projects/API_KEY/translations/test%2Ekey/rename"
+      end
+    end
+  end
+
   describe "#export_url" do
     it "it extends the project_url and defaults to yml" do
       with_configuration(@config) do

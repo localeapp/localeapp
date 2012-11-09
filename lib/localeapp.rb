@@ -42,6 +42,7 @@ require 'localeapp/cli/push'
 require 'localeapp/cli/update'
 require 'localeapp/cli/add'
 require 'localeapp/cli/remove'
+require 'localeapp/cli/rename'
 require 'localeapp/cli/daemon'
 
 # AUDIT: Will this work on ruby 1.9.x

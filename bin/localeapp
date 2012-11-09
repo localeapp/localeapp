@@ -85,6 +85,20 @@ command :rm do |c|
   end
 end
 
+desc "renames a key in the project"
+arg_name "<current key name> <new key name>"
+command :mv do |c|
+  c.action do |global_options, options, args|
+    current_name = args.shift
+    new_name = args.shift
+    if current_name.nil? || new_name.nil?
+      exit_now! "localeapp mv requires a current key name and a new key name", 1
+    else
+      Localeapp::CLI::Rename.new(global_options).execute(current_name, new_name, *args)
+    end
+  end
+end
+
 desc "Pulls all translations from localeapp.com"
 command :pull do |c|
   c.action do |global_options, options, args|

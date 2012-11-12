@@ -1,3 +1,7 @@
+# Version 0.6.7
+
+* Add rm and mv commands for deleting / renaming keys from the command line
+
 # Version 0.6.6
 
 * Add a timeout configuration setting

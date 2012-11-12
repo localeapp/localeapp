@@ -27,6 +27,13 @@ When /^new translations for the api key "([^"]*)" since "([^"]*)" with time "([^
   add_fake_web_uri(:get, uri, ['200', 'OK'], body, 'date' => Time.at(new_time.to_i).httpdate)
 end
 
+
+When /^I have a valid project on localeapp\.com with api key "([^"]*)" and the translation key "([^"]*)"/ do |api_key, key_name|
+  uri = "https://api.localeapp.com/v1/projects/#{api_key}/translations/#{key_name.gsub(/\./, '%2E')}"
+  add_fake_web_uri(:delete, uri, ['200', 'OK'], '')
+  add_fake_web_uri(:post, uri + '/rename', ['200', 'OK'], '')
+end
+
 When /^an initializer file$/ do
   steps %Q{
     And a file named "config/initializers/localeapp.rb" with:

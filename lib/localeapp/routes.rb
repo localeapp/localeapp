@@ -1,3 +1,5 @@
+require 'rack/utils'
+
 module Localeapp
   module Routes
     VERSION = 'v1'
@@ -28,6 +30,24 @@ module Localeapp
 
     def export_endpoint(options = {})
       [:get, export_url(options)]
+    end
+
+    def remove_endpoint(options = {})
+      [:delete, remove_url(options)]
+    end
+
+    def remove_url(options = {})
+      url = http_scheme.build(base_options.merge(:path => remove_path(options[:key], options[:format])))
+      url.to_s
+    end
+
+    def rename_endpoint(options = {})
+      [:post, rename_url(options)]
+    end
+
+    def rename_url(options = {})
+      url = http_scheme.build(base_options.merge(:path => rename_path(options[:current_name], options[:format])))
+      url.to_s
     end
 
     def export_url(options = {})
@@ -83,6 +103,24 @@ module Localeapp
       path = project_path << '/translations'
       path << ".#{format}" if format
       path
+    end
+
+    def remove_path(key, format = nil)
+      raise "remove_path requires a key" if key.nil?
+      path = translations_path << "/#{escape_key(key)}"
+      path << ".#{format}" if format
+      path
+    end
+
+    def rename_path(current_name, format = nil)
+      raise "rename_path requires current name" if current_name.nil?
+      path = translations_path << "/#{escape_key(current_name)}" << '/rename'
+      path << ".#{format}" if format
+      path
+    end
+
+    def escape_key(key)
+      Rack::Utils.escape(key).gsub(/\./, '%2E')
     end
 
     def export_path(format = nil)

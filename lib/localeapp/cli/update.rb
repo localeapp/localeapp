@@ -1,10 +1,6 @@
 module Localeapp
   module CLI
-    class Update
-      def initialize(output = $stdout)
-        @output = output
-      end
-
+    class Update < Command
       def execute
         poller = Localeapp::Poller.new
         @output.puts("Localeapp update: checking for translations since #{poller.updated_at}")

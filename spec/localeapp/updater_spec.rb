@@ -37,7 +37,20 @@ describe Localeapp::Updater, ".update(data)" do
 
     if defined? Psych
       if Psych::VERSION == '1.0.0'
-        File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
+        if RUBY_ENGINE == 'jruby'
+          File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
+en:
+  foo:
+    monkey: hello
+    night: the night
+  space:
+  blank: ''
+  tilde:
+  scalar1:
+  scalar2:
+EN
+        else
+          File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en:
   foo:
     monkey: hello
@@ -48,6 +61,7 @@ en:
   scalar1: !!null 
   scalar2: !!null 
 EN
+        end
       else
         File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
 en:
@@ -141,5 +155,92 @@ JA
       })
       File.read(File.join(@yml_dir, 'en.yml')).should match(/foo: ! 'bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar '/m)
     end
+  end
+
+  it "doesn't change a yml file's permissions" do
+    filepath = File.join(@yml_dir, 'en.yml')
+    File.chmod(0777, filepath)
+    permissions = lambda { File.stat(filepath).mode.to_s(8) }
+    expect {
+      do_update(
+        'translations' => {
+          'en' => { 'foo' => 'bar'}
+        },
+        'locales' => ['en']
+      )
+    }.to_not change(permissions, :call)
+  end
+
+  it "creates new yml files chmodded with 644" do
+    do_update({
+      'translations' => {
+        'ja' => { 'foo' => 'bar'}
+      },
+      'locales' => ['ja']
+    })
+    mode = File.stat(File.join(@yml_dir, 'ja.yml')).mode # octal
+    mode.to_s(8)[3, 3].should == "644"
+  end
+end
+
+describe Localeapp::Updater, ".dump(data)" do
+  before(:each) do
+    @yml_dir = Dir.mktmpdir
+    Dir.glob(File.join(File.dirname(__FILE__), '..', 'fixtures', '*.yml')).each { |f| FileUtils.cp f, @yml_dir }
+    with_configuration(:translation_data_directory => @yml_dir) do
+      @updater = Localeapp::Updater.new
+    end
+  end
+
+  after(:each) do
+    FileUtils.rm_rf @yml_dir
+  end
+
+  def do_dump(data)
+    @updater.dump(data)
+  end
+
+  it "replaces the content of an existing yml file" do
+    filepath = File.join(@yml_dir, 'en.yml')
+    content = lambda { File.read(filepath) }
+    if defined? Psych
+      expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to <<-EN
+en:
+  updated: content
+EN
+    else
+      expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to <<-EN
+en: 
+  updated: content
+EN
+    end
+  end
+
+  it "creates a new yml file if an unknown locale is passed" do
+    do_dump({'ja' => { 'foo' => 'bar'} })
+    if defined? Psych
+      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
+ja:
+  foo: bar
+JA
+    else
+      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
+ja: 
+  foo: bar
+JA
+    end
+  end
+
+  it "doesn't change a yml file's permissions" do
+    filepath = File.join(@yml_dir, 'en.yml')
+    File.chmod(0777, filepath)
+    permissions = lambda { File.stat(filepath).mode.to_s(8) }
+    expect { do_dump({'en' => { 'foo' => 'bar'} }) }.to_not change(permissions, :call)
+  end
+
+  it "creates new yml files chmodded with 644" do
+    do_dump({'ja' => { 'foo' => 'bar'} })
+    mode = File.stat(File.join(@yml_dir, 'ja.yml')).mode # octal
+    mode.to_s(8)[3, 3].should == "644"
   end
 end

@@ -1,11 +1,7 @@
 module Localeapp
   module CLI
-    class Push
+    class Push < Command
       include ::Localeapp::ApiCall
-
-      def initialize(output = $stdout)
-        @output = output
-      end
 
       def execute(path = nil)
         @output.puts "Localeapp Push"

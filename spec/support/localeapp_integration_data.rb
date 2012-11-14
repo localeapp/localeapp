@@ -30,4 +30,14 @@ module LocaleappIntegrationData
       'locales' => %w{en es}
     }
   end
+
+  def valid_export_data
+    { 'en' => {
+        'foo' => {'monkey' => 'hello', 'night' => 'night'}
+      },
+      'es' => {
+        'foo' => {'monkey' => 'hola', 'night' => 'noche'}
+      }
+    }
+  end
 end

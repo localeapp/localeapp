@@ -144,20 +144,20 @@ can be disabled in a similar way to polling and sending:
 
     config.reloading_environments = []
 
-### Inviting other developers and translators
+## Inviting other developers and translators
 
 You can invite other developers and translators via localeapp.com.  Developers
 have access to all the content and all the locales. Translators are restricted
 to editing only the locales you give them access too.
 
-### Adding a locale
+## Adding a locale
 
 If we find an unknown locale during an import we'll add it to your project.
 You can also add a new locale to a project via localeapp.com. This will create
 missing translations for every translation key. You will need to restart any
 listeners completely to pick up the new locale.
 
-### Syck, Psych, and creating YAML
+## Syck, Psych, and creating YAML
 
 Since ruby 1.9.3-p0 Psych has been the default YAML engine in Ruby. Psych is
 based on libyaml and fixes a number of issues with the previous YAML library,
@@ -168,13 +168,13 @@ but it does write YAML differently to Psych so you will notice differences
 between exporting directly from localeapp.com and doing localeapp pull on the
 command line unless you're using 1.9.3+ or have installed Psych as a gem.
 
-### Proxies
+## Proxies
 
 If you need to go through a proxy server, you can configure it with:
 
     config.proxy = "http://my.proxy.com:8888"
 
-### SSL Certificate verification
+## SSL Certificate verification
 
 localeapp.com uses https everywhere but certificate validation is turned off by
 default. This is because ruby doesn't know how to read the certs from the OSX
@@ -188,7 +188,7 @@ See [this article on Ruby Inside][1] for some more details.
 
 [1]: http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html
 
-### Support and feedback
+## Support and feedback
 
 You can contact us via the support link at the bottom of the page or emailing
-info@localeapp.com
+support@localeapp.com

@@ -8,16 +8,16 @@ module Localeapp
 
       def handle_translation_updates
         unless ::Localeapp.configuration.polling_disabled?
-          ::Localeapp.log Time.now.to_i.to_s << '-- Handling translation updates'
+          ::Localeapp.log_with_time 'Handling translation updates'
           if ::Localeapp.poller.needs_polling?
-            ::Localeapp.log Time.now.to_i.to_s << ' - polling'
+            ::Localeapp.log_with_time 'polling'
             ::Localeapp.poller.poll!
           end
         end
 
         unless ::Localeapp.configuration.reloading_disabled?
           if ::Localeapp.poller.needs_reloading?
-            ::Localeapp.log Time.now.to_i.to_s << '- reloading I18n'
+            ::Localeapp.log_with_time 'reloading I18n'
             I18n.reload!
             ::Localeapp.poller.updated_at = ::Localeapp.poller.synchronization_data[:updated_at]
           end

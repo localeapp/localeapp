@@ -1,3 +1,3 @@
 module Localeapp
-  VERSION = "0.5.0"
+  VERSION = "0.6.7"
 end

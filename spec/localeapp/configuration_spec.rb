@@ -19,6 +19,14 @@ describe Localeapp::Configuration do
     expect { configuration.proxy = 'http://localhost:8888' }.to change(configuration, :proxy).to('http://localhost:8888')
   end
 
+  it "sets timeout to 60 by default" do
+    configuration.timeout.should == 60
+  end
+
+  it "allows timeout setting to be overridden" do
+    expect { configuration.timeout = 120 }.to change(configuration, :timeout).to(120)
+  end
+
   it "sets secure to true by default" do
     configuration.secure.should == true
   end
@@ -95,210 +103,63 @@ describe Localeapp::Configuration do
     end
   end
 
-  context "disabled_sending_environments" do
-    it "sets deprecated_environment_config_used flag to true" do
-      configuration.disabled_sending_environments = %w(foo bar)
-      configuration.deprecated_environment_config_used?.should be_true
-    end
-
-    it "does not include development by default" do
-      configuration.environment_name = 'development'
-      configuration.sending_disabled?.should be_false
-    end
-
-    it "include cucumber by default" do
-      configuration.environment_name = 'cucumber'
-      configuration.sending_disabled?.should be_true
-    end
-
-    it "include test by default" do
-      configuration.environment_name = 'test'
-      configuration.sending_disabled?.should be_true
-    end
-
-    it "include production by default" do
-      configuration.environment_name = 'production'
-      configuration.sending_disabled?.should be_true
-    end
-  end
-
-  context "disabled_reloading_environments" do
-    it "sets deprecated_environment_config_used flag to true" do
-      configuration.disabled_reloading_environments = %w(foo bar)
-      configuration.deprecated_environment_config_used?.should be_true
-    end
-
-    it "does not include development by default" do
-      configuration.environment_name = 'development'
-      configuration.reloading_disabled?.should be_false
-    end
-
-    it "include cucumber by default" do
-      configuration.environment_name = 'cucumber'
-      configuration.reloading_disabled?.should be_true
-    end
-
-    it "include test by default" do
-      configuration.environment_name = 'test'
-      configuration.reloading_disabled?.should be_true
-    end
-
-    it "include production by default" do
-      configuration.environment_name = 'production'
-      configuration.reloading_disabled?.should be_true
-    end
-  end
-  
-  context "disabled_polling_environments" do
-    it "sets deprecated_environment_config_used flag to true" do
-      configuration.disabled_polling_environments = %w(foo bar)
-      configuration.deprecated_environment_config_used?.should be_true
-    end
-
-    it "does not include development by default" do
-      configuration.environment_name = 'development'
-      configuration.polling_disabled?.should be_false
-    end
-
-    it "include cucumber by default" do
-      configuration.environment_name = 'cucumber'
-      configuration.polling_disabled?.should be_true
-    end
-
-    it "include test by default" do
-      configuration.environment_name = 'test'
-      configuration.polling_disabled?.should be_true
-    end
-
-    it "include production by default" do
-      configuration.environment_name = 'production'
-      configuration.polling_disabled?.should be_true
-    end
-  end
-
   describe "polling_disabled?" do
-    context "deprecated syntax used" do
-      it "is true when environment is disabled" do
-        configuration.disabled_polling_environments = %w(foo)
-        configuration.environment_name = 'foo'
-        configuration.should be_polling_disabled
-      end
-
-      it "is false when environment is not disabled" do
-        configuration.disabled_polling_environments = %w(foo)
-        configuration.environment_name = 'bar'
-        configuration.should_not be_polling_disabled
-      end
-
-      it "supports symbols in list of environments" do
-        configuration.disabled_polling_environments = [:foo]
-        configuration.environment_name = 'foo'
-        configuration.should be_polling_disabled
-      end
+    it "is true when environment is not enabled" do
+      configuration.polling_environments = %w(foo)
+      configuration.environment_name = 'bar'
+      configuration.should be_polling_disabled
     end
 
-    context "new syntax used" do
-      it "is true when environment is not enabled" do
-        configuration.polling_environments = %w(foo)
-        configuration.environment_name = 'bar'
-        configuration.should be_polling_disabled
-      end
+    it "is false when environment is enabled" do
+      configuration.polling_environments = %w(foo)
+      configuration.environment_name = 'foo'
+      configuration.should_not be_polling_disabled
+    end
 
-      it "is false when environment is enabled" do
-        configuration.polling_environments = %w(foo)
-        configuration.environment_name = 'foo'
-        configuration.should_not be_polling_disabled
-      end
-
-      it "supports symbols in list of environments" do
-        configuration.polling_environments = [:foo]
-        configuration.environment_name = 'foo'
-        configuration.should_not be_polling_disabled
-      end
+    it "supports symbols in list of environments" do
+      configuration.polling_environments = [:foo]
+      configuration.environment_name = 'foo'
+      configuration.should_not be_polling_disabled
     end
   end
 
   describe "reloading_disabled?" do
-    context "deprecated syntax used" do
-      it "is true when environment is disabled" do
-        configuration.disabled_reloading_environments = %w(foo)
-        configuration.environment_name = 'foo'
-        configuration.should be_reloading_disabled
-      end
-
-      it "is false when environment is not disabled" do
-        configuration.disabled_reloading_environments = %w(foo)
-        configuration.environment_name = 'bar'
-        configuration.should_not be_reloading_disabled
-      end
-
-      it "supports symbols in list of environments" do
-        configuration.disabled_reloading_environments = [:foo]
-        configuration.environment_name = 'foo'
-        configuration.should be_reloading_disabled
-      end
+    it "is true when environment is not enabled" do
+      configuration.reloading_environments = %w(foo)
+      configuration.environment_name = 'bar'
+      configuration.should be_reloading_disabled
     end
 
-    context "new syntax used" do
-      it "is true when environment is not enabled" do
-        configuration.reloading_environments = %w(foo)
-        configuration.environment_name = 'bar'
-        configuration.should be_reloading_disabled
-      end
+    it "is false when environment is enabled" do
+      configuration.reloading_environments = %w(foo)
+      configuration.environment_name = 'foo'
+      configuration.should_not be_reloading_disabled
+    end
 
-      it "is false when environment is enabled" do
-        configuration.reloading_environments = %w(foo)
-        configuration.environment_name = 'foo'
-        configuration.should_not be_reloading_disabled
-      end
-
-      it "supports symbols in list of environments" do
-        configuration.reloading_environments = [:foo]
-        configuration.environment_name = 'foo'
-        configuration.should_not be_reloading_disabled
-      end
+    it "supports symbols in list of environments" do
+      configuration.reloading_environments = [:foo]
+      configuration.environment_name = 'foo'
+      configuration.should_not be_reloading_disabled
     end
   end
 
   describe "sending_disabled?" do
-    context "deprecated syntax used" do
-      it "is true when environment is disabled" do
-        configuration.disabled_sending_environments = %w(foo)
-        configuration.environment_name = 'foo'
-        configuration.should be_sending_disabled
-      end
-
-      it "is false when environment is not disabled" do
-        configuration.disabled_sending_environments = %w(foo)
-        configuration.environment_name = 'bar'
-        configuration.should_not be_sending_disabled
-      end
-
-      it "supports symbols in the list of enviroments" do
-        configuration.disabled_sending_environments = [:foo]
-        configuration.environment_name = 'foo'
-        configuration.should be_sending_disabled
-      end
+    it "is true when environment is not enabled" do
+      configuration.sending_environments = %w(foo)
+      configuration.environment_name = 'bar'
+      configuration.should be_sending_disabled
     end
 
-    context "new syntax used" do
-      it "is true when environment is not enabled" do
-        configuration.sending_environments = %w(foo)
-        configuration.environment_name = 'bar'
-        configuration.should be_sending_disabled
-      end
+    it "is false when environment is enabled" do
+      configuration.sending_environments = %w(foo)
+      configuration.environment_name = 'foo'
+      configuration.should_not be_sending_disabled
+    end
 
-      it "is false when environment is enabled" do
-        configuration.sending_environments = %w(foo)
-        configuration.environment_name = 'foo'
-        configuration.should_not be_sending_disabled
-      end
-
-      it "supports symbols in the list of environments" do
-        configuration.sending_environments = [:foo]
-        configuration.environment_name = 'foo'
-        configuration.should_not be_sending_disabled
-      end
+    it "supports symbols in the list of environments" do
+      configuration.sending_environments = [:foo]
+      configuration.environment_name = 'foo'
+      configuration.should_not be_sending_disabled
     end
   end
 end

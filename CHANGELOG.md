@@ -1,3 +1,49 @@
+# Version 0.6.7
+
+* Add rm and mv commands for deleting / renaming keys from the command line
+
+# Version 0.6.6
+
+* Add a timeout configuration setting
+
+# Version 0.6.5
+
+* Build gem with 1.8.7 to fix gemspec errors
+
+# Version 0.6.4
+
+* Don't send defaults if they're an array as this was causing gems that
+  supply a lookup chain to be sending unwanted translations.
+
+# Version 0.6.3
+
+* Pulling translations now completely replaces the contents of the yaml
+  files instead of selectively updating certain translations.
+
+# Version 0.6.2
+
+* Fix bug updating synchronization files that caused polling_interval to be ignored
+
+# Version 0.6.1
+
+* Fix bug where default handler was sending array rather than resolved content
+
+# Version 0.6.0
+
+* Support passing -k or --api-key option to commands
+* Remove deprecated disabled_* configuration options
+* Fix performance bug when :default specified in I18n.t call
+
+# Version 0.5.2
+
+* Fix bug with pulling translations changing file permissions
+
+# Version 0.5.1
+
+* Fix bug with encoding of response from http_client
+* Test on Jruby
+* Compatibility with gli 2.0.0
+
 # Version 0.5.0
 
 * Post translations with default values
@@ -70,10 +116,3 @@
 * Removed some unnecessary default options from config files generated with 
   `localeapp install`
 * Fixed `localeapp push` with no arguments
-
-## NOTICE
-
-If you've added disabled_polling_environments, 
-disabled_reloading_environments or disabled_sending_environments to your 
-initializer you should change these to polling_environments, 
-reloading_environments and sending_environments and configure as per the README

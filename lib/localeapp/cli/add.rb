@@ -1,10 +1,6 @@
 module Localeapp
   module CLI
-    class Add
-      def initialize(output = $stdout)
-        @output = output
-      end
-
+    class Add < Command
       def execute(key, *translations)
         @output.puts "Localeapp Add"
         @output.puts ""

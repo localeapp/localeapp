@@ -24,8 +24,12 @@ module Localeapp
       success = false
       while connection_attempts < max_connection_attempts
         sleep_if_retrying
+
         response = make_call(method, url)
         Localeapp.debug("RESPONSE: #{response.code}")
+
+        fix_encoding(response)
+
         valid_response_codes = (200..207).to_a
         if valid_response_codes.include?(response.code.to_i)
           if options[:success]
@@ -52,6 +56,7 @@ module Localeapp
           :url => url,
           :method => method,
           :headers => headers,
+          :timeout => Localeapp.configuration.timeout,
           :verify_ssl => (Localeapp.configuration.ssl_verify ? OpenSSL::SSL::VERIFY_PEER : false)
         }
         parameters[:ca_file] = Localeapp.configuration.ssl_ca_file if Localeapp.configuration.ssl_ca_file
@@ -81,6 +86,14 @@ module Localeapp
         time = @connection_attempts * 5
         Localeapp.debug("Sleeping for #{time} before retrying")
         sleep time
+      end
+    end
+
+    def fix_encoding(response)
+      if response.respond_to?(:force_encoding)
+        if (charset = response.net_http_res.type_params['charset'])
+          response.force_encoding(charset)
+        end
       end
     end
   end

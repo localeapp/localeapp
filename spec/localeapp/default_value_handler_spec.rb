@@ -7,19 +7,26 @@ end
 describe I18n::Backend::Base, '#default' do
   let(:klass) { Klass.new }
 
-  it "posts translations to Locale" do
+  it "adds translations to missing translations to send to Locale" do
     with_configuration(:sending_environments => ['my_env'], :environment_name => 'my_env' ) do
-      sender = Localeapp::Sender.new
-      Localeapp::Sender.should_receive(:new).and_return(sender)
-      sender.should_receive(:post_translation)
-      klass.default('locale', 'object', 'subject')
+      Localeapp.missing_translations.should_receive(:add).with(:en, 'foo', 'bar', :baz => 'bam')
+      klass.default(:en, 'foo', 'bar', :baz => 'bam')
     end
   end
 
-  it "doesn't post when sending is disabled" do
-    with_configuration(:sending_environments => []) do
-      Localeapp::Sender.should_not_receive(:new)
-      klass.default('locale', 'object', 'subject')
+  describe "when subject is an array" do
+    it "doesn't send anything" do
+      with_configuration(:sending_environments => ['my_env'], :environment_name => 'my_env' ) do
+        Localeapp.missing_translations.should_not_receive(:add).with(:en, 'foo', 'not missing', :baz => 'bam')
+        I18n.stub!(:translate) do |subject, _|
+          if subject == :not_missing
+            "not missing"
+          else
+            nil
+          end
+        end
+        klass.default(:en, 'foo', [:missing, :not_missing], :baz => 'bam')
+      end
     end
   end
 end

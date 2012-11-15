@@ -9,6 +9,13 @@ When /^I have a valid project on localeapp\.com with api key "([^"]*)"$/ do |api
   add_fake_web_uri(:post, "https://api.localeapp.com/v1/projects/#{api_key}/translations/missing.json", ["202", "OK"], '')
 end
 
+When /^I have a valid heroku project/ do
+  uri = "https://api.localeapp.com/v1/projects/MYAPIKEY.json"
+  body = valid_project_data.to_json
+  add_fake_web_uri(:get, uri, ['200', 'OK'], body)
+  ENV['CUCUMBER_HEROKU_TEST_API_KEY'] = 'MYAPIKEY'
+end
+
 When /^I have a valid project on localeapp\.com but an incorrect api key "([^"]*)"$/ do |bad_api_key|
   uri = "https://api.localeapp.com/v1/projects/#{bad_api_key}.json"
   body = valid_project_data.to_json

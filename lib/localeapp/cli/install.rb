@@ -126,19 +126,15 @@ CONTENT
           super
         end
 
-        # AUDIT: Need to find a less hacky way of doing this
         def get_heroku_api_key
           self.key = if ENV['CUCUMBER_HEROKU_TEST_API_KEY']
             ENV['CUCUMBER_HEROKU_TEST_API_KEY']
+          elsif ENV['LOCALEAPP_API_KEY']
+            ENV['LOCALEAPP_API_KEY']
+          elsif File.exist?('.env') && IO.read('.env') =~ /^LOCALEAPP_API_KEY=(\w+)$/
+            $1
           else
-            @output.puts `pwd`
-            config_lines = `heroku config -s`
-            if $? == 0
-              config_line = config_lines.lines.grep(/LOCALEAPP_API_KEY/).first.chomp
-              config_line.sub('LOCALEAPP_API_KEY=', '')
-            else
-              nil
-            end
+            nil
           end
         end
 

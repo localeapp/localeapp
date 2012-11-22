@@ -24,6 +24,16 @@ else
 end
 
 pre do |global_options, command, options, args|
+  global_options[:k] = if global_options[:k]
+    global_options[:k]
+  elsif ENV['LOCALEAPP_API_KEY']
+    ENV['LOCALEAPP_API_KEY']
+  elsif File.exist?('.env') && IO.read('.env') =~ /^LOCALEAPP_API_KEY=(\w+)$/
+    $1
+  else
+    nil
+  end
+
   if Localeapp.has_config_file? || !global_options[:k].nil?
     true
   else

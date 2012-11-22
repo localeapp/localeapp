@@ -41,6 +41,23 @@ When /^I have a valid project on localeapp\.com with api key "([^"]*)" and the t
   add_fake_web_uri(:post, uri + '/rename', ['200', 'OK'], '')
 end
 
+When /^I have a LOCALEAPP_API_KEY env variable set to "(.*?)"$/ do |api_key|
+  ENV['LOCALEAPP_API_KEY'] = api_key
+end
+
+Then /^I clear the LOCALEAPP_API_KEY env variable$/ do
+  ENV['LOCALEAPP_API_KEY'] = nil
+end
+
+When /^I have a \.env file containing the api key "(.*?)"$/ do |api_key|
+  steps %Q{
+    And a file named ".env" with:
+    """
+    LOCALEAPP_API_KEY=#{api_key}
+    """
+  }
+end
+
 When /^an initializer file$/ do
   steps %Q{
     And a file named "config/initializers/localeapp.rb" with:

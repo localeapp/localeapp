@@ -35,59 +35,20 @@ describe Localeapp::Updater, ".update(data)" do
       'locales' => %w{en es}
     })
 
-    if defined? Psych
-      if Psych::VERSION == '1.0.0'
-        if RUBY_ENGINE == 'jruby'
-          File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
-en:
-  foo:
-    monkey: hello
-    night: the night
-  space:
-  blank: ''
-  tilde:
-  scalar1:
-  scalar2:
-EN
-        else
-          File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
-en:
-  foo:
-    monkey: hello
-    night: the night
-  space: !!null 
-  blank: ''
-  tilde: !!null 
-  scalar1: !!null 
-  scalar2: !!null 
-EN
-        end
-      else
-        File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
-en:
-  foo:
-    monkey: hello
-    night: the night
-  space: 
-  blank: ''
-  tilde: 
-  scalar1: 
-  scalar2: 
-EN
-      end
-    else
-      File.read(File.join(@yml_dir, 'en.yml')).should == <<-EN
-en: 
-  blank: ""
-  foo: 
-    monkey: hello
-    night: "the night"
-  scalar1: ~
-  scalar2: ~
-  space: ~
-  tilde: ~
-EN
-    end
+    content = YAML.load(File.read(File.join(@yml_dir, 'en.yml')))
+    content.should == {
+      'en' => {
+        'foo' => {
+          'monkey' => 'hello',
+          'night' => 'the night'
+        },
+        'space' => nil,
+        'blank' => '',
+        'tilde' => nil,
+        'scalar1' => nil,
+        'scalar2' => nil,
+      }
+    }
   end
 
   it "deletes keys in the yml files when updates are empty" do
@@ -100,19 +61,14 @@ EN
       ],
       'locales' => %w{es}
     })
-    if defined? Psych
-      File.read(File.join(@yml_dir, 'es.yml')).should == <<-ES
-es:
-  foo:
-    monkey: Mono
-ES
-    else
-      File.read(File.join(@yml_dir, 'es.yml')).should == <<-ES
-es: 
-  foo: 
-    monkey: Mono
-ES
-    end
+    content = YAML.load(File.read(File.join(@yml_dir, 'es.yml')))
+    content.should == {
+      'es' => {
+        'foo' => {
+          'monkey' => 'Mono'
+        }
+      }
+    }
   end
 
   it "creates a new yml file if an unknown locale is passed" do
@@ -122,17 +78,12 @@ ES
       },
       'locales' => ['ja']
     })
-    if defined? Psych
-      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
-ja:
-  foo: bar
-JA
-    else
-      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
-ja: 
-  foo: bar
-JA
-    end
+    content = YAML.load(File.read(File.join(@yml_dir, 'ja.yml')))
+    content.should == {
+      'ja' => {
+        'foo' => 'bar'
+      }
+    }
   end
 
   it "doesn't create a new yml file if an unknown locale is passed but it has no translations" do
@@ -202,33 +153,21 @@ describe Localeapp::Updater, ".dump(data)" do
 
   it "replaces the content of an existing yml file" do
     filepath = File.join(@yml_dir, 'en.yml')
-    content = lambda { File.read(filepath) }
-    if defined? Psych
-      expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to <<-EN
-en:
-  updated: content
-EN
-    else
-      expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to <<-EN
-en: 
-  updated: content
-EN
-    end
+    content = lambda { YAML.load(File.read(filepath)) }
+    expect { do_dump({'en' => {'updated' => 'content'}}) }.to change(content, :call).to({
+      'en' => {
+        'updated' => 'content'
+      }
+    })
   end
 
   it "creates a new yml file if an unknown locale is passed" do
     do_dump({'ja' => { 'foo' => 'bar'} })
-    if defined? Psych
-      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
-ja:
-  foo: bar
-JA
-    else
-      File.read(File.join(@yml_dir, 'ja.yml')).should == <<-JA
-ja: 
-  foo: bar
-JA
-    end
+    YAML.load(File.read(File.join(@yml_dir, 'ja.yml'))).should == {
+      'ja' => {
+        'foo' => 'bar'
+      }
+    }
   end
 
   it "doesn't change a yml file's permissions" do

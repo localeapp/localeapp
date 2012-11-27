@@ -145,7 +145,7 @@ require 'localeapp/rails'
 
 Localeapp.configure do |config|
   config.api_key = ENV['LOCALEAPP_API_KEY']
-  config.poll_interval = 300 if defined?(Rails) && Rails.env.staging?
+  config.environment_name = ENV['LOCALEAPP_ENV'] unless ENV['LOCALEAPP_ENV'].nil?
   config.polling_environments = [:development, :staging]
   config.reloading_environments = [:development, :staging]
   config.sending_environments = [:development, :staging]

@@ -17,6 +17,10 @@ describe Localeapp::Updater, ".update(data)" do
     @updater.update(data)
   end
 
+  def load_yaml(locale)
+    YAML.load(File.read(File.join(@yml_dir, "#{locale}.yml")))
+  end
+
   it "adds, updates and deletes keys in the yml files" do
     do_update({
       'translations' => {
@@ -35,8 +39,7 @@ describe Localeapp::Updater, ".update(data)" do
       'locales' => %w{en es}
     })
 
-    content = YAML.load(File.read(File.join(@yml_dir, 'en.yml')))
-    content.should == {
+    load_yaml('en').should == {
       'en' => {
         'foo' => {
           'monkey' => 'hello',
@@ -61,8 +64,8 @@ describe Localeapp::Updater, ".update(data)" do
       ],
       'locales' => %w{es}
     })
-    content = YAML.load(File.read(File.join(@yml_dir, 'es.yml')))
-    content.should == {
+
+    load_yaml('es').should == {
       'es' => {
         'foo' => {
           'monkey' => 'Mono'
@@ -78,8 +81,8 @@ describe Localeapp::Updater, ".update(data)" do
       },
       'locales' => ['ja']
     })
-    content = YAML.load(File.read(File.join(@yml_dir, 'ja.yml')))
-    content.should == {
+
+    load_yaml('ja').should == {
       'ja' => {
         'foo' => 'bar'
       }

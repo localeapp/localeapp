@@ -25,8 +25,10 @@ module Localeapp
       end
 
       def send_missing_translations
+        Localeapp.debug "send_missing_translation"
         return if ::Localeapp.configuration.sending_disabled?
 
+        Localeapp.debug "send_missing_translation: enabled in this environment so posting"
         ::Localeapp.sender.post_missing_translations
       end
     end

@@ -2,6 +2,9 @@ module Localeapp
   MissingTranslationRecord = Struct.new(:key, :locale, :description, :options)
 
   class MissingTranslations
+
+    @@sent_keys = []
+
     def initialize
       @translations = Hash.new { |h, k| h[k] = {} }
     end
@@ -16,14 +19,17 @@ module Localeapp
       @translations[locale]
     end
 
-    # This method will get cleverer so we don't resend keys we've
-    # already sent, or send multiple times for the same locale etc.
-    # For now it's pretty dumb
     def to_send
       data = []
       # need the sort to make specs work under 1.8
       @translations.sort { |a, b| a.to_s <=> b.to_s }.each do |locale, records|
         records.each do |key, record|
+          # Check to see if we've sent this key up already
+          if Localeapp.configuration.cache_missing_translations
+            next if @@sent_keys.include?(key)
+            @@sent_keys << key
+          end
+
           missing_data = {}
           missing_data[:key] = key
           missing_data[:locale] = locale

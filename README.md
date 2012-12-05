@@ -184,6 +184,15 @@ If you need to go through a proxy server, you can configure it with:
 
     config.proxy = "http://my.proxy.com:8888"
 
+## Caching
+
+To prevent localeapp from sending translations every time they are missing,
+add this config setting:
+
+```ruby
+config.cache_missing_translations = true
+```
+
 ## SSL Certificate verification
 
 localeapp.com uses https everywhere but certificate validation is turned off by

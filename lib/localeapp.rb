@@ -54,6 +54,9 @@ module Localeapp
   API_VERSION = "1"
   LOG_PREFIX = "** [Localeapp] "
 
+  class LocaleappError < StandardError; end
+  class PotentiallyInsecureYaml < LocaleappError; end
+
   class << self
     # An Localeapp configuration object.
     attr_accessor :configuration
@@ -115,6 +118,7 @@ module Localeapp
     end
 
     def load_yaml(contents)
+      raise Localeapp::PotentiallyInsecureYaml if contents =~ /!ruby\//
       if defined?(Psych) && defined?(Psych::VERSION)
         Psych.load(contents)
       else

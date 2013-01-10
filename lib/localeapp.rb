@@ -118,7 +118,10 @@ module Localeapp
     end
 
     def load_yaml(contents)
-      raise Localeapp::PotentiallyInsecureYaml if contents =~ /!ruby\//
+      if Localeapp.configuration.raise_on_insecure_yaml
+        raise Localeapp::PotentiallyInsecureYaml if contents =~ /!ruby\//
+      end
+
       if defined?(Psych) && defined?(Psych::VERSION)
         Psych.load(contents)
       else

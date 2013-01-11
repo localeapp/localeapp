@@ -70,6 +70,10 @@ module Localeapp
     # The complete path to the directory where translations are stored
     attr_accessor :translation_data_directory
 
+    # Enable or disable the insecure yaml exception
+    # default: true
+    attr_accessor :raise_on_insecure_yaml
+
     def initialize
       defaults.each do |setting, value|
         send("#{setting}=", value)
@@ -90,6 +94,7 @@ module Localeapp
         :daemon_pid_file            => File.join('tmp', 'pids', 'localeapp.pid'),
         :daemon_log_file            => File.join('log', 'localeapp_daemon.log'),
         :translation_data_directory => File.join('config', 'locales'),
+        :raise_on_insecure_yaml     => true,
       }
       if ENV['DEBUG']
         require 'logger'

@@ -10,6 +10,15 @@ The gem hooks into the i18n exception mechanism to send missing translations to
 the app. When translated content has been added it's automatically pulled down
 so you can see it straight away.
 
+## Security
+
+Though the i18n gem uses YAML as it's default file format it doesn't require
+serialization of ruby objects. To prevent the kind of security problems
+detailed in [CVE-2013-0156][1] the localeapp gem will not load any YAML containing
+the string !ruby/ as of version 0.6.9.
+
+[1]: https://groups.google.com/forum/?fromgroups=#!topic/rubyonrails-security/61bkgvnSGTQ
+
 ## Installation
 
 ### Rails 3

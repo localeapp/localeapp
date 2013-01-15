@@ -1,3 +1,7 @@
+# Version 0.6.8
+
+* Don't load any yaml that may contain insecure content
+
 # Version 0.6.7
 
 * Add rm and mv commands for deleting / renaming keys from the command line

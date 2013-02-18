@@ -1,3 +1,7 @@
+# master
+
+* Make rack a dependency as we actually use it (Thanks @martoche)
+
 # Version 0.6.8
 
 * Don't load any yaml that may contain insecure content

@@ -8,7 +8,7 @@ module Localeapp
 
     def add(locale, key, description = nil, options = {})
       record = MissingTranslationRecord.new(key, locale, description, options)
-      @translations[locale][key] = record
+      @translations[I18n.default_locale][key] = record
     end
 
     def [](locale)

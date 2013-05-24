@@ -19,10 +19,18 @@ describe Localeapp::ExceptionHandler, '#call(exception, locale, key, options)' d
     I18n.t(['foo', 'bar'])
   end
 
+  it "delegates to super for handling of output" do
+    expect(I18n.t('foo', rescue_format: :html)).to eq("translation missing: foo")
+  end
+
+  it "delegates to super for handling of rescue_format" do
+    expect(I18n.t('foo', rescue_format: :html)).to eq("<span class=\"translation_missing\" title=\"translation missing: en.foo\">Foo</span>")
+  end
+
   it "handles missing translation exception" do
     expect {
       exception = Localeapp::I18nMissingTranslationException.new(:en, 'foo', {})
-      Localeapp::ExceptionHandler.call(exception, :en, 'foo', {})
+      Localeapp::ExceptionHandler.new.call(exception, :en, 'foo', {})
     }.to_not raise_error
   end
 end

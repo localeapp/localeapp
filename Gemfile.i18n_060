@@ -1,4 +1,4 @@
-source :rubyforge
+source 'https://rubygems.org'
 gemspec
 
 gem 'i18n', '~> 0.6.0'

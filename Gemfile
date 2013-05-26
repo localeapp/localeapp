@@ -1,4 +1,4 @@
-source :rubyforge
+source 'https://rubygems.org'
 gemspec
 
 platform :jruby do

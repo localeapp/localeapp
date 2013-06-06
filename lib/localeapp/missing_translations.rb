@@ -7,12 +7,9 @@ module Localeapp
     end
 
     def add(locale, key, description = nil, options = {})
-      begin
-        I18n.t!(key, locale: I18n.default_locale, default: [])
-      rescue I18n::MissingTranslationData
-        record = MissingTranslationRecord.new(key, locale, description, options)
-        @translations[I18n.default_locale][key] = record
-      end
+      options.delete(:default) if locale != I18n.default_locale
+      record = MissingTranslationRecord.new(key, locale, description, options)
+      @translations[locale][key] = record
     end
 
     def [](locale)

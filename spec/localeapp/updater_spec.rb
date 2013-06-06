@@ -98,7 +98,7 @@ describe Localeapp::Updater, ".update(data)" do
     File.exist?(File.join(@yml_dir, 'ja.yml')).should be_false
   end
 
-  if defined?(Psych) && Psych::VERSION >= "1.1.0" && !RUBY_PLATFORM == 'jruby'
+  if defined?(Psych) && defined?(Psych::VERSION) && Psych::VERSION >= "1.1.0" && !RUBY_PLATFORM == 'jruby'
     it "doesn't try to wrap long lines in the output" do
       do_update({
         'translations' => {

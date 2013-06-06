@@ -7,6 +7,7 @@ module Localeapp
     end
 
     def add(locale, key, description = nil, options = {})
+      options.delete(:default) if locale != I18n.default_locale
       record = MissingTranslationRecord.new(key, locale, description, options)
       @translations[locale][key] = record
     end

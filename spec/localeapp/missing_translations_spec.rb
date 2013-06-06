@@ -9,6 +9,18 @@ describe Localeapp::MissingTranslations, "#add(locale, key, description = nil, o
     translations[:en]['foo'].description.should == 'bar'
     translations[:en]['foo'].options.should == { :baz => 'bam' }
   end
+
+  it "preserves the :default param when the current locale is the default locale" do
+    translations = Localeapp::MissingTranslations.new
+    translations.add(:en, 'foo', 'bar', { :baz => 'bam', :default => 'default value' })
+    translations[:en]['foo'].options.should == { :baz => 'bam', :default => 'default value' }
+  end
+
+  it "strips the :default param when the current locale is not the default locale" do
+    translations = Localeapp::MissingTranslations.new
+    translations.add(:fr, 'foo', 'bar', { :baz => 'bam', :default => 'default value' })
+    translations[:fr]['foo'].options.should == { :baz => 'bam' }
+  end
 end
 
 describe Localeapp::MissingTranslations, "#to_send" do

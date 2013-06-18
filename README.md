@@ -154,6 +154,13 @@ can be disabled in a similar way to polling and sending:
 
     config.reloading_environments = []
 
+### Caching
+
+To prevent localeapp from sending translations every time they are missing,
+add this config setting:
+
+    config.cache_missing_translations = true
+
 ## Inviting other developers and translators
 
 You can invite other developers and translators via localeapp.com.  Developers
@@ -183,15 +190,6 @@ command line unless you're using 1.9.3+ or have installed Psych as a gem.
 If you need to go through a proxy server, you can configure it with:
 
     config.proxy = "http://my.proxy.com:8888"
-
-## Caching
-
-To prevent localeapp from sending translations every time they are missing,
-add this config setting:
-
-```ruby
-config.cache_missing_translations = true
-```
 
 ## SSL Certificate verification
 

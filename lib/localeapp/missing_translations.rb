@@ -2,8 +2,11 @@ module Localeapp
   MissingTranslationRecord = Struct.new(:key, :locale, :description, :options)
 
   class MissingTranslations
+    @cached_keys = []
 
-    @@sent_keys = []
+    class << self
+      attr_accessor :cached_keys
+    end
 
     def initialize
       @translations = Hash.new { |h, k| h[k] = {} }
@@ -24,21 +27,28 @@ module Localeapp
       # need the sort to make specs work under 1.8
       @translations.sort { |a, b| a.to_s <=> b.to_s }.each do |locale, records|
         records.each do |key, record|
-          # Check to see if we've sent this key up already
-          if Localeapp.configuration.cache_missing_translations
-            next if @@sent_keys.include?(key)
-            @@sent_keys << key
-          end
-
-          missing_data = {}
-          missing_data[:key] = key
-          missing_data[:locale] = locale
+          next if cached?(key)
+          cache(key)
+          missing_data = {:key => key, :locale => locale, :options => record.options}
           missing_data[:description] = record.description if record.description
-          missing_data[:options] = record.options
           data << missing_data
         end
       end
       data
+    end
+
+    private
+
+    def cached_keys
+      self.class.cached_keys
+    end
+
+    def cached?(key)
+      Localeapp.configuration.cache_missing_translations && cached_keys.include?(key)
+    end
+
+    def cache(key)
+      cached_keys << key if Localeapp.configuration.cache_missing_translations
     end
   end
 end

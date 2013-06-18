@@ -41,17 +41,27 @@ describe Localeapp::MissingTranslations, "#to_send" do
     to_send[1][:options].should == {}
   end
 
-  it "caches the result of #to_send" do
+  it "doesn't send the same key twice when cache_missing_translations is true" do
     with_configuration(:cache_missing_translations => true) do
-      translations_a = Localeapp::MissingTranslations.new
-      translations_a.add(:es, 'foobybar', 'baz')
-      to_send = translations_a.to_send
-      to_send.size.should == 1
+      translation_a = Localeapp::MissingTranslations.new
+      translation_a.add(:es, 'foobybar')
+      translation_a.to_send.size.should == 1
 
-      translations_b = Localeapp::MissingTranslations.new
-      translations_b.add(:es, 'foobybar', 'baz')
-      to_send = translations_b.to_send
-      to_send.size.should == 0
+      translation_b = Localeapp::MissingTranslations.new
+      translation_b.add(:en, 'foobybar')
+      translation_a.to_send.size.should == 0
+    end
+  end
+
+  it "can send the same key twice when cache_missing_translations is false" do
+    with_configuration(:cache_missing_translations => false) do
+      translation_a = Localeapp::MissingTranslations.new
+      translation_a.add(:es, 'foobybar')
+      translation_a.to_send.size.should == 1
+
+      translation_b = Localeapp::MissingTranslations.new
+      translation_b.add(:en, 'foobybar')
+      translation_a.to_send.size.should == 1
     end
   end
 end

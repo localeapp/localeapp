@@ -79,8 +79,9 @@ existing translations do:
 This will queue importing the file. The projects pages on localeapp.com will
 automatically refresh so you can see the import progress.
 
-If you've more than one locale to import you can zip up the yml files. Both
-localeapp.com and the localeapp import command accept zip files.
+If you've more than one locale to import you can import all files in a directory :
+
+    localeapp push config/locales/
 
 ## Default Rails Translations
 

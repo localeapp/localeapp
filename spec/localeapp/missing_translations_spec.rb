@@ -40,4 +40,18 @@ describe Localeapp::MissingTranslations, "#to_send" do
     to_send[1][:description].should == 'baz'
     to_send[1][:options].should == {}
   end
+
+  it "caches the result of #to_send" do
+    with_configuration(:cache_missing_translations => true) do
+      translations_a = Localeapp::MissingTranslations.new
+      translations_a.add(:es, 'foobybar', 'baz')
+      to_send = translations_a.to_send
+      to_send.size.should == 1
+
+      translations_b = Localeapp::MissingTranslations.new
+      translations_b.add(:es, 'foobybar', 'baz')
+      to_send = translations_b.to_send
+      to_send.size.should == 0
+    end
+  end
 end

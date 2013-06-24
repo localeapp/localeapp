@@ -4,7 +4,7 @@ module I18n::Backend::Base
   def default(locale, object, subject, options = {})
     result = default_without_handler(locale, object, subject, options)
     case subject # case is what i18n gem uses here so doing the same
-    when Array
+    when Array, Symbol
       # Do nothing, we only send missing translations with text defaults
     else
       value = locale == I18n.default_locale ? subject : nil

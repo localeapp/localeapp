@@ -40,4 +40,13 @@ describe I18n::Backend::Base, '#default' do
       end
     end
   end
+
+  describe "when subject is a Symbol" do
+    it "doesn't send anything to Locale" do
+      allow_sending do
+        Localeapp.missing_translations.should_not_receive(:add)
+        klass.default(:en, 'foo', :other_key, :baz => 'bam')
+      end
+    end
+  end
 end

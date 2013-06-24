@@ -1,5 +1,13 @@
 # master
 
+# Version 0.6.10
+
+* Don't send the :default param with a MissingTranslation when not in
+  the default locale.
+* Cache MissingTranslations so that they're not sent multiple times.
+
+# Version 0.6.9
+
 * Make rack a dependency as we actually use it (Thanks @martoche)
 
 # Version 0.6.8

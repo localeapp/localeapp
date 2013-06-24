@@ -7,7 +7,8 @@ module I18n::Backend::Base
     when Array
       # Do nothing, we only send missing translations with text defaults
     else
-      Localeapp.missing_translations.add(locale, object, subject, options)
+      value = locale == I18n.default_locale ? subject : nil
+      Localeapp.missing_translations.add(locale, object, value, options)
     end
     return result
   end

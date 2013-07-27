@@ -12,7 +12,11 @@ require 'localeapp/rails/controller'
 describe Localeapp::Rails::Controller, '#handle_translation_updates' do
   before do
     TestController.send(:include, Localeapp::Rails::Controller)
-    with_configuration(:synchronization_data_file => LocaleappSynchronizationData::setup) do
+    configuration = {
+      :synchronization_data_file => LocaleappSynchronizationData::setup,
+      :api_key => "my_key"
+    }
+    with_configuration(configuration) do
       @controller = TestController.new
     end
   end
@@ -87,6 +91,16 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
     it "doesn't call I18n.relaod! when the synchronization file's updated_at is the same" do
       I18n.should_not_receive(:reload!)
       @controller.handle_translation_updates
+    end
+  end
+
+  context "when an api_key is missing" do
+    before do
+      Localeapp.configuration.api_key = nil
+    end
+
+    it "raises an exception" do
+      expect { @controller.handle_translation_updates }.to raise_error Localeapp::MissingApiKey
     end
   end
 end

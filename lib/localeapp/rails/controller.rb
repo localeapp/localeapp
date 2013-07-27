@@ -7,6 +7,7 @@ module Localeapp
       end
 
       def handle_translation_updates
+        raise Localeapp::MissingApiKey unless ::Localeapp.configuration.api_key
         unless ::Localeapp.configuration.polling_disabled?
           ::Localeapp.log_with_time 'Handling translation updates'
           if ::Localeapp.poller.needs_polling?

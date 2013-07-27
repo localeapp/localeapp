@@ -56,6 +56,7 @@ module Localeapp
 
   class LocaleappError < StandardError; end
   class PotentiallyInsecureYaml < LocaleappError; end
+  class MissingApiKey < LocaleappError; end
 
   class << self
     # An Localeapp configuration object.

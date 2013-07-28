@@ -1,5 +1,8 @@
 # master
 
+* Throw a Localeapp::MissingApiKey exception when an API key has not
+  been set
+
 # Version 0.6.10
 
 * Don't send the :default param with a MissingTranslation when not in

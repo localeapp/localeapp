@@ -3,6 +3,8 @@ module I18n::Backend::Base
 
   def default(locale, object, subject, options = {})
     result = default_without_handler(locale, object, subject, options)
+
+    object ||= Thread.current[:i18n_default_object]
     case subject # case is what i18n gem uses here so doing the same
     when String
       value = locale == I18n.default_locale ? subject : nil
@@ -16,6 +18,8 @@ module I18n::Backend::Base
     when Symbol
       # Do nothing, we only send missing translations with text defaults
     end
+    # Remember the object because it will be nil after this fallback
+    Thread.current[:i18n_default_object] = options[:fallback] ? object : nil
     return result
   end
 end

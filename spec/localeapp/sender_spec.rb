@@ -10,7 +10,7 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
   it "posts the missing translation data to the backend" do
     data = {
       :translation => {
-        :key => "test.key",
+        :key => "scope.test.key",
         :locale => "en",
         :substitutions => ['bar', 'foo'],
         :description => "test content"

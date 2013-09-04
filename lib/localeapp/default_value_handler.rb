@@ -7,12 +7,12 @@ module I18n::Backend::Base
     object ||= Thread.current[:i18n_default_object]
     case subject # case is what i18n gem uses here so doing the same
     when String
-      value = locale == I18n.default_locale ? subject : nil
+      value = locale.to_s == I18n.default_locale.to_s ? subject : nil
       Localeapp.missing_translations.add(locale, object, value, options)
     when Array
       text_default = subject.detect{|item| item.is_a? String }
       if text_default
-        value = locale == I18n.default_locale ? text_default : nil
+        value = locale.to_s == I18n.default_locale.to_s ? text_default : nil
         Localeapp.missing_translations.add(locale, object, value, options)
       end
     when Symbol

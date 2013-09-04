@@ -31,6 +31,13 @@ describe I18n::Backend::Base, '#default' do
         klass.default(:fr, 'foo', 'bar', :baz => 'bam')
       end
     end
+
+    it "adds translations to missing translations when using a string as the locale" do
+      allow_sending do
+        Localeapp.missing_translations.should_receive(:add).with('en', 'foo', 'bar', :baz => 'bam')
+        klass.default('en', 'foo', 'bar', :baz => 'bam')
+      end
+    end
   end
 
   describe "when subject is an Array" do

@@ -1,5 +1,12 @@
 # master
 
+# Version 0.6.11
+
+* Create the schronization data file even if the containing folder is
+  missing
+* Fix bug where deleting a namespace and then recreating a key inside
+  of it wasn't getting added.
+* Normalize keys so that the scope is added to missing translations
 * Throw a Localeapp::MissingApiKey exception when an API key has not
   been set
 

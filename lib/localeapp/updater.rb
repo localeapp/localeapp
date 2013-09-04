@@ -61,7 +61,10 @@ module Localeapp
       return if sub_hash.nil?
       current_key = keys.shift
       if keys.empty?
-        sub_hash.delete(current_key)
+        # delete key except if key is now used as a namespace for a child_hash
+        unless sub_hash[current_key].is_a?(Hash)
+          sub_hash.delete(current_key)
+        end
       else
         child_hash = sub_hash[current_key]
         unless child_hash.nil?

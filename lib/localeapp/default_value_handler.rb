@@ -18,8 +18,18 @@ module I18n::Backend::Base
     when Symbol
       # Do nothing, we only send missing translations with text defaults
     end
-    # Remember the object because it will be nil after this fallback
-    Thread.current[:i18n_default_object] = options[:fallback] ? object : nil
     return result
+  end
+end
+
+module I18n::Backend::Fallbacks
+  alias_method :translate_without_remember_key, :translate
+
+  # Remember the object because it will be nil after the fallback
+  def translate(locale, key, options = {})
+    Thread.current[:i18n_default_object] = key
+    translate_without_remember_key(locale, key, options)
+  ensure
+    Thread.current[:i18n_default_object] = nil
   end
 end

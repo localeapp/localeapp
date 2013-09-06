@@ -4,6 +4,10 @@ class Klass
   include I18n::Backend::Base
 end
 
+class I18nWithFallbacks < I18n::Backend::Simple
+  include I18n::Backend::Fallbacks
+end
+
 describe I18n::Backend::Base, '#default' do
   let(:klass) { Klass.new }
 
@@ -25,6 +29,13 @@ describe I18n::Backend::Base, '#default' do
       allow_sending do
         Localeapp.missing_translations.should_receive(:add).with(:fr, 'foo', nil, :baz => 'bam')
         klass.default(:fr, 'foo', 'bar', :baz => 'bam')
+      end
+    end
+
+    it "adds translations to missing translations when using a string as the locale" do
+      allow_sending do
+        Localeapp.missing_translations.should_receive(:add).with('en', 'foo', 'bar', :baz => 'bam')
+        klass.default('en', 'foo', 'bar', :baz => 'bam')
       end
     end
   end
@@ -59,6 +70,15 @@ describe I18n::Backend::Base, '#default' do
         Localeapp.missing_translations.should_not_receive(:add)
         klass.default(:en, 'foo', :other_key, :baz => 'bam')
       end
+    end
+  end
+
+  it "records missing translations when fallbacks are enabled" do
+    i18n = I18nWithFallbacks.new
+
+    with_configuration(:sending_environments => ['my_env'], :environment_name => 'my_env' ) do
+      Localeapp.missing_translations.should_receive(:add).with(:en, 'my.object', 'my default', {:default => 'my default'})
+      i18n.translate(:en, 'my.object', :default => 'my default')
     end
   end
 end

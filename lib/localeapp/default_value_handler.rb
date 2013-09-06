@@ -4,6 +4,7 @@ module I18n::Backend::Base
   def default(locale, object, subject, options = {})
     result = default_without_handler(locale, object, subject, options)
 
+    original_object = object
     object ||= Thread.current[:i18n_default_object]
     case subject # case is what i18n gem uses here so doing the same
     when String
@@ -18,18 +19,9 @@ module I18n::Backend::Base
     when Symbol
       # Do nothing, we only send missing translations with text defaults
     end
+
+    # Remember the object because it will be nil after the fallback
+    Thread.current[:i18n_default_object] = original_object
     return result
-  end
-end
-
-module I18n::Backend::Fallbacks
-  alias_method :translate_without_remember_key, :translate
-
-  # Remember the object because it will be nil after the fallback
-  def translate(locale, key, options = {})
-    Thread.current[:i18n_default_object] = key
-    translate_without_remember_key(locale, key, options)
-  ensure
-    Thread.current[:i18n_default_object] = nil
   end
 end

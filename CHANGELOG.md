@@ -2,6 +2,7 @@
 
 # Version 0.6.11
 
+* Handle sending fallbacks
 * Create the schronization data file even if the containing folder is
   missing
 * Fix bug where deleting a namespace and then recreating a key inside

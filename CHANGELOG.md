@@ -1,6 +1,10 @@
 # master
 
-# Version 0.6.11
+# Version 0.6.12
+
+* Fix an error creating the folder for the syncfile
+
+# Version 0.6.11 (yanked)
 
 * Handle sending fallbacks
 * Create the schronization data file even if the containing folder is

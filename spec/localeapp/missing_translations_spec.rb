@@ -9,6 +9,14 @@ describe Localeapp::MissingTranslations, "#add(locale, key, description = nil, o
     translations[:en]['foo'].description.should == 'bar'
     translations[:en]['foo'].options.should == { :baz => 'bam' }
   end
+
+  it "respects I18n options when constructing a key" do
+    translations = Localeapp::MissingTranslations.new
+    translations.add(:en, 'foo', nil, { :scope => 'bar', :baz => 'bam' })
+
+    translations[:en].should include('bar.foo')
+    translations[:en]['bar.foo'].options.should == { :baz => 'bam' }
+  end
 end
 
 describe Localeapp::MissingTranslations, "#to_send" do

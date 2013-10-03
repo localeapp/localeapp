@@ -13,6 +13,9 @@ module Localeapp
     end
 
     def add(locale, key, description = nil, options = {})
+      separator = options.delete(:separator) { I18n.default_separator }
+      scope = options.delete(:scope)
+      key = I18n.normalize_keys(nil, key, scope, separator).map(&:to_s).join(separator)
       record = MissingTranslationRecord.new(key, locale, description, options)
       @translations[locale][key] = record
     end

@@ -1,5 +1,7 @@
 # master
 
+* Specify that the MIT license is used
+
 # Version 0.6.12
 
 * Fix an error creating the folder for the syncfile

@@ -209,3 +209,7 @@ See [this article on Ruby Inside][1] for some more details.
 
 You can contact us via the support link at the bottom of the page or emailing
 support@localeapp.com
+
+## License
+
+The code for `localeapp` is released under the [MIT License](http://opensource.org/licenses/MIT).

@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://www.localeapp.com"
   s.summary     = %q{Easy i18n translation management with localeapp.com}
   s.description = %q{Synchronizes i18n translation keys and content with localeapp.com so you don't have to manage translations by hand.}
+  s.license     = 'MIT'
 
   s.rubyforge_project = "localeapp"
 

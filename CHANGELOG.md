@@ -1,5 +1,8 @@
 # master
 
+# Version 0.6.12
+
+* Respect the `scopez option when contructing translations
 * Specify that the MIT license is used
 
 # Version 0.6.12

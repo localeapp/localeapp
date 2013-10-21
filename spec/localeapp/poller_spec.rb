@@ -25,13 +25,20 @@ describe Localeapp::Poller do
   end
 
   describe "#synchronization_data" do
+    let(:default_data) { {:polled_at => 0, :updated_at => 0} }
+
     before do
       @original_configuration_file = Localeapp.configuration.synchronization_data_file
-      Localeapp.configuration.synchronization_data_file = "#{File.dirname(__FILE__)}/../fixtures/empty_log.yml"
     end
 
-    it "returns an empty hash if there is a yml file that is empty" do
-      @poller.synchronization_data.should == {}
+    it "returns default data if there is a yml file that is empty" do
+      Localeapp.configuration.synchronization_data_file = "#{File.dirname(__FILE__)}/../fixtures/empty_log.yml"
+      @poller.synchronization_data.should == default_data
+    end
+
+    it "returns default data when the yml file doesn't exist" do
+      Localeapp.configuration.synchronization_data_file = "non_existant_file.yml"
+      @poller.synchronization_data.should == default_data
     end
 
     after do

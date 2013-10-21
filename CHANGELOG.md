@@ -1,8 +1,15 @@
 # master
 
+# Version 0.6.14
+
+* Fix a bug where the last poll and last refresh date could be nil
+
+# Version 0.6.13
+
+* Respect the `scope` option when contructing translations
+
 # Version 0.6.12
 
-* Respect the `scopez option when contructing translations
 * Specify that the MIT license is used
 
 # Version 0.6.12

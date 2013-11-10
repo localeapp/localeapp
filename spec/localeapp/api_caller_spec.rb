@@ -229,6 +229,13 @@ describe Localeapp::ApiCaller, "#call(object)" do
       @api_caller.call(@object)
     end
 
+    it "handles RestClient::ServerBrokeConnection" do
+      RestClient::Request.stub(:execute).and_raise(RestClient::ServerBrokeConnection)
+      @api_caller.options[:failure] = :fail
+      @object.should_receive(:fail)
+      @api_caller.call(@object)
+    end
+
     it "handles SocketError" do
       RestClient::Request.stub(:execute).and_raise(SocketError)
       @api_caller.options[:failure] = :fail

@@ -72,6 +72,8 @@ module Localeapp
         RestClient::ServiceUnavailable,
         RestClient::GatewayTimeout => error
         return error.response
+      rescue RestClient::ServerBrokeConnection => error
+        return NonHTTPResponse.new(-1)
       rescue Errno::ECONNREFUSED => error
         Localeapp.debug("ERROR: Connection Refused")
         return NonHTTPResponse.new(-1)

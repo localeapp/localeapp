@@ -89,6 +89,30 @@ describe Localeapp::Updater, ".update(data)" do
     }
   end
 
+  it "doesn't delete a namespace having the same name as a previously deleted key" do
+    do_update({
+      'translations' => {
+        'az' => {
+          'once_deleted' => {
+            'but_not' => 'anymore'
+          }
+        }
+      },
+      'deleted' => [
+        'once_deleted'
+      ],
+      'locales' => ['az']
+    })
+
+    load_yaml('az').should == {
+      'az' => {
+        'once_deleted' => {
+          'but_not' => 'anymore'
+        }
+      }
+    }
+  end
+
   it "doesn't create a new yml file if an unknown locale is passed but it has no translations" do
     do_update({
       'translations' => {},
@@ -98,7 +122,7 @@ describe Localeapp::Updater, ".update(data)" do
     File.exist?(File.join(@yml_dir, 'ja.yml')).should be_false
   end
 
-  if defined?(Psych) && Psych::VERSION >= "1.1.0" && !RUBY_PLATFORM == 'jruby'
+  if defined?(Psych) && defined?(Psych::VERSION) && Psych::VERSION >= "1.1.0" && !RUBY_PLATFORM == 'jruby'
     it "doesn't try to wrap long lines in the output" do
       do_update({
         'translations' => {

@@ -79,8 +79,9 @@ existing translations do:
 This will queue importing the file. The projects pages on localeapp.com will
 automatically refresh so you can see the import progress.
 
-If you've more than one locale to import you can zip up the yml files. Both
-localeapp.com and the localeapp import command accept zip files.
+If you've more than one locale to import you can import all files in a directory :
+
+    localeapp push config/locales/
 
 ## Default Rails Translations
 
@@ -153,6 +154,13 @@ can be disabled in a similar way to polling and sending:
 
     config.reloading_environments = []
 
+### Caching
+
+To prevent localeapp from sending translations every time they are missing,
+add this config setting:
+
+    config.cache_missing_translations = true
+
 ## Inviting other developers and translators
 
 You can invite other developers and translators via localeapp.com.  Developers
@@ -201,3 +209,7 @@ See [this article on Ruby Inside][1] for some more details.
 
 You can contact us via the support link at the bottom of the page or emailing
 support@localeapp.com
+
+## License
+
+The code for `localeapp` is released under the [MIT License](http://opensource.org/licenses/MIT).

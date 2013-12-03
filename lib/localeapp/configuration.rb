@@ -74,6 +74,10 @@ module Localeapp
     # default: true
     attr_accessor :raise_on_insecure_yaml
 
+    # Enable or disable the missing translation cache
+    # default: false
+    attr_accessor :cache_missing_translations
+
     def initialize
       defaults.each do |setting, value|
         send("#{setting}=", value)

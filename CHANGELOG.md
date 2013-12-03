@@ -1,5 +1,40 @@
 # master
 
+# Version 0.6.14
+
+* Fix a bug where the last poll and last refresh date could be nil
+
+# Version 0.6.13
+
+* Respect the `scope` option when contructing translations
+
+# Version 0.6.12
+
+* Specify that the MIT license is used
+
+# Version 0.6.12
+
+* Fix an error creating the folder for the syncfile
+
+# Version 0.6.11 (yanked)
+
+* Handle sending fallbacks
+* Create the schronization data file even if the containing folder is
+  missing
+* Fix bug where deleting a namespace and then recreating a key inside
+  of it wasn't getting added.
+* Normalize keys so that the scope is added to missing translations
+* Throw a Localeapp::MissingApiKey exception when an API key has not
+  been set
+
+# Version 0.6.10
+
+* Don't send the :default param with a MissingTranslation when not in
+  the default locale.
+* Cache MissingTranslations so that they're not sent multiple times.
+
+# Version 0.6.9
+
 * Make rack a dependency as we actually use it (Thanks @martoche)
 
 # Version 0.6.8

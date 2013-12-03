@@ -13,15 +13,16 @@ module Localeapp
     attr_accessor :updated_at
 
     def initialize
-      @polled_at  = synchronization_data[:polled_at]  || 0
-      @updated_at = synchronization_data[:updated_at] || 0
+      @polled_at  = synchronization_data[:polled_at]
+      @updated_at = synchronization_data[:updated_at]
     end
 
     def synchronization_data
       if File.exists?(Localeapp.configuration.synchronization_data_file)
-        Localeapp.load_yaml_file(Localeapp.configuration.synchronization_data_file) || {}
+        Localeapp.load_yaml_file(Localeapp.configuration.synchronization_data_file) ||
+        default_synchronization_data
       else
-        {}
+        default_synchronization_data
       end
     end
 
@@ -67,6 +68,10 @@ module Localeapp
     private
     def current_time
       Time.now
+    end
+
+    def default_synchronization_data
+      {:polled_at => 0, :updated_at => 0}
     end
   end
 end

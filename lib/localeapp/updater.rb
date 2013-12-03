@@ -43,7 +43,7 @@ module Localeapp
     private
 
     def generate_yaml(translations)
-      if defined? Psych
+      if defined?(Psych) && defined?(Psych::VERSION)
         Psych.dump(translations, :line_width => -1)[4..-1].sub(/\.\.\.\n$/, '')
       else
         translations.ya2yaml[5..-1]
@@ -61,7 +61,10 @@ module Localeapp
       return if sub_hash.nil?
       current_key = keys.shift
       if keys.empty?
-        sub_hash.delete(current_key)
+        # delete key except if key is now used as a namespace for a child_hash
+        unless sub_hash[current_key].is_a?(Hash)
+          sub_hash.delete(current_key)
+        end
       else
         child_hash = sub_hash[current_key]
         unless child_hash.nil?

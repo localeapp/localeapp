@@ -7,15 +7,16 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
     end
   end
 
-  it "posts the missing translation data to the backend" do
-    data = {
-      :translation => {
-        :key => "test.key",
-        :locale => "en",
-        :substitutions => ['bar', 'foo'],
-        :description => "test content"
-      }
-    }
+  let(:response) { double('response', :code => 200) }
+  let(:data) { { :translation => {
+    :key => "test.key",
+    :locale => "en",
+    :substitutions => ['bar', 'foo'],
+    :description => "test content"
+    }}
+  }
+
+  def expect_execute
     # have to stub RestClient here as FakeWeb doesn't support looking at the post body yet
     RestClient::Request.should_receive(:execute).with(hash_including(
       :url => @sender.translations_url,
@@ -23,8 +24,18 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
       :headers => {
         :x_localeapp_gem_version => Localeapp::VERSION,
         :content_type => :json },
-      :method => :post)).and_return(double('response', :code => 200))
-    @sender.post_translation('en', 'test.key', { 'foo' => 'foo', 'bar' => 'bar', :default => 'default', :scope => 'scope' }, 'test content')
+      :method => :post)).and_return(response)
+  end
+
+  it "posts the missing translation data to the backend" do
+    expect_execute
+    @sender.post_translation('en', 'test.key', { 'foo' => 'foo', 'bar' => 'bar', :default => 'default' }, 'test content')
+  end
+
+  it "normalizes keys sent with a scope" do
+    data[:translation][:key] = 'my.custom.scope.test.key'
+    expect_execute
+    @sender.post_translation('en', 'test.key', { 'foo' => 'foo', 'bar' => 'bar', :scope => 'my.custom.scope' }, 'test content')
   end
 end
 

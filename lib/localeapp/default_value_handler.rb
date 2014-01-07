@@ -11,7 +11,7 @@ module I18n::Backend::Base
       value = locale.to_s == I18n.default_locale.to_s ? subject : nil
       Localeapp.missing_translations.add(locale, object, value, options)
     when Array
-      text_default = subject.detect{|item| item.is_a? String }
+      text_default = subject.detect{|item| item.is_a? String and !item.empty? }
       if text_default
         value = locale.to_s == I18n.default_locale.to_s ? text_default : nil
         Localeapp.missing_translations.add(locale, object, value, options)

@@ -42,8 +42,15 @@ describe I18n::Backend::Base, '#default' do
 
   describe "when subject is an Array" do
 
-    describe "and there is a text inside the array" do
-      it "add translations to missing translations to send to Locale" do
+    describe "and there is text inside the array" do
+      it "doesn't send empty strings to Locale" do
+        allow_sending do
+          Localeapp.missing_translations.should_not_receive(:add)
+          klass.default(:en, 'foo', [:missing, ''], :baz => 'bam')
+        end
+      end
+
+      it "adds missing translations to send to Locale" do
         allow_sending do
           Localeapp.missing_translations.should_receive(:add).with(:en, 'foo', 'correct default', :baz => 'bam')
           klass.default(:en, 'foo', [:missing, 'correct default'], :baz => 'bam')
@@ -51,7 +58,7 @@ describe I18n::Backend::Base, '#default' do
       end
     end
 
-    describe "and there is not a text inside the array" do
+    describe "and there is no text inside the array" do
       it "doesn't send anything to Locale" do
         allow_sending do
           Localeapp.missing_translations.should_not_receive(:add)

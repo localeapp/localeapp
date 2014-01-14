@@ -57,7 +57,7 @@ command :install do |c|
   c.desc "create configuration when using localeapp via a heroku addon (PRE ALPHA)"
   c.switch [:h, 'heroku']
 
-  c.desc "install a skeleton project suitable for Github"
+  c.desc "install a skeleton project suitable for Github (warning: README.md will be overwritten)"
   c.switch [:g, 'github']
 
   c.action do |global_options, options, args|

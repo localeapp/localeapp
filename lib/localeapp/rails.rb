@@ -27,6 +27,13 @@ module Localeapp
         require 'localeapp/rails/2_3_translation_helper_monkeypatch'
       end
 
+      # Rails >= 4.0.2 || Rails >= 3.2.16
+      # ie: after CVE-2013-4491 patch (https://github.com/rails/rails/commit/78790e4bceedc632cb40f9597792d7e27234138a)
+      if (::Rails::VERSION::MAJOR == 4 && (::Rails::VERSION::MINOR > 0 or (::Rails::VERSION::MINOR == 0 && ::Rails::VERSION::TINY >= 2))) or
+         (::Rails::VERSION::MAJOR == 3 && (::Rails::VERSION::MINOR > 2 or (::Rails::VERSION::MINOR == 2 && ::Rails::VERSION::TINY >= 16)))
+        require 'localeapp/rails/force_exception_handler_in_translation_helper'
+      end
+
       Localeapp.configure do |config|
         config.logger                     = rails_logger
         config.environment_name           = rails_env

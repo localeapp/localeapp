@@ -1,5 +1,7 @@
 # master
 
+* Fix missing translations sending with Rails >= 3.2.16 and >= 4.0.2 (@michaelbaudino)
+
 # Version 0.6.14
 
 * Fix a bug where the last poll and last refresh date could be nil

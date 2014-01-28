@@ -1,5 +1,6 @@
 # master
 
+* Mimic new Rails `translate` helper behaviour, which is to wrap missing translations messages in <span> elements (@michaelbaudino)
 * Fix missing translations sending with Rails >= 3.2.16 and >= 4.0.2 (@michaelbaudino)
 
 # Version 0.6.14

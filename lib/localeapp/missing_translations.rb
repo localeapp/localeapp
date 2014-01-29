@@ -29,7 +29,7 @@ module Localeapp
       # need the sort to make specs work under 1.8
       @translations.sort { |a, b| a.to_s <=> b.to_s }.each do |locale, records|
         records.each do |key, record|
-          next if cached?(key)
+          next if ignore?(key, record)
           cache(key)
           missing_data = {:key => key, :locale => locale, :options => record.options}
           missing_data[:description] = record.description if record.description
@@ -51,6 +51,10 @@ module Localeapp
 
     def cache(key)
       cached_keys << key if Localeapp.configuration.cache_missing_translations
+    end
+
+    def ignore?(key, record)
+      cached?(key) || (Localeapp.configuration.ignore_empty_translations && record.description.to_s == "")
     end
   end
 end

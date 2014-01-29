@@ -60,4 +60,29 @@ describe Localeapp::MissingTranslations, "#to_send" do
       translation_a.to_send.size.should == 1
     end
   end
+
+  it "doesn't send empty descriptions when ignore_empty_translations is true" do
+    with_configuration(:ignore_empty_translations => true) do
+      translation_a = Localeapp::MissingTranslations.new
+      translation_a.add(:es, 'foobybar_empty', '')
+      translation_a.add(:es, 'foobybar_nil'  , nil)
+      translation_a.to_send.size.should == 0
+    end
+  end
+
+  it "sends non-empty descriptions when ignore_empty_translations is true" do
+    with_configuration(:ignore_empty_translations => true) do
+      translation_a = Localeapp::MissingTranslations.new
+      translation_a.add(:es, 'foobybar', 'not_empty')
+      translation_a.to_send.size.should == 1
+    end
+  end
+
+  it "sends empty descriptions when ignore_empty_translations is false" do
+    with_configuration(:ignore_empty_translations => false) do
+      translation_a = Localeapp::MissingTranslations.new
+      translation_a.add(:es, 'foobybar', '')
+      translation_a.to_send.size.should == 1
+    end
+  end
 end

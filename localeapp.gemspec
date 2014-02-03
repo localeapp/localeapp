@@ -28,9 +28,9 @@ Gem::Specification.new do |s|
   s.add_dependency('gli')
 
   s.add_development_dependency('rake')
-  s.add_development_dependency('rspec', '2.11.0')
-  s.add_development_dependency('yard', '0.6.7')
-  s.add_development_dependency('RedCloth', '4.2.9')
-  s.add_development_dependency('aruba', '0.5.1')
-  s.add_development_dependency('fakeweb', '1.3.0')
+  s.add_development_dependency('rspec')
+  s.add_development_dependency('yard')
+  s.add_development_dependency('RedCloth')
+  s.add_development_dependency('aruba')
+  s.add_development_dependency('fakeweb')
 end

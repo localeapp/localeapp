@@ -32,6 +32,7 @@ module Localeapp
       if (::Rails::VERSION::MAJOR == 4 && (::Rails::VERSION::MINOR > 0 or (::Rails::VERSION::MINOR == 0 && ::Rails::VERSION::TINY >= 2))) or
          (::Rails::VERSION::MAJOR == 3 && (::Rails::VERSION::MINOR > 2 or (::Rails::VERSION::MINOR == 2 && ::Rails::VERSION::TINY >= 16)))
         require 'localeapp/rails/force_exception_handler_in_translation_helper'
+        require 'localeapp/rails/mimic_rails_missing_translation_display'
       end
 
       Localeapp.configure do |config|

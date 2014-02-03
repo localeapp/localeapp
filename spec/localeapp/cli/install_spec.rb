@@ -8,12 +8,12 @@ describe Localeapp::CLI::Install, '.execute(key = nil)' do
 
   it "creates the installer based on the config type" do
     command.config_type = :heroku
-    command.should_receive(:installer).with("HerokuInstaller").and_return(stub.as_null_object)
+    command.should_receive(:installer).with("HerokuInstaller").and_return(double.as_null_object)
     command.execute(key)
   end
 
   it "executes the installer with the given key" do
-    installer = stub(:installer)
+    installer = double(:installer)
     installer.should_receive(:execute).with(key)
     command.stub(:installer).and_return(installer)
     command.execute(key)
@@ -156,7 +156,7 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#write_config_file' do
   it "creates a configuration file containing just the api key" do
     installer.key = key
     installer.config_file_path = config_file_path
-    file = stub('file')
+    file = double('file')
     file.should_receive(:write).with <<-CONTENT
 require 'localeapp/rails'
 
@@ -200,7 +200,7 @@ describe Localeapp::CLI::Install::HerokuInstaller, '#write_config_file' do
   it "creates a configuration file setup for staging / production on heroku" do
     installer.key = key
     installer.config_file_path = config_file_path
-    file = stub('file')
+    file = double('file')
     file.should_receive(:write).with <<-CONTENT
 require 'localeapp/rails'
 
@@ -260,7 +260,7 @@ describe Localeapp::CLI::Install::StandaloneInstaller, '#write_config_file' do
     installer.key = key
     installer.config_file_path = config_file_path
     installer.data_directory = data_directory
-    file = stub('file')
+    file = double('file')
     file.should_receive(:write).with <<-CONTENT
 Localeapp.configure do |config|
   config.api_key                    = 'APIKEY'

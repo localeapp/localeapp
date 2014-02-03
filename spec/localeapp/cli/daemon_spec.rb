@@ -30,7 +30,7 @@ describe Localeapp::CLI::Daemon, "#do_update" do
   let(:command) { Localeapp::CLI::Daemon.new(:output => output) }
 
   it "creates and executes and Updater" do
-    stub = stub(:updater)
+    stub = double(:updater)
     stub.should_receive(:execute)
     Localeapp::CLI::Update.should_receive(:new).and_return(stub)
     command.do_update

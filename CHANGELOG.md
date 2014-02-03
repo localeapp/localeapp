@@ -1,7 +1,11 @@
 # master
 
-* Mimic new Rails `translate` helper behaviour, which is to wrap missing translations messages in <span> elements (@michaelbaudino)
-* Fix missing translations sending with Rails >= 3.2.16 and >= 4.0.2 (@michaelbaudino)
+# Version 0.7.0
+
+* Drop support for Ruby 1.8 (both MRI and JRuby)
+* Add support for Ruby 2.0 and 2.1 (both MRI and JRuby)
+* Mimic new Rails `translate` helper behaviour, which is to wrap missing translations messages in <span> elements
+* Fix missing translations sending with Rails >= 3.2.16 and >= 4.0.2
 
 # Version 0.6.14
 

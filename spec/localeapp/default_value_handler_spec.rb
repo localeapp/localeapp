@@ -55,7 +55,7 @@ describe I18n::Backend::Base, '#default' do
       it "doesn't send anything to Locale" do
         allow_sending do
           Localeapp.missing_translations.should_not_receive(:add)
-          I18n.stub!(:translate) do |subject, _|
+          I18n.stub(:translate) do |subject, _|
             subject == :not_missing ? "not missing" : nil
           end
           klass.default(:en, 'foo', [:missing, :not_missing], :baz => 'bam')

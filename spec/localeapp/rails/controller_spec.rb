@@ -62,7 +62,7 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
   context "when reloading is enabled" do
     before do
       Localeapp.configuration.environment_name = 'development'
-      Localeapp.poller.stub!(:poll!)
+      Localeapp.poller.stub(:poll!)
     end
  
     it "calls I18n.reload! when the synchronization file's updated_at has changed" do

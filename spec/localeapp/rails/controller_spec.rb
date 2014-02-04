@@ -19,6 +19,7 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
     with_configuration(configuration) do
       @controller = TestController.new
     end
+    now = Time.now; Time.stub(:now).and_return(now)
   end
 
   after do
@@ -29,7 +30,7 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
     before do
       Localeapp.configuration.environment_name = 'development'
     end
- 
+
     it "calls poller.poll! when the synchronization file's polled_at has changed" do
       Localeapp.poller.write_synchronization_data!(01234, 56789)
       Localeapp.poller.should_receive(:poll!)
@@ -58,13 +59,13 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
       @controller.handle_translation_updates
     end
   end
- 
+
   context "when reloading is enabled" do
     before do
       Localeapp.configuration.environment_name = 'development'
-      Localeapp.poller.stub!(:poll!)
+      Localeapp.poller.stub(:poll!)
     end
- 
+
     it "calls I18n.reload! when the synchronization file's updated_at has changed" do
       Localeapp.poller.write_synchronization_data!(01234, 56789)
       I18n.should_receive(:reload!)
@@ -76,7 +77,7 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
       @controller.handle_translation_updates
     end
   end
- 
+
   context "when reloading is disabled" do
     before do
       Localeapp.configuration.environment_name = 'production'

@@ -13,7 +13,7 @@ describe Localeapp::CLI::Add, "#execute(key, *translations)" do
 
   it "adds the translations to missing_translations" do
     with_configuration do
-      Localeapp.sender.stub!(:post_missing_translations)
+      Localeapp.sender.stub(:post_missing_translations)
       do_action
     end
     en_missing = Localeapp.missing_translations['en']
@@ -28,7 +28,7 @@ describe Localeapp::CLI::Add, "#execute(key, *translations)" do
 
   it "ignores badly formed arguments" do
     with_configuration do
-      Localeapp.sender.stub!(:post_missing_translations)
+      Localeapp.sender.stub(:post_missing_translations)
       do_action('test.key', ["en:this is fine", "esbad"])
     end
     Localeapp.missing_translations['en'].size.should == 1

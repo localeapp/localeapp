@@ -14,20 +14,20 @@ describe Localeapp::ApiCaller, "#call(object)" do
       @api_caller = Localeapp::ApiCaller.new(:test)
     end
     @url = 'https://example.com/test'
-    @api_caller.stub!(:test_endpoint).and_return([:get, @url])
-    @api_caller.stub!(:sleep_if_retrying)
+    @api_caller.stub(:test_endpoint).and_return([:get, @url])
+    @api_caller.stub(:sleep_if_retrying)
   end
 
   it "gets the method and url for the endpoint" do
     @api_caller.should_receive(:test_endpoint).with({}).and_return([:get, @url])
-    RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
+    RestClient::Request.stub(:execute).and_return(double('response', :code => 200))
     @api_caller.call(self)
   end
 
   it "passes through any url options" do
     @api_caller.should_receive(:test_endpoint).with({:foo => :bar}).and_return([:get, @url])
     @api_caller.options[:url_options] = { :foo => :bar }
-    RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
+    RestClient::Request.stub(:execute).and_return(double('response', :code => 200))
     @api_caller.call(self)
   end
 
@@ -43,7 +43,7 @@ describe Localeapp::ApiCaller, "#call(object)" do
 
     it "sets the response encoding based on the response charset" do
       response = "string"
-      response.stub!(:code).and_return(200)
+      response.stub(:code).and_return(200)
       response.force_encoding('US-ASCII')
       response.stub_chain(:net_http_res, :type_params).and_return('charset' => 'utf-8')
       RestClient::Request.stub(:execute).and_return(response)
@@ -54,7 +54,7 @@ describe Localeapp::ApiCaller, "#call(object)" do
 
   context "Proxy" do
     before do
-      RestClient::Request.stub!(:execute).and_return(double('response', :code => 200))
+      RestClient::Request.stub(:execute).and_return(double('response', :code => 200))
     end
 
     it "sets the proxy if configured" do
@@ -120,7 +120,7 @@ describe Localeapp::ApiCaller, "#call(object)" do
 
   context " a POST request" do
     before do
-      @api_caller.stub!(:test_endpoint).and_return([:post, @url])
+      @api_caller.stub(:test_endpoint).and_return([:post, @url])
       @api_caller.options[:payload] = "test data"
     end
 

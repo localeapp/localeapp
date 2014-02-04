@@ -75,7 +75,7 @@ describe Localeapp::Poller do
       end
 
       it "updates the polled_at but not the updated_at synchronization data" do
-        @poller.stub!(:current_time).and_return(polled_at_time)
+        @poller.stub(:current_time).and_return(polled_at_time)
         @poller.should_receive(:write_synchronization_data!).with(polled_at_time, @updated_at)
         @poller.poll!
       end
@@ -116,7 +116,7 @@ describe Localeapp::Poller do
       end
 
       it "updates the polled_at and the updated_at synchronization data" do
-        @poller.stub!(:current_time).and_return(polled_at_time)
+        @poller.stub(:current_time).and_return(polled_at_time)
         @poller.should_receive(:write_synchronization_data!).with(polled_at_time, updated_at_time)
         @poller.poll!
       end

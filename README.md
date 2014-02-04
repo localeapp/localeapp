@@ -1,6 +1,6 @@
 # Locale
 
-[![Build status](https://secure.travis-ci.org/Locale/localeapp.png)](http://travis-ci.org/Locale/localeapp)[![Code Climate](https://codeclimate.com/github/Locale/localeapp.png)](https://codeclimate.com/github/Locale/localeapp)
+[![Build status](https://secure.travis-ci.org/Locale/localeapp.png)](http://travis-ci.org/Locale/localeapp) [![Code Climate](https://codeclimate.com/github/Locale/localeapp.png)](https://codeclimate.com/github/Locale/localeapp) [![Gem Version](https://badge.fury.io/rb/localeapp.png)](http://badge.fury.io/rb/localeapp)
 
 The localeapp gem connects your rails app to the Locale service on
 http://www.localeapp.com. Locale makes hand editing translation files something

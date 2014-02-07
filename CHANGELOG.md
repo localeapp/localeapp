@@ -1,5 +1,9 @@
 # master
 
+# Version 0.7.1
+
+* Raise Localeapp::MissingApiKey when api_key is empty
+
 # Version 0.7.0
 
 * Drop support for Ruby 1.8 (both MRI and JRuby)

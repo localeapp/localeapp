@@ -162,4 +162,22 @@ describe Localeapp::Configuration do
       configuration.should_not be_sending_disabled
     end
   end
+
+  describe "#has_api_key?" do
+
+    context "when an api_key is defined" do
+      it "returns true" do
+        configuration.api_key = '0123456789abcdef'
+        expect(configuration.has_api_key?).to be_true
+      end
+    end
+
+    context "with no api_key provided" do
+      it "returns false" do
+        expect(configuration.has_api_key?).to be_false
+      end
+    end
+
+  end
+
 end

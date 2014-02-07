@@ -104,6 +104,16 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
       expect { @controller.handle_translation_updates }.to raise_error Localeapp::MissingApiKey
     end
   end
+
+  context "when the api_key is empty" do
+    before do
+      Localeapp.configuration.api_key = ''
+    end
+
+    it "raises an exception" do
+      expect { @controller.handle_translation_updates }.to raise_error Localeapp::MissingApiKey
+    end
+  end
 end
 
 describe Localeapp::Rails::Controller, '#send_missing_translations' do

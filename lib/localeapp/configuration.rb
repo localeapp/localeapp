@@ -118,5 +118,10 @@ module Localeapp
     def sending_disabled?
       !sending_environments.map { |v| v.to_s }.include?(environment_name)
     end
+
+    def has_api_key?
+      !api_key.nil? && !api_key.empty?
+    end
+
   end
 end

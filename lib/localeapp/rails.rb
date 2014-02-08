@@ -62,7 +62,7 @@ module Localeapp
     end
 
     def self.rails_version_matches?(requirement)
-      Gem::Requirement.new(requirement).satisfied_by? Gem::Version::new(::Rails::VERSION::STRING)
+      Gem::Requirement.new(requirement).satisfied_by? Gem::Version.new(::Rails::VERSION::STRING)
     end
 
     def self.rails_version_matches_any?(*requirements)

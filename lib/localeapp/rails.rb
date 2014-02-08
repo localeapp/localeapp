@@ -3,23 +3,6 @@ require 'fileutils'
 module Localeapp
   module Rails
     def self.initialize
-      if defined?(::Rails.logger)
-        rails_logger = ::Rails.logger
-      elsif defined?(RAILS_DEFAULT_LOGGER)
-        rails_logger = RAILS_DEFAULT_LOGGER
-      end
-
-      if defined?(::Rails.env)
-        rails_env = ::Rails.env
-      elsif defined?(RAILS_ENV)
-        rails_env = RAILS_ENV
-      end
-
-      if defined?(::Rails.root)
-        rails_root = ::Rails.root
-      elsif defined?(RAILS_ROOT)
-        rails_root = RAILS_ROOT
-      end
 
       ActionController::Base.send(:include, Localeapp::Rails::Controller)
 
@@ -39,8 +22,8 @@ module Localeapp
         config.logger                     = rails_logger
         config.environment_name           = rails_env
         config.project_root               = rails_root
-        config.synchronization_data_file  = File.join([rails_root, 'log', 'localeapp.yml'])
-        config.translation_data_directory = File.join([rails_root, 'config', 'locales'])
+        config.synchronization_data_file  = File.join([config.project_root, 'log', 'localeapp.yml'])
+        config.translation_data_directory = File.join([config.project_root, 'config', 'locales'])
       end
       initialize_synchronization_data_file
     end
@@ -54,6 +37,33 @@ module Localeapp
         end
       end
     end
+
+    protected
+
+    def self.rails_logger
+      if defined?(::Rails.logger)
+        ::Rails.logger
+      elsif defined?(RAILS_DEFAULT_LOGGER)
+        RAILS_DEFAULT_LOGGER
+      end
+    end
+
+    def self.rails_env
+      if defined?(::Rails.env)
+        ::Rails.env
+      elsif defined?(RAILS_ENV)
+        RAILS_ENV
+      end
+    end
+
+    def self.rails_root
+      if defined?(::Rails.root)
+        ::Rails.root
+      elsif defined?(RAILS_ROOT)
+        RAILS_ROOT
+      end
+    end
+
   end
 end
 

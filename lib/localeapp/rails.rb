@@ -6,14 +6,11 @@ module Localeapp
 
       ActionController::Base.send(:include, Localeapp::Rails::Controller)
 
-      if ::Rails::VERSION::MAJOR == 2 && ::Rails::VERSION::MINOR >= 3 # TODO: Check previous rails versions if required
+      if rails_version_matches? '~> 2.3' # TODO: Check previous rails versions if required
         require 'localeapp/rails/2_3_translation_helper_monkeypatch'
       end
 
-      # Rails >= 4.0.2 || Rails >= 3.2.16
-      # ie: after CVE-2013-4491 patch (https://github.com/rails/rails/commit/78790e4bceedc632cb40f9597792d7e27234138a)
-      if (::Rails::VERSION::MAJOR == 4 && (::Rails::VERSION::MINOR > 0 or (::Rails::VERSION::MINOR == 0 && ::Rails::VERSION::TINY >= 2))) or
-         (::Rails::VERSION::MAJOR == 3 && (::Rails::VERSION::MINOR > 2 or (::Rails::VERSION::MINOR == 2 && ::Rails::VERSION::TINY >= 16)))
+      if rails_version_matches_any? '~> 3.2.16', '~> 4.0.2' # ie: after CVE-2013-4491 patch (https://github.com/rails/rails/commit/78790e4bceedc632cb40f9597792d7e27234138a)
         require 'localeapp/rails/force_exception_handler_in_translation_helper'
         require 'localeapp/rails/mimic_rails_missing_translation_display'
       end
@@ -62,6 +59,14 @@ module Localeapp
       elsif defined?(RAILS_ROOT)
         RAILS_ROOT
       end
+    end
+
+    def self.rails_version_matches?(requirement)
+      Gem::Requirement.new(requirement).satisfied_by? Gem::Version::new(::Rails::VERSION::STRING)
+    end
+
+    def self.rails_version_matches_any?(*requirements)
+      requirements.map{ |r| rails_version_matches?(r) }.reduce(:|)
     end
 
   end

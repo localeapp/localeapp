@@ -197,6 +197,7 @@ describe Localeapp::ApiCaller, "#call(object)" do
     {
       304 => 'Not Modified',
       404 => 'Resource Not Found',
+      422 => 'Unprocessable Entity',
       500 => 'Internal Server Error',
       # Work out when this could happen
       # 501 => 'Not Implemented',

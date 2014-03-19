@@ -70,6 +70,7 @@ module Localeapp
         RestClient::InternalServerError,
         RestClient::BadGateway,
         RestClient::ServiceUnavailable,
+        RestClient::UnprocessableEntity,
         RestClient::GatewayTimeout => error
         return error.response
       rescue RestClient::ServerBrokeConnection => error

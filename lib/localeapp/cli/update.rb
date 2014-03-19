@@ -17,11 +17,11 @@ module Localeapp
     protected
 
       def timestamp_too_old?
-        poller.updated_at < Time.now.to_i - six_months
+        poller.updated_at < six_months_ago
       end
 
-      def six_months
-        15552000 # This is 6.months.to_i according to ActiveRecord
+      def six_months_ago
+        Time.now.to_i - 15552000 # This is 6.months.to_i according to ActiveRecord
       end
     end
   end

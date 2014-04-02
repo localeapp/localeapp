@@ -34,6 +34,11 @@ When /^new translations for the api key "([^"]*)" since "([^"]*)" with time "([^
   add_fake_web_uri(:get, uri, ['200', 'OK'], body, 'date' => Time.at(new_time.to_i).httpdate)
 end
 
+When /^new translations for the api key "([^"]*)" since last fetch with time "([^"]*)" seconds later$/ do |api_key, time_shift|
+  steps %Q{
+    When new translations for the api key "#{api_key}" since "#{@timestamp}" with time "#{@timestamp + time_shift.to_i}"
+  }
+end
 
 When /^I have a valid project on localeapp\.com with api key "([^"]*)" and the translation key "([^"]*)"/ do |api_key, key_name|
   uri = "https://api.localeapp.com/v1/projects/#{api_key}/translations/#{key_name.gsub(/\./, '%2E')}"
@@ -75,6 +80,28 @@ When /^help should not be displayed$/ do
     And the output should not contain:
     """
     Usage: localeapp COMMAND [options]
+    """
+  }
+end
+
+When /^the timestamp is (\d+) months? old$/ do |months|
+  @timestamp = Time.now.to_i - months.to_i * 2592000
+  steps %Q{
+    And a file named "log/localeapp.yml" with:
+    """
+    ---
+    :updated_at: #{@timestamp}
+    :polled_at: #{@timestamp}
+    """
+  }
+end
+
+Then /^translations should be fetched since last fetch only$/ do
+  steps %Q{
+    Then the output should contain:
+    """
+    Localeapp update: checking for translations since #{@timestamp}
+    Found and updated new translations
     """
   }
 end

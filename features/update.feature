@@ -24,3 +24,15 @@ Feature: Getting new translations
     Then translations should be fetched since last fetch only
     And help should not be displayed
     And a file named "config/locales/en.yml" should exist
+
+  Scenario: Running update with a too old timestamp
+    In order to receive the translations that have been updated since the last check
+    When I have a valid project on localeapp.com with api key "MYAPIKEY"
+    And an initializer file
+    And the timestamp is 8 months old
+    When I run `localeapp update`
+    Then the output should contain:
+    """
+    Timestamp is missing or too old
+    """
+    And help should not be displayed

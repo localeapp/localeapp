@@ -1,6 +1,8 @@
 # Locale
 
-[![Build status](https://secure.travis-ci.org/Locale/localeapp.png)](http://travis-ci.org/Locale/localeapp) [![Code Climate](https://codeclimate.com/github/Locale/localeapp.png)](https://codeclimate.com/github/Locale/localeapp) [![Gem Version](https://badge.fury.io/rb/localeapp.png)](http://badge.fury.io/rb/localeapp)
+[![Build status](https://secure.travis-ci.org/Locale/localeapp.png)](http://travis-ci.org/Locale/localeapp)
+[![Code Climate](https://codeclimate.com/github/Locale/localeapp.png)](https://codeclimate.com/github/Locale/localeapp)
+[![Gem Version](https://badge.fury.io/rb/localeapp.png)](http://badge.fury.io/rb/localeapp)
 
 The localeapp gem connects your rails app to the Locale service on
 http://www.localeapp.com. Locale makes hand editing translation files something
@@ -16,8 +18,6 @@ Though the i18n gem uses YAML as it's default file format it doesn't require
 serialization of ruby objects. To prevent the kind of security problems
 detailed in [CVE-2013-0156][1] the localeapp gem will not load any YAML containing
 the string !ruby/ as of version 0.6.9.
-
-[1]: https://groups.google.com/forum/?fromgroups=#!topic/rubyonrails-security/61bkgvnSGTQ
 
 ## Installation
 
@@ -48,13 +48,13 @@ Install the gem:
 Create a project on localeapp.com and get the api key. Then run:
 
     localeapp install <YOUR_API_KEY>
-    
+
 ### Non rails projects
 
 Install the gem and run:
 
     localeapp install --standalone <YOUR_API_KEY>
-    
+
 This will create a `.localeapp` directory for your configuration files.
 
 ### Public projects
@@ -201,15 +201,22 @@ certificates are by adding:
     config.ssl_verify = true
     config.ssl_ca_file = /path/to/ca_cert.pm
 
-See [this article on Ruby Inside][1] for some more details.
-
-[1]: http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html
+See [this article on Ruby Inside][2] for some more details.
 
 ## Support and feedback
 
 You can contact us via the support link at the bottom of the page or emailing
 support@localeapp.com
 
+## Contributing
+
+See corresponding [contributing guidelines][3].
+
 ## License
 
-The code for `localeapp` is released under the [MIT License](http://opensource.org/licenses/MIT).
+The code for `localeapp` is released under the [MIT License][4].
+
+[1]: https://groups.google.com/forum/?fromgroups=#!topic/rubyonrails-security/61bkgvnSGTQ
+[2]: http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html
+[3]: https://github.com/Locale/localeapp/blob/master/CONTRIBUTING.md
+[4]: http://opensource.org/licenses/MIT

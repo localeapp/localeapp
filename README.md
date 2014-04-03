@@ -167,9 +167,11 @@ See corresponding [contributing guidelines][3].
 
 ## License
 
-The code for `localeapp` is released under the [MIT License][4].
+Copyright (c) 2014 [Locale][5] and other [contributors][6], released under the [MIT License][4].
 
 [1]: https://groups.google.com/forum/?fromgroups=#!topic/rubyonrails-security/61bkgvnSGTQ
 [2]: http://www.rubyinside.com/how-to-cure-nethttps-risky-default-https-behavior-4010.html
 [3]: https://github.com/Locale/localeapp/blob/master/CONTRIBUTING.md
 [4]: http://opensource.org/licenses/MIT
+[5]: https://github.com/Locale
+[6]: https://github.com/Locale/localeapp/graphs/contributors

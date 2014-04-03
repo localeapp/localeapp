@@ -7,7 +7,6 @@ Here are some ways *you* can contribute:
 * by using prerelease versions
 * by reporting [bugs][2]
 * by suggesting new features
-* by writing translations
 * by writing or editing documentation
 * by writing specifications
 * by writing code (*no patch is too small*: fix typos, add comments, clean up inconsistent whitespace)
@@ -20,9 +19,8 @@ Starting point:
 * Fork the repo
 * Clone your repo
 * Run `bundle install`
-* Run `bundle exec rake test_app` to create the test application in `spec/test_app`
 * Make your changes
-* Ensure specs pass by running `bundle exec rspec spec`
+* Ensure specs pass by running `bundle exec rake`
 * Submit your pull request
 
 [1]: http://www.fsf.org/licensing/essays/free-sw.html

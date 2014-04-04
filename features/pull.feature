@@ -25,7 +25,7 @@ Feature: Pulling all translation
     When I run `localeapp pull`
     Then the output should contain:
     """
-    Could not write locale file, please make sure that config/locales exists and is writeable
+    Could not write locale file, please make sure that config/locales exists and is writable
     """
 
   Scenario: Running pull with no initializer file, passing the key on the command line

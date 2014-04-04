@@ -1,5 +1,10 @@
 # master
 
+# Version 0.7.2
+
+* Display a message when the timestamp used for an update command is too old
+* Do not even try to hit the API when this timestamp is too old (since the API will return a 422 error anyway)
+
 # Version 0.7.1
 
 * Raise Localeapp::MissingApiKey when api_key is empty

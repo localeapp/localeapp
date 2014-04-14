@@ -289,7 +289,6 @@ describe Localeapp::CLI::Install::GithubInstaller, '#write_config_file' do
     installer.stub(:write_standalone_config)
     installer.stub(:create_data_directory)
     installer.stub(:create_gitignore)
-    installer.stub(:create_readme)
   end
 
   it "creates a standalone configuration file" do
@@ -304,11 +303,6 @@ describe Localeapp::CLI::Install::GithubInstaller, '#write_config_file' do
 
   it "creates the .gitignore file" do
     installer.should_receive(:create_gitignore)
-    installer.write_config_file
-  end
-
-  it "creates the READMI file" do
-    installer.should_receive(:create_readme)
     installer.write_config_file
   end
 end

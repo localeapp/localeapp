@@ -196,7 +196,6 @@ CONTENT
           super
           create_data_directory
           create_gitignore
-          create_readme
         end
 
         private
@@ -207,24 +206,6 @@ CONTENT
         def create_gitignore
           File.open('.gitignore', 'a+') do |file|
             file.write config_dir
-          end
-        end
-
-        def create_readme
-          File.open('README.md', 'w+') do |file|
-            file.write <<-CONTENT
-# #{project_data['name']}
-
-A ruby translation project managed on [Locale](http://www.localeapp.com/) that's open to all!
-
-## Contributing to #{project_data['name']}
-
-- Edit the translations directly on the [#{project_data['name']}](http://www.localeapp.com/projects/public?search=#{project_data['name']}) project on Locale.
-- **That's it!**
-- The maintainer will then pull translations from the Locale project and push to Github.
-
-Happy translating!
-CONTENT
           end
         end
       end

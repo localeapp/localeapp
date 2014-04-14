@@ -53,7 +53,6 @@ Feature: Installation
     And help should not be displayed
     And a file named ".localeapp/config.rb" should exist
     And a file named ".gitignore" should exist
-    And a file named "README.md" should exist
     And the exit status should be 0
 
   Scenario: Running heroku install with no api key

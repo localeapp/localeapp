@@ -5,7 +5,7 @@ require 'time'
 module Localeapp
   class Poller
     include ::Localeapp::ApiCall
-    
+
     # when we last asked the service for updates
     attr_accessor :polled_at
 
@@ -18,7 +18,7 @@ module Localeapp
     end
 
     def synchronization_data
-      if File.exists?(Localeapp.configuration.synchronization_data_file)
+      if File.exist?(Localeapp.configuration.synchronization_data_file)
         Localeapp.load_yaml_file(Localeapp.configuration.synchronization_data_file) ||
         default_synchronization_data
       else

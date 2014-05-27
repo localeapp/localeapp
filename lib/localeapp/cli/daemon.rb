@@ -40,7 +40,7 @@ module Localeapp
       end
 
       def kill_existing
-        if File.exists? Localeapp.configuration.daemon_pid_file
+        if File.exist? Localeapp.configuration.daemon_pid_file
           begin
             daemon_pid = File.read(Localeapp.configuration.daemon_pid_file)
             Process.kill("QUIT", daemon_pid.to_i)

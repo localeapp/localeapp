@@ -34,6 +34,7 @@ require 'localeapp/updater'
 require 'localeapp/key_checker'
 require 'localeapp/missing_translations'
 require 'localeapp/default_value_handler'
+require 'localeapp/hash'
 
 require 'localeapp/cli/command'
 require 'localeapp/cli/install'
@@ -74,7 +75,6 @@ module Localeapp
     # The missing_translations object is responsible for keeping track of missing translations
     # that will be sent to the backend
     attr_reader :missing_translations
-
 
     # Writes out the given message to the #logger
     def log(message)
@@ -120,9 +120,13 @@ module Localeapp
 
     def load_yaml(contents)
       if Localeapp.configuration.raise_on_insecure_yaml
-        raise Localeapp::PotentiallyInsecureYaml if contents =~ /!ruby\//
+        raise Localeapp::PotentiallyInsecureYaml if insecure_yaml?(contents)
       end
 
+      yaml_to_hash(contents)
+    end
+
+    def yaml_to_hash(contents)
       if defined?(Psych) && defined?(Psych::VERSION)
         Psych.load(contents)
       else
@@ -130,8 +134,34 @@ module Localeapp
       end
     end
 
-    def load_yaml_file(filename)
-      load_yaml(File.read(filename))
+    def symbolize_yaml_keys(contents)
+      if contents.is_a?(Hash)
+        contents.symbolize_keys
+      else
+        contents
+      end
+    end
+
+    def rebuild_insecure_log_file(filename)
+      contents = File.read(filename)
+      if insecure_yaml?(contents)
+        File.open(Localeapp.configuration.synchronization_data_file, 'w+') do |f|
+          f.write(yaml_to_hash(contents).to_yaml)
+        end
+      end
+    end
+
+    def load_yaml_file(filename, symbolize = false)
+      if symbolize
+        rebuild_insecure_log_file(filename)
+        load_yaml symbolize_yaml_keys(File.read(filename))
+      else
+        load_yaml File.read(filename)
+      end
+    end
+
+    def insecure_yaml?(contents)
+      !!contents.to_s.match(/!ruby\//)
     end
 
     private

@@ -24,39 +24,17 @@ describe Localeapp::Poller do
     end
   end
 
-  describe "#synchronization_data" do
-    let(:default_data) { {:polled_at => 0, :updated_at => 0} }
-
-    before do
-      @original_configuration_file = Localeapp.configuration.synchronization_data_file
-    end
-
-    it "returns default data if there is a yml file that is empty" do
-      Localeapp.configuration.synchronization_data_file = "#{File.dirname(__FILE__)}/../fixtures/empty_log.yml"
-      @poller.synchronization_data.should == default_data
-    end
-
-    it "returns default data when the yml file doesn't exist" do
-      Localeapp.configuration.synchronization_data_file = "non_existant_file.yml"
-      @poller.synchronization_data.should == default_data
-    end
-
-    after do
-      Localeapp.configuration.synchronization_data_file = @original_configuration_file
-    end
-  end
-
   describe "#write_synchronization_data!(polled_at, updated_at)" do
     let(:polled_at_time) { Time.at(1000000) }
     let(:updated_at_time) { Time.at(1000010) }
 
     it "updates polled_at in the synchronization file" do
-      polled_at = lambda { @poller.synchronization_data[:polled_at] }
+      polled_at = lambda { @poller.sync_data.polled_at }
       expect { @poller.write_synchronization_data!(polled_at_time, updated_at_time) }.to change(polled_at, :call).to(polled_at_time.to_i)
     end
 
     it "updates updated_at in the synchronization file" do
-      updated_at = lambda { @poller.synchronization_data[:updated_at] }
+      updated_at = lambda { @poller.sync_data.updated_at }
       expect { @poller.write_synchronization_data!(polled_at_time, updated_at_time) }.to change(updated_at, :call).to(updated_at_time.to_i)
     end
   end

@@ -41,9 +41,8 @@ module Localeapp
       sync_file = Localeapp.configuration.synchronization_data_file
       if !File.exists?(sync_file)
         FileUtils.mkdir_p(File.dirname(sync_file))
-        File.open(sync_file, 'w') do |f|
-          f.write({:polled_at => Time.now.to_i, :updated_at => Time.now.to_i}.to_yaml)
-        end
+        file = Localeapp::SyncFile.new(sync_file)
+        file.write(Time.now.to_i, Time.now.to_i)
       end
     end
   end

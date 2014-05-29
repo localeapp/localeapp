@@ -108,7 +108,7 @@ module Localeapp
     end
 
     def has_config_file?
-      default_config_file_paths.any? { |path| File.exists?(path) }
+      default_config_file_paths.any? { |path| File.exist?(path) }
     end
 
     def default_config_file_paths

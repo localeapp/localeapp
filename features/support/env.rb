@@ -1,4 +1,6 @@
 require 'aruba/cucumber'
+require 'aruba/jruby'
+
 require File.expand_path(File.join(File.dirname(__FILE__), '../../spec/support/localeapp_integration_data'))
 World(LocaleappIntegrationData)
 
@@ -18,4 +20,3 @@ module FakeWebHelper
   end
 end
 World(FakeWebHelper)
-

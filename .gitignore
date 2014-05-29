@@ -6,3 +6,5 @@ Gemfile.*.lock
 .yardoc/*
 doc/*
 tmp/*
+.ruby-version
+.ruby-gemsets

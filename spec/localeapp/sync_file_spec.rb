@@ -54,7 +54,8 @@ describe Localeapp::SyncFile do
 
     it "writes to the configuration file" do
       file.write(123, 456)
-      expect( File.read("#{base_dir}/example_write.yml") ).to eq "---\npolled_at: 123\nupdated_at: 456\n"
+      # using a regexp here since 1.9.3 output has an extra space after the first "---"
+      expect( File.read("#{base_dir}/example_write.yml") ).to match /--- ?\npolled_at: 123\nupdated_at: 456\n/
     end
   end
 end

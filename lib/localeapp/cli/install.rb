@@ -206,14 +206,15 @@ CONTENT
 
         def create_gitignore
           File.open('.gitignore', 'a+') do |file|
-            file.write config_dir
+            file.write "\n#{config_dir}"
           end
         end
 
         def create_readme
-          File.open('README.md', 'w+') do |file|
+          File.open('README.md', 'a+') do |file|
             file.write <<-CONTENT
-# #{project_data['name']}
+
+---
 
 A ruby translation project managed on [Locale](http://www.localeapp.com/) that's open to all!
 

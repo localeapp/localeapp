@@ -20,7 +20,7 @@ module Localeapp
           if ::Localeapp.poller.needs_reloading?
             ::Localeapp.log_with_time 'reloading I18n'
             I18n.reload!
-            ::Localeapp.poller.updated_at = ::Localeapp.poller.synchronization_data[:updated_at]
+            ::Localeapp.poller.updated_at = ::Localeapp.poller.sync_data.updated_at
           end
         end
       end

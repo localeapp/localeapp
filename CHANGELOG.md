@@ -1,5 +1,15 @@
 # master
 
+# Version 0.8.0
+
+* Fix problem with line ending in three dots. (@holli)
+* Change deprecated File.exists? to File.exist?
+* Fix "install --github" so it append README.md, before it truncated the README.md file with new content, now its
+append content in a more proper manner. Also fix .gitignore injection so it ensure newline.
+* Extract synchronisation data into SyncFile and SyncData classes. These value objects allow us to read synchronisation data from yaml files that have both strings and symbols as keys. Sync files now use strings as keys when serialising to yaml. If you find that you have a log/localeapp.yml file that contains the string !ruby, run localeapp pull to update to "regular" yaml syntax.
+* Tweak Aruba config for jRuby (development related only).
+* Fix minor typo in "updater" output message.
+
 # Version 0.7.2
 
 * Display a message when the timestamp used for an update command is too old

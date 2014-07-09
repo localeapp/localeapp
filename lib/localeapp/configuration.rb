@@ -77,6 +77,12 @@ module Localeapp
     # Enable or disable the missing translation cache
     # default: false
     attr_accessor :cache_missing_translations
+    
+    # A regular expression that is matched against a translation key.
+    # If the key matches, the translation will not be sent to the Locale
+    # server via the rails exception handler.
+    # default: nil
+    attr_accessor :blacklisted_keys_pattern
 
     def initialize
       defaults.each do |setting, value|

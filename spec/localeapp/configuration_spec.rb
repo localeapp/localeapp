@@ -85,6 +85,10 @@ describe Localeapp::Configuration do
     expect { configuration.daemon_log_file = 'log/la.log' }.to change(configuration, :daemon_log_file).to('log/la.log')
   end
 
+  it "sets the sending_blacklist by default" do
+    expect(configuration.blacklisted_keys_pattern).to be_nil
+  end
+
   context "enabled_sending_environments" do
     it "is only development by default" do
       configuration.sending_environments.should == ['development']

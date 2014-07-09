@@ -136,4 +136,10 @@ describe Localeapp::Rails::Controller, '#send_missing_translations' do
     Localeapp.sender.should_receive(:post_missing_translations)
     @controller.send_missing_translations
   end
+
+  it "rejects blacklisted translations" do
+    Localeapp.configuration.environment_name = 'development'
+    Localeapp.missing_translations.should_receive(:reject_blacklisted)
+    @controller.send_missing_translations
+  end
 end

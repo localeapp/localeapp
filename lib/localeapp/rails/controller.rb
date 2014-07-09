@@ -27,7 +27,7 @@ module Localeapp
 
       def send_missing_translations
         return if ::Localeapp.configuration.sending_disabled?
-
+        ::Localeapp.missing_translations.reject_blacklisted
         ::Localeapp.sender.post_missing_translations
       end
     end

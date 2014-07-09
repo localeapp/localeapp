@@ -39,6 +39,15 @@ module Localeapp
       data
     end
 
+    def reject_blacklisted
+      return unless Localeapp.configuration.blacklisted_keys_pattern
+      @translations.each do |locale, records|
+        records.reject! do |key, record|
+          key.match(Localeapp.configuration.blacklisted_keys_pattern)
+        end
+      end
+    end
+
     private
 
     def cached_keys

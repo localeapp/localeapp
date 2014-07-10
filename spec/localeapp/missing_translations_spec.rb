@@ -70,14 +70,20 @@ describe Localeapp::MissingTranslations, "#reject_blacklisted" do
     translations.add(:en, 'feline.lion')
     translations.add(:en, 'feline.tiger')
     translations.add(:en, 'bird.eagle')
-
+    translations.add(:de, 'crow', nil, {:scope => 'bird'})
     translations.add(:fr, 'feline.lion')
     translations.add(:fr, 'reptile.lizard')
   end
 
-  it "removes translations who's key matches the blacklisted_keys_pattern" do
+  it "removes translations whose key matches the blacklisted_keys_pattern" do
     with_configuration(:blacklisted_keys_pattern => /^feline/) do
-      expect { translations.reject_blacklisted }.to change(count, :call).to(2)
+      expect { translations.reject_blacklisted }.to change(count, :call).by(-3)
+    end
+  end
+
+  it "removes translations whose scope matches the blacklisted_keys_pattern" do
+    with_configuration(:blacklisted_keys_pattern => /^bird\./) do
+      expect { translations.reject_blacklisted }.to change(count, :call).by(-2)
     end
   end
 

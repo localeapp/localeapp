@@ -44,7 +44,7 @@ module Localeapp
 
     def generate_yaml(translations)
       if defined?(Psych) && defined?(Psych::VERSION)
-        Psych.dump(translations, :line_width => -1)[4..-1].sub(/\.\.\.\n$/, '')
+        Psych.dump(translations, :line_width => -1)[4..-1]
       else
         translations.ya2yaml[5..-1]
       end

@@ -2,10 +2,12 @@
 
 # Version 0.8.0
 
+* Add the `blacklisted_keys_pattern` configuration option
+* Prevent blacklisted keys from being sent to Locale servers in the Rails exception handler
 * Fix problem with line ending in three dots. (@holli)
 * Change deprecated File.exists? to File.exist?
-* Fix "install --github" so it append README.md, before it truncated the README.md file with new content, now its
-append content in a more proper manner. Also fix .gitignore injection so it ensure newline.
+* Fix "install --github" so it appends README.md. Before it truncated the README.md file with new content, now it appends content in a more correct manner.
+* Fix .gitignore injection so it ensures a newline.
 * Extract synchronisation data into SyncFile and SyncData classes. These value objects allow us to read synchronisation data from yaml files that have both strings and symbols as keys. Sync files now use strings as keys when serialising to yaml. If you find that you have a log/localeapp.yml file that contains the string !ruby, run localeapp pull to update to "regular" yaml syntax.
 * Tweak Aruba config for jRuby (development related only).
 * Fix minor typo in "updater" output message.

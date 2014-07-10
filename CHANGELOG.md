@@ -1,9 +1,12 @@
 # master
 
-# Version 0.8.0
+# Version 0.8.1
 
 * Add the `blacklisted_keys_pattern` configuration option
 * Prevent blacklisted keys from being sent to Locale servers in the Rails exception handler
+
+# Version 0.8.0
+
 * Fix problem with line ending in three dots. (@holli)
 * Change deprecated File.exists? to File.exist?
 * Fix "install --github" so it appends README.md. Before it truncated the README.md file with new content, now it appends content in a more correct manner.

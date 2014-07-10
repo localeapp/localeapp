@@ -124,6 +124,14 @@ Automatic reloading is only enabled in the development environment by default an
 
     config.reloading_environments = []
 
+### Blacklisting keys and namespaces (Rails only)
+
+To prevent certain missing translations from being sent to the Locale servers - in case of automatically generated keys from a gem for example - you can configure the `blacklisted_keys_pattern` option with a regular expression.
+
+For example, to prevent all keys containing the word "simple_form" :
+
+    config.blacklisted_keys_pattern = /simple_form/
+
 ### Caching
 
 To prevent localeapp from sending translations every time they are missing, add this config setting:

@@ -1,5 +1,10 @@
 # master
 
+# Version 0.8.0
+
+* Add the `blacklisted_keys_pattern` configuration option
+* Prevent blacklisted keys from being sent to Locale servers in the Rails exception handler
+
 # Version 0.7.2
 
 * Display a message when the timestamp used for an update command is too old

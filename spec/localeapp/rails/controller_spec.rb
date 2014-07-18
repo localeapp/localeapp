@@ -123,6 +123,7 @@ describe Localeapp::Rails::Controller, '#send_missing_translations' do
     end
     TestController.send(:include, Localeapp::Rails::Controller)
     @controller = TestController.new
+    @controller.stub_chain(:request, :path).and_return('/admin/posts')
   end
 
   it "does nothing when sending is disabled" do
@@ -131,7 +132,7 @@ describe Localeapp::Rails::Controller, '#send_missing_translations' do
     @controller.send_missing_translations
   end
 
-  it "proceeds when configuration is enabled" do
+  it "proceeds when sending is enabled" do
     Localeapp.configuration.environment_name = 'development'
     Localeapp.sender.should_receive(:post_missing_translations)
     @controller.send_missing_translations
@@ -140,6 +141,13 @@ describe Localeapp::Rails::Controller, '#send_missing_translations' do
   it "rejects blacklisted translations" do
     Localeapp.configuration.environment_name = 'development'
     Localeapp.missing_translations.should_receive(:reject_blacklisted)
+    @controller.send_missing_translations
+  end
+
+  it "does nothing if the current request path is blacklisted" do
+    Localeapp.configuration.environment_name = 'development'
+    Localeapp.configuration.blacklisted_request_paths_pattern = /admin/
+    Localeapp.sender.should_not_receive(:post_missing_translations)
     @controller.send_missing_translations
   end
 end

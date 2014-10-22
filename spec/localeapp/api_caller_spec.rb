@@ -96,6 +96,20 @@ describe Localeapp::ApiCaller, "#call(object)" do
     end
   end
 
+  context "SSL version" do
+    it "sets the HTTPClient ssl_version to the value given to ssl_version" do
+      Localeapp.configuration.ssl_version = 'SSLv3'
+      RestClient::Request.should_receive(:execute).with(hash_including(:ssl_version => 'SSLv3')).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+
+    it "doesn't set the HTTPClient ssl_version if it's nil" do
+      Localeapp.configuration.ssl_version = nil
+      RestClient::Request.should_receive(:execute).with(hash_including(:ssl_version => nil)).and_return(double('response', :code => 200))
+      @api_caller.call(self)
+    end
+  end
+
   context "Timeout" do
     it "sets the timeout to the configured timeout" do
       Localeapp.configuration.timeout = 120

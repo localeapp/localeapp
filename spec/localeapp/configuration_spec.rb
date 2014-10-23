@@ -39,6 +39,10 @@ describe Localeapp::Configuration do
     configuration.ssl_verify.should == false
   end
 
+  it "sets ssl_version to 'SSLv23' by default" do
+    configuration.ssl_version.should == 'SSLv23'
+  end
+
   it "allows ssl_verify setting to be overridden" do
     expect { configuration.ssl_verify = true }.to change(configuration, :ssl_verify).to(true)
   end

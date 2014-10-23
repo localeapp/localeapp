@@ -57,7 +57,8 @@ module Localeapp
           :method => method,
           :headers => headers,
           :timeout => Localeapp.configuration.timeout,
-          :verify_ssl => (Localeapp.configuration.ssl_verify ? OpenSSL::SSL::VERIFY_PEER : false)
+          :verify_ssl => (Localeapp.configuration.ssl_verify ? OpenSSL::SSL::VERIFY_PEER : false),
+          :ssl_version => Localeapp.configuration.ssl_version
         }
         parameters[:ca_file] = Localeapp.configuration.ssl_ca_file if Localeapp.configuration.ssl_ca_file
         if method == :post

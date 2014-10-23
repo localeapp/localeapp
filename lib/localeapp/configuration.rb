@@ -22,6 +22,9 @@ module Localeapp
     # Path to local CA certs bundle
     attr_accessor :ssl_ca_file
 
+    # SSL version to use in requests (defaults to 'SSLv23')
+    attr_accessor :ssl_version
+
     # The port to connect to if it's not the default one
     attr_accessor :port
 
@@ -96,6 +99,7 @@ module Localeapp
         :timeout                    => 60,
         :secure                     => true,
         :ssl_verify                 => false,
+        :ssl_version                => 'SSLv23',
         :sending_environments       => %w(development),
         :reloading_environments     => %w(development),
         :polling_environments       => %w(development),

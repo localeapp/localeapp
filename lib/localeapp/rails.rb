@@ -15,10 +15,6 @@ module Localeapp
         require 'localeapp/rails/mimic_rails_missing_translation_display'
       end
 
-      if rails_version_matches_any? '~> 4.1.0.rc1', '~> 4.2.0.beta1'
-        require 'localeapp/rails/4_1_translation_helper_monkeypatch'
-      end
-
       Localeapp.configure do |config|
         config.logger                     = rails_logger
         config.environment_name           = rails_env
@@ -72,9 +68,6 @@ module Localeapp
       requirements.map{ |r| rails_version_matches?(r) }.reduce(:|)
     end
 
-    def self.rails_version_matches_all?(*requirements)
-      requirements.map{ |r| rails_version_matches?(r) }.reduce(:&)
-    end
   end
 end
 

@@ -2,7 +2,7 @@
 # This means the exception handler will be called and missing translations get sent to
 # localeapp. It's ugly but there's no other way to do it :(
 
-module Localeapp::TranslationHelper23MonkeyPatch
+module Localeapp::TranslationHelperMonkeyPatch
   # Delegates to I18n#translate but also performs two additional functions. First, it'll catch MissingTranslationData exceptions
   # and turn them into inline spans that contains the missing key, such that you can see in a view what is missing where.
   #
@@ -33,4 +33,4 @@ module Localeapp::TranslationHelper23MonkeyPatch
   alias :t :translate
 end
 
-ActionView::Base.send(:include, ::Localeapp::TranslationHelper23MonkeyPatch)
+ActionView::Base.send(:include, ::Localeapp::TranslationHelperMonkeyPatch)

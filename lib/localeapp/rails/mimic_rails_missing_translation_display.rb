@@ -12,7 +12,7 @@ module Localeapp
         alias :old_rails_call :call
         def call(exception, locale, key, options)
           locale, key = old_rails_call(exception, locale, key, options).split(', ')
-          "<span class=\"translation_missing\" title=\"translation missing: #{key}\">#{locale}, #{key}</span>".html_safe
+          "<span class=\"translation_missing\" title=\"translation missing: #{locale}.#{key}\">#{key.titleize}</span>".html_safe
         end
 
       end

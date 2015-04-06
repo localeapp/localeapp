@@ -1,5 +1,10 @@
 # master
 
+# Version 0.9.2
+
+* Refactor which monkeypatch/backported-bugfix is loaded for which Rails version
+* Hotfix a regression where calling `I18n.t(nil)` would end up in a an error in MimicRailsMissingTranslationDisplay
+
 # Version 0.9.1
 
 * Fix Rails 4.1 TranslationHelper regression

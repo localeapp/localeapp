@@ -1,5 +1,13 @@
 # master
 
+# Version 0.9.1
+
+* Fix Rails 4.1 TranslationHelper regression
+
+# Version 0.9.0
+
+* Add option to configure SSL version used
+
 # Version 0.8.1
 
 * Add the `blacklisted_keys_pattern` configuration option
@@ -126,7 +134,7 @@
 
 # Version 0.4.3
 
-* Make sure Psych is fully loaded before using it (Thanks @tenderlove) 
+* Make sure Psych is fully loaded before using it (Thanks @tenderlove)
 
 # Version 0.4.2
 
@@ -135,41 +143,33 @@
 # Version 0.4.1
 
 * Ignore HUP when backgrounded. (Thanks @xijo)
-* Add --standalone option to install to generate a .localeapp/ config
-  directory. This enables usage outside of rails.
+* Add --standalone option to install to generate a .localeapp/ config directory. This enables usage outside of rails.
 
 # Version 0.4.0
 
-* Use Psych to generate the yaml if it's available (This will completely change
-  your yaml the first time you do a localeapp pull and Psych is available)
-* Report when the directory to write the yml to doesn't exist (Thanks Robin
-  Mehner)
+* Use Psych to generate the yaml if it's available (This will completely change your yaml the first time you do a localeapp pull and Psych is available)
+* Report when the directory to write the yml to doesn't exist (Thanks Robin Mehner)
 
 # Version 0.3.2
 
-* Use yml rather than json when making api calls to localeapp.com. This avoids
-  symbols turning into strings and breaking parts of rails.
+* Use yml rather than json when making api calls to localeapp.com. This avoids symbols turning into strings and breaking parts of rails.
 
 # Version 0.3.1
 
-* Handle SocketError so we don't cause errors in client apps when they're not
-  connected to the network
+* Handle SocketError so we don't cause errors in client apps when they're not connected to the network
 * Fix bug with empty log file (Thanks Robin Mehner)
 
 # Version 0.3.0
 
 * Allow symbols for environment names in config file
-* `localeapp push` will now push all yaml files in a directory if it's given a
-  directory instead of a file. (Thanks Bartłomiej Danek)
-* Better daemon support. `daemon_pid_file` and `daemon_log_file` configuration
-  options. (Thanks again Bartłomiej Danek)
+* `localeapp push` will now push all yaml files in a directory if it's given a directory instead of a file. (Thanks Bartłomiej Danek)
+* Better daemon support. `daemon_pid_file` and `daemon_log_file` configuration options. (Thanks again Bartłomiej Danek)
 
 # Version 0.2.0
 
 * Add `localeapp add` command for sending keys and translations from the command line
 * Add `secure` configuration setting for api communications. Default: true
-* Add `ssl_verify` and `ssl_ca_file` configuration settings for ssl cert verification.
-  Off by default, see the README for more details
+* Add `ssl_verify` and `ssl_ca_file` configuration settings for ssl cert verification. Off by default, see the README for more details
 * Add `proxy` configuration setting
 
 # Version 0.1.2
@@ -185,8 +185,6 @@
 # Version 0.1.0
 
 * Added support for Heroku's Cedar stack
-* Added a safer configuration style where enabled environments are explicitly
-  defined
-* Removed some unnecessary default options from config files generated with 
-  `localeapp install`
+* Added a safer configuration style where enabled environments are explicitly defined
+* Removed some unnecessary default options from config files generated with `localeapp install`
 * Fixed `localeapp push` with no arguments

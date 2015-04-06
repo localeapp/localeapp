@@ -1,6 +1,6 @@
 # We're replacing the original method with one that doesn't always override the :raise option.
-# This bug was introduced in Rails here (4.1.0.rc1): https://github.com/rails/rails/pull/13832
-# and fixed here: https://github.com/rails/rails/pull/17676
+# This bug was introduced in Rails here (4.0.10.rc1, 4.1.0.rc1 and 4.2.0.beta1): https://github.com/rails/rails/pull/13832
+# and fixed here (4.1.10.rc1 and 4.2.1.rc1): https://github.com/rails/rails/pull/17676 (thus, this is simply a backport of the bugfix)
 
 module Localeapp::TranslationHelperRails41MonkeyPatch
   # Delegates to <tt>I18n#translate</tt> but also performs three additional functions.

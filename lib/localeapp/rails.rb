@@ -10,11 +10,15 @@ module Localeapp
         require 'localeapp/rails/2_3_translation_helper_monkeypatch'
       end
 
-      if rails_version_matches_any? '~> 4.1.0.rc1', '~> 4.2.0.beta1' # i.e. between https://github.com/rails/rails/commit/d57ce232a885b21e1d6d1f9fbf60bc5908ad880d and https://github.com/rails/rails/commit/4dbce79e95e3f56a9b48992dea4531493a5008cc
-        require 'localeapp/rails/4_1_translation_helper_monkeypatch'
+      # match all versions between https://github.com/rails/rails/commit/d57ce232a885b21e1d6d1f9fbf60bc5908ad880d and https://github.com/rails/rails/commit/4dbce79e95e3f56a9b48992dea4531493a5008cc on all branches
+      if rails_version_matches_all?('~> 4.0.10.rc1') |
+         rails_version_matches_all?('~> 4.1.0.rc1', '< 4.1.10.rc1') |
+         rails_version_matches_all?('~> 4.2.0.beta1', '< 4.2.1.rc1')
+        require 'localeapp/rails/backport_translation_helper_fix_to_honor_raise_option'
       end
 
-      if rails_version_matches_any? '~> 3.2.16', '>= 4.0.2' # ie: after CVE-2013-4491 patch (https://github.com/rails/rails/commit/78790e4bceedc632cb40f9597792d7e27234138a)
+      # match all versions after CVE-2013-4491 patch (https://github.com/rails/rails/commit/78790e4bceedc632cb40f9597792d7e27234138a)
+      if rails_version_matches_any? '~> 3.2.16', '>= 4.0.2'
         require 'localeapp/rails/mimic_rails_missing_translation_display'
         require 'localeapp/rails/force_exception_handler_in_translation_helper'
       end
@@ -70,6 +74,10 @@ module Localeapp
 
     def self.rails_version_matches_any?(*requirements)
       requirements.map{ |r| rails_version_matches?(r) }.reduce(:|)
+    end
+
+    def self.rails_version_matches_all?(*requirements)
+      requirements.map{ |r| rails_version_matches?(r) }.reduce(:&)
     end
 
   end

@@ -5,7 +5,7 @@ module Localeapp
         @output.puts "Localeapp Add"
         @output.puts ""
         translations.each do |translation|
-          if translation =~ /([\w\-]+):(.*)/
+          if translation =~ /([\w\-]+):(.*)/m
             locale, description = $1, $2
             Localeapp.missing_translations.add(locale, key, description)
           else

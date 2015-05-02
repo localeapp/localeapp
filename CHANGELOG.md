@@ -1,5 +1,9 @@
 # master
 
+# Version 0.9.3
+
+* Support multilines translations content in `localeapp add`
+
 # Version 0.9.2
 
 * Refactor which monkeypatch/backported-bugfix is loaded for which Rails version

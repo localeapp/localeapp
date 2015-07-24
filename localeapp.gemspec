@@ -15,10 +15,8 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "localeapp"
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  s.files         = `git ls-files lib`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
 
   s.add_dependency('i18n')
   s.add_dependency('json')

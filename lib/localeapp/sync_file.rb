@@ -4,7 +4,7 @@ module Localeapp
   SyncFile = Struct.new(:path) do
     def refresh
       @data = if File.exist?(path)
-        SyncData.from_hash( Localeapp.load_yaml_file(path) )
+        SyncData.from_hash( Localeapp.load_locale_file(path) )
       else
         SyncData.default
       end

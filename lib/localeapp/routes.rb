@@ -2,6 +2,8 @@ require 'rack/utils'
 
 module Localeapp
   module Routes
+    include Formats
+
     VERSION = 'v1'
 
     def project_endpoint(options = {})
@@ -51,7 +53,7 @@ module Localeapp
     end
 
     def export_url(options = {})
-      options[:format] ||= 'yml'
+      options[:format] ||= Localeapp.configuration.format
       url = http_scheme.build(base_options.merge(:path => export_path(options[:format])))
       url.query = options[:query].map { |k,v| "#{k}=#{v}" }.join('&') if options[:query]
       url.to_s
@@ -125,7 +127,7 @@ module Localeapp
 
     def export_path(format = nil)
       path = project_path << '/translations/all'
-      path << ".#{format}" if format
+      path << path_suffix_for_format(format) if format
       path
     end
 

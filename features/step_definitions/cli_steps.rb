@@ -22,10 +22,12 @@ When /^I have a valid project on localeapp\.com but an incorrect api key "([^"]*
   add_fake_web_uri(:get, uri, ['404', 'Not Found'], body)
 end
 
-When /^I have a translations on localeapp\.com for the project with api key "([^"]*)"$/ do |api_key|
-  uri = "https://api.localeapp.com/v1/projects/#{api_key}/translations/all.yml"
-  body = valid_export_data.to_yaml
-  add_fake_web_uri(:get, uri, ['200', 'OK'], body)
+When /^I have(?: a)? translations on localeapp\.com for the project with api key "([^"]*)"$/ do |api_key|
+  uri = "https://api.localeapp.com/v1/projects/#{api_key}/translations/all.%s"
+  body = valid_export_data
+  { json: :to_json, yml: :to_yaml }.each do |uri_suffix, meth|
+    add_fake_web_uri :get, uri % uri_suffix, ['200', 'OK'], body.send(meth)
+  end
 end
 
 When /^new translations for the api key "([^"]*)" since "([^"]*)" with time "([^"]*)"$/ do |api_key, update_time, new_time|
@@ -59,18 +61,6 @@ When /^I have a \.env file containing the api key "(.*?)"$/ do |api_key|
     And a file named ".env" with:
     """
     LOCALEAPP_API_KEY=#{api_key}
-    """
-  }
-end
-
-When /^an initializer file$/ do
-  steps %Q{
-    And a file named "config/initializers/localeapp.rb" with:
-    """
-    require 'localeapp/rails'
-    Localeapp.configure do |config|
-      config.api_key = 'MYAPIKEY'
-    end
     """
   }
 end

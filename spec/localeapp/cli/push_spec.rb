@@ -5,16 +5,23 @@ describe Localeapp::CLI::Push, "#execute(path)" do
   let(:pusher) { Localeapp::CLI::Push.new(:output => output) }
 
   context "path is a directory" do
-    it "calls push_file on each yaml file in the directory" do
+    let(:path)  { "spec/fixtures/locales" }
+
+    it "calls push_file on each YAML file in the directory" do
       with_configuration do
-        directory = double('directory')
-        path = 'test_path'
-        yaml_files = %w(en.yml es.yml)
-        allow(pusher).to receive(:path_is_directory?).and_return(true)
-        expect(pusher).to receive(:yaml_files_in_directory).with(path).and_return(yaml_files)
-        expect(pusher).to receive(:push_file).with('en.yml')
-        expect(pusher).to receive(:push_file).with('es.yml')
-        pusher.execute(path)
+        expect(pusher).to receive(:push_file).with File.join(path, "en.yml")
+        expect(pusher).to receive(:push_file).with File.join(path, "es.yml")
+        pusher.execute path
+      end
+    end
+
+    context "when JSON format is configured" do
+      around { |example| with_configuration(format: :json) { example.run } }
+
+      it "calls push_file on each JSON file in the directory" do
+        expect(pusher).to receive(:push_file).with File.join(path, "en.json")
+        expect(pusher).to receive(:push_file).with File.join(path, "es.json")
+        pusher.execute path
       end
     end
   end

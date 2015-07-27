@@ -1,5 +1,7 @@
 # master
 
+* Support JSON format
+
 # Version 0.9.3
 
 * Support multilines translations content in `localeapp add`

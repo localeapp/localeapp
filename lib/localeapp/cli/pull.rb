@@ -17,7 +17,7 @@ module Localeapp
       def update_backend(response)
         @output.puts "Success!"
         @output.puts "Updating backend:"
-        Localeapp.updater.dump(Localeapp.load_yaml(response))
+        Localeapp.updater.dump(Localeapp.load_locale(response))
         @output.puts "Success!"
         Localeapp.poller.write_synchronization_data!(Time.now.to_i, Time.now.to_i)
       end

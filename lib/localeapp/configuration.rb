@@ -80,12 +80,16 @@ module Localeapp
     # Enable or disable the missing translation cache
     # default: false
     attr_accessor :cache_missing_translations
-    
+
     # A regular expression that is matched against a translation key.
     # If the key matches, the translation will not be sent to the Locale
     # server via the rails exception handler.
     # default: nil
     attr_accessor :blacklisted_keys_pattern
+
+    # Locales file format
+    # default: :yaml
+    attr_accessor :format
 
     def initialize
       defaults.each do |setting, value|
@@ -109,6 +113,7 @@ module Localeapp
         :daemon_log_file            => File.join('log', 'localeapp_daemon.log'),
         :translation_data_directory => File.join('config', 'locales'),
         :raise_on_insecure_yaml     => true,
+        :format                     => :yaml
       }
       if ENV['DEBUG']
         require 'logger'

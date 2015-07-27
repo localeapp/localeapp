@@ -2,11 +2,12 @@ module Localeapp
   module CLI
     class Push < Command
       include ::Localeapp::ApiCall
+      include Formats
 
       def execute(path = nil)
         @output.puts "Localeapp Push"
         if path_is_directory?(path)
-          yaml_files_in_directory(path).each do |path|
+          locale_files_in_directory(path).each do |path|
             push_file(path)
           end
         else
@@ -53,8 +54,12 @@ module Localeapp
         File.directory?(path)
       end
 
-      def yaml_files_in_directory(path)
-        Dir.glob(File.join(path, '*.yml')).sort
+      def locale_files_in_directory(path)
+        Dir.glob(File.join(path, locale_files_pattern)).sort
+      end
+
+      def locale_files_pattern
+        ["*", path_suffix_for_format(Localeapp.configuration.format)].join
       end
     end
   end

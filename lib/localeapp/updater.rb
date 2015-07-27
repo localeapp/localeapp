@@ -2,13 +2,14 @@ require 'fileutils'
 
 module Localeapp
   class Updater
+    include Formats
 
     def update(data)
       data['locales'].each do |short_code|
         filename = File.join(Localeapp.configuration.translation_data_directory, "#{short_code}.yml")
 
         if File.exist?(filename)
-          translations = Localeapp.load_yaml_file(filename)
+          translations = Localeapp.load_locale_file(filename)
           if data['translations'] && data['translations'][short_code]
             new_data = { short_code => data['translations'][short_code] }
             translations.deep_merge!(new_data)
@@ -33,14 +34,28 @@ module Localeapp
 
     def dump(data)
       data.each do |locale, translations|
-        filename = File.join(Localeapp.configuration.translation_data_directory, "#{locale}.yml")
+        filename = File.join(
+          Localeapp.configuration.translation_data_directory,
+          [locale, path_suffix_for_format(Localeapp.configuration.format)].join
+        )
         atomic_write(filename) do |file|
-          file.write generate_yaml({locale => translations})
+          file.write generate({locale => translations})
         end
       end
     end
 
     private
+
+    def generate(translations)
+      case Localeapp.configuration.format
+        when :json then generate_json translations
+        when :yaml then generate_yaml translations
+      end
+    end
+
+    def generate_json(translations)
+      JSON.pretty_generate(translations)
+    end
 
     def generate_yaml(translations)
       if defined?(Psych) && defined?(Psych::VERSION)

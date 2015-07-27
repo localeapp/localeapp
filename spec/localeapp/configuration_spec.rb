@@ -93,6 +93,10 @@ describe Localeapp::Configuration do
     expect(configuration.blacklisted_keys_pattern).to be_nil
   end
 
+  it "sets the default format as YAML" do
+    expect(configuration.format).to be :yaml
+  end
+
   context "enabled_sending_environments" do
     it "is only development by default" do
       expect(configuration.sending_environments).to eq(['development'])
@@ -172,7 +176,6 @@ describe Localeapp::Configuration do
   end
 
   describe "#has_api_key?" do
-
     context "when an api_key is defined" do
       it "returns true" do
         configuration.api_key = '0123456789abcdef'
@@ -185,7 +188,5 @@ describe Localeapp::Configuration do
         expect(configuration.has_api_key?).to be false
       end
     end
-
   end
-
 end

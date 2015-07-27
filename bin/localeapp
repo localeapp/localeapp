@@ -133,7 +133,7 @@ command :push do |c|
   end
 end
 
-desc "Gets any changes since the last poll and updates the yml"
+desc "Gets any changes since the last poll and updates locale files"
 command :update do |c|
   c.action do |global_options, options, args|
     Localeapp::CLI::Update.new(global_options).execute

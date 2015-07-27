@@ -25,6 +25,7 @@ end
 require 'localeapp/i18n_shim'
 require 'localeapp/version'
 require 'localeapp/configuration'
+require 'localeapp/formats'
 require 'localeapp/routes'
 require 'localeapp/api_call'
 require 'localeapp/api_caller'
@@ -58,6 +59,8 @@ module Localeapp
   class LocaleappError < StandardError; end
   class PotentiallyInsecureYaml < LocaleappError; end
   class MissingApiKey < LocaleappError; end
+  class ArgumentError < LocaleappError; end
+  class InvalidFormatError < ArgumentError; end
 
   class << self
     # An Localeapp configuration object.
@@ -119,7 +122,7 @@ module Localeapp
       ]
     end
 
-    def load_yaml(contents)
+    def load_locale(contents)
       if Localeapp.configuration.raise_on_insecure_yaml
         raise Localeapp::PotentiallyInsecureYaml if contents =~ /!ruby\//
       end
@@ -131,8 +134,8 @@ module Localeapp
       end
     end
 
-    def load_yaml_file(filename)
-      load_yaml(File.read(filename))
+    def load_locale_file(filename)
+      load_locale(File.read(filename))
     end
 
     private

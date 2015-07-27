@@ -47,7 +47,7 @@ module Localeapp
     def handle_success(response)
       Localeapp.log_with_time "poll success"
       @success = true
-      Localeapp.updater.update(Localeapp.load_yaml(response))
+      Localeapp.updater.update(Localeapp.load_locale(response))
       write_synchronization_data!(current_time, Time.parse(response.headers[:date]))
     end
 

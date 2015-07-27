@@ -1,13 +1,12 @@
 require 'spec_helper'
 
-class TestRoutes
-  include Localeapp::Routes
-end
-  
 describe Localeapp::Routes do
+  let(:config)      { { host: "test.host", api_key: "API_KEY" } }
+  subject(:routes)  { Class.new { include Localeapp::Routes }.new }
+
   before(:each) do
-    @routes = TestRoutes.new
-    @config = {:host => 'test.host', :api_key => 'API_KEY'}
+    @routes = routes
+    @config = config
   end
 
   describe "#project_endpoint(options = {})" do
@@ -136,6 +135,14 @@ describe Localeapp::Routes do
     it "can be changed to another content type" do
       with_configuration(@config) do
         expect(@routes.export_url(:format => :json)).to eq('https://test.host/v1/projects/API_KEY/translations/all.json')
+      end
+    end
+
+    context "when JSON format is configured" do
+      around { |example| with_configuration(format: :json) { example.run } }
+
+      it "suffixes the URI with .json" do
+        expect(routes.export_url).to match /\.json\z/
       end
     end
   end

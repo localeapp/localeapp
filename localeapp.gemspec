@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rspec', '~> 2.14.1')
   s.add_development_dependency('yard')
   s.add_development_dependency('RedCloth')
-  s.add_development_dependency('aruba')
+  s.add_development_dependency('aruba', '< 0.7')
   s.add_development_dependency('cucumber', '~> 1.3')
   s.add_development_dependency('fakeweb')
 end

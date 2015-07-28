@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files lib`.split("\n")
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
 
-  s.add_dependency('i18n')
+  s.add_dependency('i18n', '< 0.7')
   s.add_dependency('json')
   s.add_dependency('rest-client')
   s.add_dependency('rack')

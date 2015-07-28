@@ -4,7 +4,7 @@ describe Localeapp::Configuration do
   let(:configuration) { Localeapp::Configuration.new }
 
   it "sets the host by default" do
-    configuration.host.should == 'api.localeapp.com'
+    expect(configuration.host).to eq('api.localeapp.com')
   end
 
   it "allows the host to be overwritten" do
@@ -12,7 +12,7 @@ describe Localeapp::Configuration do
   end
 
   it "sets proxy to nil by default" do
-    configuration.proxy.should == nil
+    expect(configuration.proxy).to eq(nil)
   end
 
   it "allows proxy setting to be overridden" do
@@ -20,7 +20,7 @@ describe Localeapp::Configuration do
   end
 
   it "sets timeout to 60 by default" do
-    configuration.timeout.should == 60
+    expect(configuration.timeout).to eq(60)
   end
 
   it "allows timeout setting to be overridden" do
@@ -28,7 +28,7 @@ describe Localeapp::Configuration do
   end
 
   it "sets secure to true by default" do
-    configuration.secure.should == true
+    expect(configuration.secure).to eq(true)
   end
 
   it "allows secure setting to be overridden" do
@@ -36,11 +36,11 @@ describe Localeapp::Configuration do
   end
 
   it "sets ssl_verify to false by default" do
-    configuration.ssl_verify.should == false
+    expect(configuration.ssl_verify).to eq(false)
   end
 
   it "sets ssl_version to 'SSLv23' by default" do
-    configuration.ssl_version.should == 'SSLv23'
+    expect(configuration.ssl_version).to eq('SSLv23')
   end
 
   it "allows ssl_verify setting to be overridden" do
@@ -48,7 +48,7 @@ describe Localeapp::Configuration do
   end
 
   it "sets ssl_ca_file to nil by default" do
-    configuration.ssl_ca_file.should == nil
+    expect(configuration.ssl_ca_file).to eq(nil)
   end
 
   it "allows ssl_ca_file setting to be overridden" do
@@ -56,25 +56,25 @@ describe Localeapp::Configuration do
   end
 
   it "includes http_auth_username defaulting to nil" do
-    configuration.http_auth_username.should == nil
+    expect(configuration.http_auth_username).to eq(nil)
     configuration.http_auth_username = "test"
-    configuration.http_auth_username.should == "test"
+    expect(configuration.http_auth_username).to eq("test")
   end
 
   it "includes http_auth_password defaulting to nil" do
-    configuration.http_auth_password.should == nil
+    expect(configuration.http_auth_password).to eq(nil)
     configuration.http_auth_password = "test"
-    configuration.http_auth_password.should == "test"
+    expect(configuration.http_auth_password).to eq("test")
   end
 
   it "includes translation_data_directory defaulting to config/locales" do
-    configuration.translation_data_directory.should == File.join("config", "locales")
+    expect(configuration.translation_data_directory).to eq(File.join("config", "locales"))
     configuration.translation_data_directory = "test"
-    configuration.translation_data_directory.should == "test"
+    expect(configuration.translation_data_directory).to eq("test")
   end
 
   it "sets the daemon_pid_file by default" do
-    configuration.daemon_pid_file.should == 'tmp/pids/localeapp.pid'
+    expect(configuration.daemon_pid_file).to eq('tmp/pids/localeapp.pid')
   end
 
   it "allows the daemon_pid_file to be overwritten" do
@@ -82,7 +82,7 @@ describe Localeapp::Configuration do
   end
 
   it "sets the daemon_log_file by default" do
-    configuration.daemon_log_file.should == 'log/localeapp_daemon.log'
+    expect(configuration.daemon_log_file).to eq('log/localeapp_daemon.log')
   end
 
   it "allows the daemon_log_file to be overwritten" do
@@ -95,19 +95,19 @@ describe Localeapp::Configuration do
 
   context "enabled_sending_environments" do
     it "is only development by default" do
-      configuration.sending_environments.should == ['development']
+      expect(configuration.sending_environments).to eq(['development'])
     end
   end
 
   context "enabled_reloading_environments" do
     it "is only development by default" do
-      configuration.reloading_environments.should == ['development']
+      expect(configuration.reloading_environments).to eq(['development'])
     end
   end
 
   context "enabled_polling_environments" do
     it "is only development by default" do
-      configuration.polling_environments.should == ['development']
+      expect(configuration.polling_environments).to eq(['development'])
     end
   end
 
@@ -115,19 +115,19 @@ describe Localeapp::Configuration do
     it "is true when environment is not enabled" do
       configuration.polling_environments = %w(foo)
       configuration.environment_name = 'bar'
-      configuration.should be_polling_disabled
+      expect(configuration).to be_polling_disabled
     end
 
     it "is false when environment is enabled" do
       configuration.polling_environments = %w(foo)
       configuration.environment_name = 'foo'
-      configuration.should_not be_polling_disabled
+      expect(configuration).not_to be_polling_disabled
     end
 
     it "supports symbols in list of environments" do
       configuration.polling_environments = [:foo]
       configuration.environment_name = 'foo'
-      configuration.should_not be_polling_disabled
+      expect(configuration).not_to be_polling_disabled
     end
   end
 
@@ -135,19 +135,19 @@ describe Localeapp::Configuration do
     it "is true when environment is not enabled" do
       configuration.reloading_environments = %w(foo)
       configuration.environment_name = 'bar'
-      configuration.should be_reloading_disabled
+      expect(configuration).to be_reloading_disabled
     end
 
     it "is false when environment is enabled" do
       configuration.reloading_environments = %w(foo)
       configuration.environment_name = 'foo'
-      configuration.should_not be_reloading_disabled
+      expect(configuration).not_to be_reloading_disabled
     end
 
     it "supports symbols in list of environments" do
       configuration.reloading_environments = [:foo]
       configuration.environment_name = 'foo'
-      configuration.should_not be_reloading_disabled
+      expect(configuration).not_to be_reloading_disabled
     end
   end
 
@@ -155,19 +155,19 @@ describe Localeapp::Configuration do
     it "is true when environment is not enabled" do
       configuration.sending_environments = %w(foo)
       configuration.environment_name = 'bar'
-      configuration.should be_sending_disabled
+      expect(configuration).to be_sending_disabled
     end
 
     it "is false when environment is enabled" do
       configuration.sending_environments = %w(foo)
       configuration.environment_name = 'foo'
-      configuration.should_not be_sending_disabled
+      expect(configuration).not_to be_sending_disabled
     end
 
     it "supports symbols in the list of environments" do
       configuration.sending_environments = [:foo]
       configuration.environment_name = 'foo'
-      configuration.should_not be_sending_disabled
+      expect(configuration).not_to be_sending_disabled
     end
   end
 
@@ -176,13 +176,13 @@ describe Localeapp::Configuration do
     context "when an api_key is defined" do
       it "returns true" do
         configuration.api_key = '0123456789abcdef'
-        expect(configuration.has_api_key?).to be_true
+        expect(configuration.has_api_key?).to be true
       end
     end
 
     context "with no api_key provided" do
       it "returns false" do
-        expect(configuration.has_api_key?).to be_false
+        expect(configuration.has_api_key?).to be false
       end
     end
 

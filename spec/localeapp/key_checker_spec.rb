@@ -6,7 +6,7 @@ describe Localeapp::KeyChecker, "#check(key)" do
     with_configuration do
       @checker = Localeapp::KeyChecker.new
     end
-    @checker.check('TEST_KEY').should == [false, {}]
+    expect(@checker.check('TEST_KEY')).to eq([false, {}])
   end
 
   it "returns true and and the parsed json hash if the response from locale app is a 200" do
@@ -14,6 +14,6 @@ describe Localeapp::KeyChecker, "#check(key)" do
     with_configuration do
       @checker = Localeapp::KeyChecker.new
     end
-    @checker.check('TEST_KEY').should == [true, valid_project_data]
+    expect(@checker.check('TEST_KEY')).to eq([true, valid_project_data])
   end
 end

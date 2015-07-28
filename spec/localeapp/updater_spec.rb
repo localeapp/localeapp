@@ -39,7 +39,7 @@ describe Localeapp::Updater, ".update(data)" do
       'locales' => %w{en es}
     })
 
-    load_yaml('en').should == {
+    expect(load_yaml('en')).to eq({
       'en' => {
         'foo' => {
           'monkey' => 'hello',
@@ -51,7 +51,7 @@ describe Localeapp::Updater, ".update(data)" do
         'scalar1' => nil,
         'scalar2' => nil,
       }
-    }
+    })
   end
 
   it "deletes keys in the yml files when updates are empty" do
@@ -65,13 +65,13 @@ describe Localeapp::Updater, ".update(data)" do
       'locales' => %w{es}
     })
 
-    load_yaml('es').should == {
+    expect(load_yaml('es')).to eq({
       'es' => {
         'foo' => {
           'monkey' => 'Mono'
         }
       }
-    }
+    })
   end
 
   it "creates a new yml file if an unknown locale is passed" do
@@ -82,11 +82,11 @@ describe Localeapp::Updater, ".update(data)" do
       'locales' => ['ja']
     })
 
-    load_yaml('ja').should == {
+    expect(load_yaml('ja')).to eq({
       'ja' => {
         'foo' => 'bar'
       }
-    }
+    })
   end
 
   it "doesn't delete a namespace having the same name as a previously deleted key" do
@@ -104,13 +104,13 @@ describe Localeapp::Updater, ".update(data)" do
       'locales' => ['az']
     })
 
-    load_yaml('az').should == {
+    expect(load_yaml('az')).to eq({
       'az' => {
         'once_deleted' => {
           'but_not' => 'anymore'
         }
       }
-    }
+    })
   end
 
   it "doesn't create a new yml file if an unknown locale is passed but it has no translations" do
@@ -119,7 +119,7 @@ describe Localeapp::Updater, ".update(data)" do
       'deleted' => ['foo.delete_me'],
       'locales' => ['ja']
     })
-    File.exist?(File.join(@yml_dir, 'ja.yml')).should be_false
+    expect(File.exist?(File.join(@yml_dir, 'ja.yml'))).to be false
   end
 
   if defined?(Psych) && defined?(Psych::VERSION) && Psych::VERSION >= "1.1.0" && !RUBY_PLATFORM == 'jruby'
@@ -131,7 +131,7 @@ describe Localeapp::Updater, ".update(data)" do
          'locales' => ['en'],
          'deleted' => []
       })
-      File.read(File.join(@yml_dir, 'en.yml')).should match(/foo: ! 'bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar '/m)
+      expect(File.read(File.join(@yml_dir, 'en.yml'))).to match(/foo: ! 'bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar '/m)
     end
   end
 
@@ -157,7 +157,7 @@ describe Localeapp::Updater, ".update(data)" do
       'locales' => ['ja']
     })
     mode = File.stat(File.join(@yml_dir, 'ja.yml')).mode # octal
-    mode.to_s(8)[3, 3].should == "644"
+    expect(mode.to_s(8)[3, 3]).to eq("644")
   end
 end
 
@@ -190,11 +190,11 @@ describe Localeapp::Updater, ".dump(data)" do
 
   it "creates a new yml file if an unknown locale is passed" do
     do_dump({'ja' => { 'foo' => 'bar'} })
-    YAML.load(File.read(File.join(@yml_dir, 'ja.yml'))).should == {
+    expect(YAML.load(File.read(File.join(@yml_dir, 'ja.yml')))).to eq({
       'ja' => {
         'foo' => 'bar'
       }
-    }
+    })
   end
 
   it "doesn't change a yml file's permissions" do
@@ -207,6 +207,6 @@ describe Localeapp::Updater, ".dump(data)" do
   it "creates new yml files chmodded with 644" do
     do_dump({'ja' => { 'foo' => 'bar'} })
     mode = File.stat(File.join(@yml_dir, 'ja.yml')).mode # octal
-    mode.to_s(8)[3, 3].should == "644"
+    expect(mode.to_s(8)[3, 3]).to eq("644")
   end
 end

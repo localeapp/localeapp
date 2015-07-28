@@ -9,7 +9,7 @@ describe Localeapp::CLI::Pull, "#execute" do
 
   it "makes the api call to the translations endpoint" do
     with_configuration do
-      @puller.should_receive(:api_call).with(
+      expect(@puller).to receive(:api_call).with(
         :export,
         :success => :update_backend,
         :failure => :report_failure,
@@ -29,16 +29,16 @@ describe Localeapp::CLI::Pull, "#update_backend(response)" do
 
   it "calls the updater" do
     with_configuration do
-      Localeapp.poller.stub(:write_synchronization_data!)
-      Localeapp.updater.should_receive(:dump).with(['test data'])
+      allow(Localeapp.poller).to receive(:write_synchronization_data!)
+      expect(Localeapp.updater).to receive(:dump).with(['test data'])
       @puller.update_backend(@test_data)
     end
   end
 
   it "writes the synchronization data" do
     with_configuration do
-      Localeapp.updater.stub(:dump)
-      Localeapp.poller.should_receive(:write_synchronization_data!)
+      allow(Localeapp.updater).to receive(:dump)
+      expect(Localeapp.poller).to receive(:write_synchronization_data!)
       @puller.update_backend(@test_data)
     end
   end

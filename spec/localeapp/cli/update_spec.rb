@@ -6,10 +6,13 @@ describe Localeapp::CLI::Update, "#execute" do
   let(:updater) { Localeapp::CLI::Update.new(:output => output) }
   let(:poller)  { Localeapp::Poller.new }
 
-  before(:each) { Localeapp::Poller.stub(:new => poller) }
+  before do
+    poller
+    allow(Localeapp::Poller).to receive(:new) { poller }
+  end
 
   context "when timestamp is recent" do
-    before(:each) { poller.stub(:updated_at => Time.now.to_i - 60) }
+    before { allow(poller).to receive(:updated_at) { Time.now.to_i - 60 } }
 
     it "creates a Poller and calls poll! on it" do
       with_configuration do
@@ -20,7 +23,7 @@ describe Localeapp::CLI::Update, "#execute" do
   end
 
   context "when timestamp is too old" do
-    before(:each) { poller.stub(:updated_at => 0) }
+    before { allow(poller).to receive(:updated_at) { 0 } }
 
     it "warns the user" do
       with_configuration do

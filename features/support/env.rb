@@ -1,5 +1,5 @@
 require 'aruba/cucumber'
-require 'aruba/jruby'
+require 'aruba/config/jruby'
 
 require File.expand_path(File.join(File.dirname(__FILE__), '../../spec/support/localeapp_integration_data'))
 World(LocaleappIntegrationData)

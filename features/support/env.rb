@@ -18,3 +18,7 @@ module FakeWebHelper
   end
 end
 World(FakeWebHelper)
+
+After do
+  ENV.delete 'FAKE_WEB_FAKES'
+end

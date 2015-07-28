@@ -19,7 +19,7 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
     with_configuration(configuration) do
       @controller = TestController.new
     end
-    now = Time.now; Time.stub(:now).and_return(now)
+    now = Time.now; allow(Time).to receive(:now).and_return(now)
   end
 
   after do
@@ -33,12 +33,12 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
 
     it "calls poller.poll! when the synchronization file's polled_at has changed" do
       Localeapp.poller.write_synchronization_data!(01234, 56789)
-      Localeapp.poller.should_receive(:poll!)
+      expect(Localeapp.poller).to receive(:poll!)
       @controller.handle_translation_updates
     end
 
     it "doesn't call poller.poll! when the synchronization file's polled_at is the same" do
-      Localeapp.poller.should_not_receive(:poll!)
+      expect(Localeapp.poller).not_to receive(:poll!)
       @controller.handle_translation_updates
     end
   end
@@ -50,12 +50,12 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
 
     it "doesn't poller.poll! when the synchronization file's polled_at has changed" do
       Localeapp.poller.write_synchronization_data!(01234, 56789)
-      Localeapp.poller.should_not_receive(:poll!)
+      expect(Localeapp.poller).not_to receive(:poll!)
       @controller.handle_translation_updates
     end
 
     it "doesn't poller.poll! when the synchronization file's polled_at is the same" do
-      Localeapp.poller.should_not_receive(:poll!)
+      expect(Localeapp.poller).not_to receive(:poll!)
       @controller.handle_translation_updates
     end
   end
@@ -63,17 +63,17 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
   context "when reloading is enabled" do
     before do
       Localeapp.configuration.environment_name = 'development'
-      Localeapp.poller.stub(:poll!)
+      allow(Localeapp.poller).to receive(:poll!)
     end
 
     it "calls I18n.reload! when the synchronization file's updated_at has changed" do
       Localeapp.poller.write_synchronization_data!(01234, 56789)
-      I18n.should_receive(:reload!)
+      expect(I18n).to receive(:reload!)
       @controller.handle_translation_updates
     end
 
     it "doesn't call I18n.relaod! when the synchronization file's updated_at is the same" do
-      I18n.should_not_receive(:reload!)
+      expect(I18n).not_to receive(:reload!)
       @controller.handle_translation_updates
     end
   end
@@ -85,12 +85,12 @@ describe Localeapp::Rails::Controller, '#handle_translation_updates' do
 
     it "doesn't call I18n.reload! when the synchronization file's updated_at has changed" do
       Localeapp.poller.write_synchronization_data!(01234, 56789)
-      I18n.should_not_receive(:reload!)
+      expect(I18n).not_to receive(:reload!)
       @controller.handle_translation_updates
     end
 
     it "doesn't call I18n.relaod! when the synchronization file's updated_at is the same" do
-      I18n.should_not_receive(:reload!)
+      expect(I18n).not_to receive(:reload!)
       @controller.handle_translation_updates
     end
   end
@@ -127,19 +127,19 @@ describe Localeapp::Rails::Controller, '#send_missing_translations' do
 
   it "does nothing when sending is disabled" do
     Localeapp.configuration.environment_name = 'test'
-    Localeapp.sender.should_not_receive(:post_missing_translations)
+    expect(Localeapp.sender).not_to receive(:post_missing_translations)
     @controller.send_missing_translations
   end
 
   it "proceeds when configuration is enabled" do
     Localeapp.configuration.environment_name = 'development'
-    Localeapp.sender.should_receive(:post_missing_translations)
+    expect(Localeapp.sender).to receive(:post_missing_translations)
     @controller.send_missing_translations
   end
 
   it "rejects blacklisted translations" do
     Localeapp.configuration.environment_name = 'development'
-    Localeapp.missing_translations.should_receive(:reject_blacklisted)
+    expect(Localeapp.missing_translations).to receive(:reject_blacklisted)
     @controller.send_missing_translations
   end
 end

@@ -13,34 +13,34 @@ describe Localeapp::CLI::Add, "#execute(key, *translations)" do
 
   it "adds the translations to missing_translations" do
     with_configuration do
-      Localeapp.sender.stub(:post_missing_translations)
+      allow(Localeapp.sender).to receive(:post_missing_translations)
       do_action
     end
     en_missing = Localeapp.missing_translations['en']
-    en_missing.size.should == 1
-    en_missing['test.key'].locale.should == 'en'
-    en_missing['test.key'].description.should == 'test en'
+    expect(en_missing.size).to eq(1)
+    expect(en_missing['test.key'].locale).to eq('en')
+    expect(en_missing['test.key'].description).to eq('test en')
     es_missing = Localeapp.missing_translations['es']
-    es_missing.size.should == 1
-    es_missing['test.key'].locale.should == 'es'
-    es_missing['test.key'].description.should == 'test es'
+    expect(es_missing.size).to eq(1)
+    expect(es_missing['test.key'].locale).to eq('es')
+    expect(es_missing['test.key'].description).to eq('test es')
   end
 
   it "ignores badly formed arguments" do
     with_configuration do
-      Localeapp.sender.stub(:post_missing_translations)
+      allow(Localeapp.sender).to receive(:post_missing_translations)
       do_action('test.key', ["en:this is fine", "esbad"])
     end
-    Localeapp.missing_translations['en'].size.should == 1
-    Localeapp.missing_translations['es'].size.should == 0
-    Localeapp.missing_translations['esbad'].size.should == 0
-    @output.string.should include("Ignoring bad translation esbad")
-    @output.string.should include("format should be <locale>:<translation content>")
+    expect(Localeapp.missing_translations['en'].size).to eq(1)
+    expect(Localeapp.missing_translations['es'].size).to eq(0)
+    expect(Localeapp.missing_translations['esbad'].size).to eq(0)
+    expect(@output.string).to include("Ignoring bad translation esbad")
+    expect(@output.string).to include("format should be <locale>:<translation content>")
   end
 
   it "tells the sender to send the missing translations" do
     with_configuration do
-      Localeapp.sender.should_receive(:post_missing_translations)
+      expect(Localeapp.sender).to receive(:post_missing_translations)
       do_action
     end
   end

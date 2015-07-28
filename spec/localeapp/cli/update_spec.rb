@@ -13,7 +13,7 @@ describe Localeapp::CLI::Update, "#execute" do
 
     it "creates a Poller and calls poll! on it" do
       with_configuration do
-        poller.should_receive(:poll!)
+        expect(poller).to receive(:poll!)
         updater.execute
       end
     end
@@ -25,13 +25,13 @@ describe Localeapp::CLI::Update, "#execute" do
     it "warns the user" do
       with_configuration do
         updater.execute
-        output.string.should include("Timestamp is missing or too old.")
+        expect(output.string).to include("Timestamp is missing or too old.")
       end
     end
 
     it "does not even call the API" do
       with_configuration do
-        poller.should_not_receive(:poll!)
+        expect(poller).not_to receive(:poll!)
         updater.execute
       end
     end

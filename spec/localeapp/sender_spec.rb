@@ -18,7 +18,7 @@ describe Localeapp::Sender, "#post_translation(locale, key, options, value = nil
 
   def expect_execute
     # have to stub RestClient here as FakeWeb doesn't support looking at the post body yet
-    RestClient::Request.should_receive(:execute).with(hash_including(
+    expect(RestClient::Request).to receive(:execute).with(hash_including(
       :url => @sender.translations_url,
       :payload => data.to_json,
       :headers => {
@@ -51,10 +51,10 @@ describe Localeapp::Sender, "#post_missing_translations" do
       { :key => "test.key", :locale => "en" },
       { :key => "test.key2", :locale => "en" }
     ]
-    Localeapp.missing_translations.should_receive(:to_send).and_return(missing_to_send)
+    expect(Localeapp.missing_translations).to receive(:to_send).and_return(missing_to_send)
     data = { :translations => missing_to_send }
     # have to stub RestClient here as FakeWeb doesn't support looking at the post body yet
-    RestClient::Request.should_receive(:execute).with(hash_including(
+    expect(RestClient::Request).to receive(:execute).with(hash_including(
       :url => @sender.missing_translations_url,
       :payload => data.to_json,
       :headers => {
@@ -65,8 +65,8 @@ describe Localeapp::Sender, "#post_missing_translations" do
   end
 
   it "does nothing if there are no missing translations to send" do
-    Localeapp.missing_translations.should_receive(:to_send).and_return([])
-    RestClient.should_not_receive(:post)
+    expect(Localeapp.missing_translations).to receive(:to_send).and_return([])
+    expect(RestClient).not_to receive(:post)
     @sender.post_missing_translations
   end
 end

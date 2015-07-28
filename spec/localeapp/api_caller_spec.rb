@@ -45,7 +45,9 @@ describe Localeapp::ApiCaller, "#call(object)" do
       response = "string"
       allow(response).to receive(:code).and_return(200)
       response.force_encoding('US-ASCII')
-      response.stub_chain(:net_http_res, :type_params).and_return('charset' => 'utf-8')
+      allow(response).to receive_message_chain(:net_http_res, :type_params) do
+        { "charset" => "utf-8" }
+      end
       allow(RestClient::Request).to receive(:execute).and_return(response)
       @api_caller.options[:success] = :success_check
       @api_caller.call(self)

@@ -1,3 +1,5 @@
+require 'set'
+
 module Localeapp
   MissingTranslationRecord = Struct.new(:key, :locale, :description, :options) do
     def blacklisted?
@@ -10,7 +12,7 @@ module Localeapp
   end
 
   class MissingTranslations
-    @cached_keys = []
+    @cached_keys = Set.new
 
     class << self
       attr_accessor :cached_keys

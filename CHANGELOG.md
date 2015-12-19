@@ -1,5 +1,11 @@
 # master
 
+# Version 1.0
+
+* Drop support for Ruby 1.9.2
+* Adopt semantic versioning
+* Upgrade test frameworks to RSpec 3 and Cucumber 2
+
 # Version 0.9.3
 
 * Support multilines translations content in `localeapp add`

@@ -5,7 +5,7 @@ end
 
 # Globally @announce-cmd to track down slow cmd.
 Aruba.configure do |config|
-  config.before_cmd do |cmd|
-    puts "$ '#{cmd}'"
+  config.before :command do |cmd|
+    puts "$ '#{cmd.commandline}'"
   end
 end

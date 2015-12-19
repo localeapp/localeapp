@@ -14,14 +14,14 @@ Though the i18n gem uses YAML as it's default file format it doesn't require ser
 
 ## Installation
 
-### Rails 3
+### Rails 3+
 
 Add the localeapp gem to your `Gemfile` and install it:
 
     echo "gem 'localeapp'" >> Gemfile
     bundle install
 
-Create a project on localeapp.com and get the api key. Then run:
+Create a project on [Locale](https://localeapp.com) and get the api key. Then run:
 
     bundle exec localeapp install <YOUR_API_KEY>
 

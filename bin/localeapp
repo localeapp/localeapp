@@ -5,12 +5,14 @@ require 'localeapp'
 
 # Don't connect to the net if we're running under cucumber for testing
 # Use FakeWeb to simulate api.localeapp.com
-if ENV['FAKE_WEB_DURING_CUCUMBER_RUN'] && fake_data_as_json = ENV['FAKE_WEB_FAKES']
+if ENV['FAKE_WEB_DURING_CUCUMBER_RUN']
   require 'fakeweb'
   FakeWeb.allow_net_connect = false
-  fakes = JSON.parse(fake_data_as_json)
-  fakes.each do |fake|
-    FakeWeb.register_uri fake['method'].to_sym, fake['uri'], { :body => fake['body'], :status => fake['status'] }.merge(fake['headers'])
+  if fake_data_as_json = ENV['FAKE_WEB_FAKES']
+    fakes = JSON.parse(fake_data_as_json)
+    fakes.each do |fake|
+      FakeWeb.register_uri fake['method'].to_sym, fake['uri'], { :body => fake['body'], :status => fake['status'] }.merge(fake['headers'])
+    end
   end
 end
 

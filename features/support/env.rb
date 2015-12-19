@@ -6,7 +6,7 @@ World(LocaleappIntegrationData)
 
 module FakeWebHelper
   def add_fake_web_uri(method, uri, status, body, headers = {})
-    fakes = JSON.parse(ENV['FAKE_WEB_FAKES'] || '[]')
+    fakes = JSON.parse(aruba.environment['FAKE_WEB_FAKES'] || '[]')
     fakes << {
       'method' => method,
       'uri' => uri,
@@ -14,11 +14,7 @@ module FakeWebHelper
       'body' => body,
       'headers' => headers
     }
-    ENV['FAKE_WEB_FAKES'] = fakes.to_json
+    set_environment_variable 'FAKE_WEB_FAKES', fakes.to_json
   end
 end
 World(FakeWebHelper)
-
-After do
-  ENV.delete 'FAKE_WEB_FAKES'
-end

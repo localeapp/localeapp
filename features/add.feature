@@ -57,7 +57,6 @@ Feature: Adding a translation from the command line
     Sending key: foo.baz
     Success!
     """
-    Then I clear the LOCALEAPP_API_KEY env variable
 
   Scenario: Running add with no initializer file, passing the key via a .env file
     In order to add a key and translation content

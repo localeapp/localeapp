@@ -2,22 +2,24 @@ before_install:
   - gem update bundler
 rvm:
   - 1.9.3
-  - 2.0.0
-  - 2.1.0
-  - 2.2.0
+  - 2.0
+  - 2.1
+  - 2.2
   - jruby
   - jruby-head
 gemfile:
-  - Gemfile.i18n_037
-  - Gemfile.i18n_050
-  - Gemfile.i18n_060
+  - gemfiles/i18n_0.3.gemfile
+  - gemfiles/i18n_0.4.gemfile
+  - gemfiles/i18n_0.5.gemfile
+  - gemfiles/i18n_0.6.gemfile
+  - gemfiles/i18n_0.7.gemfile
 matrix:
   exclude:
-    - rvm: 2.0.0
-      gemfile: Gemfile.i18n_037
-    - rvm: 2.1.0
-      gemfile: Gemfile.i18n_037
-    - rvm: 2.2.0
-      gemfile: Gemfile.i18n_037
+    - rvm: 2.0
+      gemfile: gemfiles/i18n_0.3.gemfile
+    - rvm: 2.1
+      gemfile: gemfiles/i18n_0.3.gemfile
+    - rvm: 2.2
+      gemfile: gemfiles/i18n_0.3.gemfile
     - rvm: jruby-head
-      gemfile: Gemfile.i18n_037
+      gemfile: gemfiles/i18n_0.3.gemfile

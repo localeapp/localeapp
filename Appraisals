@@ -1,6 +1,6 @@
 appraise "i18n-0.3" do
   gem "i18n", "~> 0.3.0"
-  gem "activesupport"
+  gem "activesupport", "~> 2.3.18"
   gem "iconv"
 end
 

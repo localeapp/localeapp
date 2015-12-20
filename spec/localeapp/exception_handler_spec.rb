@@ -36,7 +36,8 @@ describe Localeapp::ExceptionHandler, '#call(exception, locale, key, options)' d
   end
 
   it "joins locale and keys correctly" do
-    expect(I18n.t(['foo', 'bar'])).to eq 'en, foo, bar'
+    expect(I18n.t('foo.bar')).to eq 'en, foo.bar'
+    expect(I18n.t(%w{foo.bar foo.baz})).to eq 'en, foo.bar, foo.baz'
   end
 
   it "handles missing translation exception" do

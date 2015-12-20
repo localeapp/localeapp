@@ -23,3 +23,6 @@ matrix:
       gemfile: gemfiles/i18n_0.3.gemfile
     - rvm: jruby-head
       gemfile: gemfiles/i18n_0.3.gemfile
+notifications:
+  slack:
+    secure: JryUWfe2JR0cfNT+TIHwryy8NS8m9/hbRhg+5UqwuYWuEp6gtcWCA05wKsajQyRrGaNGYKu81RA9jpQrirgQWzDUJl5o3sEWbqKZv3pW0ybn8Tx52N1mxW3Puar5KLZ8TPRphKKIJ8/1EhAh4zpC5Mtxv8Sz1/AHuqnlu6l+bb4=

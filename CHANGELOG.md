@@ -1,5 +1,9 @@
 # master
 
+# Version 1.0.2
+
+* Fix a XSS vulnerability where translations keys could contain unescaped HTML (@grekko)
+
 # Version 1.0.1
 
 * Fix error when bundling with Rails >= 4.2 (due to a dependency on i18n < 0.7)

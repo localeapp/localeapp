@@ -12,5 +12,14 @@ require "localeapp/routes/import"
 module Localeapp
   module Routes
     VERSION = 'v1'
+
+    include Base
+    include Projects
+    include Translations
+    include Export
+    include Remove
+    include Rename
+    include MissingTranslations
+    include Import
   end
 end

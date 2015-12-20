@@ -11,7 +11,7 @@ module Localeapp
           Localeapp.missing_translations.add(locale, key, nil, options || {})
         end
 
-        [locale, keys].join('.')
+        [locale, keys].join(', ')
       else
         Localeapp.log('Raising exception')
         raise

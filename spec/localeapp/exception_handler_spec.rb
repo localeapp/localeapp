@@ -32,7 +32,11 @@ describe Localeapp::ExceptionHandler, '#call(exception, locale, key, options)' d
 
   it "escapes html tags from keys to prevent xss attacks" do
     expect(Localeapp.missing_translations).to receive(:add).with(:en, '&lt;script&gt;alert(1);&lt;/script&gt;', nil, {})
-    expect(I18n.t('<script>alert(1);</script>')).to eq 'en.&lt;script&gt;alert(1);&lt;/script&gt;'
+    expect(I18n.t('<script>alert(1);</script>')).to eq 'en, &lt;script&gt;alert(1);&lt;/script&gt;'
+  end
+
+  it "joins locale and keys correctly" do
+    expect(I18n.t(['foo', 'bar'])).to eq 'en, foo, bar'
   end
 
   it "handles missing translation exception" do

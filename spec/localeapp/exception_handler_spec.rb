@@ -19,6 +19,14 @@ describe Localeapp::ExceptionHandler, '#call(exception, locale, key, options)' d
     I18n.t(['foo', 'bar'])
   end
 
+  it "delegates to super for handling of output" do
+    expect(I18n.t('foo')).to eq("translation missing: en.foo")
+  end
+
+  it "delegates to super for handling of rescue_format" do
+    expect(I18n.t('foo', :rescue_format => :html)).to eq("<span class=\"translation_missing\" title=\"translation missing: en.foo\">Foo</span>")
+  end
+
   it "handles when the default is a Symbol that can be resolved" do
     I18n.backend.store_translations(:en, {:default_symbol_test => 'is resolved'})
     expect(Localeapp.missing_translations).not_to receive(:add)
@@ -33,7 +41,7 @@ describe Localeapp::ExceptionHandler, '#call(exception, locale, key, options)' d
   it "handles missing translation exception" do
     expect {
       exception = Localeapp::I18nMissingTranslationException.new(:en, 'foo', {})
-      Localeapp::ExceptionHandler.call(exception, :en, 'foo', {})
+      I18n::ExceptionHandler.new.call(exception, :en, 'foo', {})
     }.to_not raise_error
   end
 end

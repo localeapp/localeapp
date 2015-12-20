@@ -6,6 +6,8 @@ require 'support/localeapp_synchronization_data'
 require 'support/i18n/missing_translation'
 require 'logger'
 
+I18n.config.available_locales = :en
+
 def with_configuration(options = {})
   Localeapp.configuration = nil
   Localeapp.configure do |configuration|

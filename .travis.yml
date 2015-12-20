@@ -16,10 +16,10 @@ gemfile:
 matrix:
   exclude:
     - rvm: 2.0
-      gemfile: Gemfile.i18n_037
+      gemfile: gemfiles/i18n_0.3.gemfile
     - rvm: 2.1
-      gemfile: Gemfile.i18n_037
+      gemfile: gemfiles/i18n_0.3.gemfile
     - rvm: 2.2
-      gemfile: Gemfile.i18n_037
+      gemfile: gemfiles/i18n_0.3.gemfile
     - rvm: jruby-head
-      gemfile: Gemfile.i18n_037
+      gemfile: gemfiles/i18n_0.3.gemfile

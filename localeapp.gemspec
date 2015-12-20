@@ -34,4 +34,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('aruba', '~> 0.8')
   s.add_development_dependency('cucumber', '~> 2.0')
   s.add_development_dependency('fakeweb')
+  s.add_development_dependency('appraisal')
 end

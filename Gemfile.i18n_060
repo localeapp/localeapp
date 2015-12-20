@@ -1,8 +1,0 @@
-source 'https://rubygems.org'
-gemspec
-
-gem 'i18n', '~> 0.6.0'
-
-platform :jruby do
-  gem 'jruby-openssl'
-end

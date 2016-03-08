@@ -21,7 +21,7 @@ Add the localeapp gem to your `Gemfile` and install it:
     echo "gem 'localeapp'" >> Gemfile
     bundle install
 
-Create a project on [Locale](https://localeapp.com) and get the api key. Then run:
+Create a project on [Locale](https://www.localeapp.com) and get the api key. Then run:
 
     bundle exec localeapp install <YOUR_API_KEY>
 

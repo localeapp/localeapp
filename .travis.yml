@@ -1,4 +1,5 @@
 before_install:
+  - gem install bundler
   - gem update bundler
 rvm:
   - 1.9.3

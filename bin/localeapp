@@ -127,7 +127,7 @@ arg_name "<file>"
 command :push do |c|
   c.action do |global_options, options, args|
     if args.empty?
-      exit_now! "localeapp push requires an file or directory to push", 1
+      exit_now! "localeapp push requires a file or directory to push", 1
     else
       path = args.first
       pusher = Localeapp::CLI::Push.new(global_options)

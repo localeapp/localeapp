@@ -1,8 +1,3 @@
-appraise "i18n-0.3" do
-  gem "i18n", "~> 0.3.0"
-  gem "activesupport", "~> 2.3.18"
-end
-
 appraise "i18n-0.4" do
   gem "i18n", "~> 0.4.0"
 end

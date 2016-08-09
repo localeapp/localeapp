@@ -29,17 +29,8 @@ This will check everything looks good and create `config/initializers/localeapp.
 
 ### Rails 2.3
 
-Define localeapp in `config/environment.rb`:
-
-    config.gem 'localeapp'
-
-Install the gem:
-
-    rake gems:install
-
-Create a project on localeapp.com and get the api key. Then run:
-
-    localeapp install <YOUR_API_KEY>
+Rails 2.3 support has been discontinued after 1.0.2. Please use this
+version at your own risk if you really want to.
 
 ### Non rails projects
 

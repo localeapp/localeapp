@@ -1,5 +1,6 @@
 # master
 
+* Drop i18n 0.3.x and rails 2.x support
 * Remove rack dependency
 
 # Version 1.0.2

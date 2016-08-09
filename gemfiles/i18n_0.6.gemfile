@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "i18n", "~> 0.6.0"
+gem "i18n", "~> 0.6.8"
 
 platforms :jruby do
   gem "jruby-openssl"

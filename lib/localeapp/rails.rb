@@ -6,10 +6,6 @@ module Localeapp
 
       ActionController::Base.send(:include, Localeapp::Rails::Controller)
 
-      if rails_version_matches? '~> 2.3' # TODO: Check previous rails versions if required
-        require 'localeapp/rails/2_3_translation_helper_monkeypatch'
-      end
-
       # match all versions between https://github.com/rails/rails/commit/d57ce232a885b21e1d6d1f9fbf60bc5908ad880d and https://github.com/rails/rails/commit/4dbce79e95e3f56a9b48992dea4531493a5008cc on all branches
       if rails_version_matches_all?('~> 4.0.10.rc1') |
          rails_version_matches_all?('~> 4.1.0.rc1', '< 4.1.10.rc1') |

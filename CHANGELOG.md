@@ -1,5 +1,8 @@
 # master
 
+* Drop support for i18n gem < 0.6.8 (and for rails 2 at the same
+  time).
+
 # Version 1.0.2
 
 * Fix a XSS vulnerability where translations keys could contain unescaped HTML (@grekko)

@@ -126,7 +126,8 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#check_default_locale' do
   it "displays warning if I18n.default_locale doesn't match what's configured on localeapp.com" do
     allow(I18n).to receive(:default_locale).and_return(:es)
     installer.check_default_locale
-    expect(output.string).to match(%r{WARNING: I18n.default_locale is es, change in config/environment.rb \(Rails 2\) or config/application.rb \(Rails 3\)})
+    expect(output.string)
+      .to match(%r{WARNING: I18n.default_locale is es, change in config/application.rb \(Rails 3+\)})
   end
 end
 

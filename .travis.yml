@@ -10,8 +10,6 @@ rvm:
   - jruby
   - jruby-head
 gemfile:
-  - gemfiles/i18n_0.4.gemfile
-  - gemfiles/i18n_0.5.gemfile
   - gemfiles/i18n_0.6.gemfile
   - gemfiles/i18n_0.7.gemfile
 notifications:

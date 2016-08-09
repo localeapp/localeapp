@@ -21,7 +21,7 @@ module Localeapp
       end
 
       def escape_key(key)
-        Rack::Utils.escape(key).gsub(/\./, '%2E')
+        URI.encode_www_form_component(key).gsub(/\./, '%2E')
       end
     end
   end

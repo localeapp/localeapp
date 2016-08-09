@@ -5,7 +5,7 @@ source "https://rubygems.org"
 gem "i18n", "~> 0.6.0"
 
 platforms :jruby do
-  gem "jruby-openssl"
+  gem "jruby-openssl", "~> 0.6"
 end
 
 gemspec :path => "../"

@@ -1,5 +1,3 @@
-require 'rack/utils'
-
 require "localeapp/routes/base"
 require "localeapp/routes/projects"
 require "localeapp/routes/translations"

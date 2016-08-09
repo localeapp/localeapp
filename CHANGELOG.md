@@ -1,5 +1,7 @@
 # master
 
+* Remove rack dependency
+
 # Version 1.0.2
 
 * Fix a XSS vulnerability where translations keys could contain unescaped HTML (@grekko)

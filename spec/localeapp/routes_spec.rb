@@ -98,6 +98,12 @@ describe Localeapp::Routes do
         expect(@routes.remove_url(:key => 'test.key')).to eq("https://test.host/v1/projects/API_KEY/translations/test%2Ekey")
       end
     end
+
+    it "URL encodes the key name" do
+      with_configuration @config do
+        expect(@routes.remove_url key: "some key").to include "some+key"
+      end
+    end
   end
 
   describe "#rename_endpoint(options = {})" do

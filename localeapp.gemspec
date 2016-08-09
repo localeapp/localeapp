@@ -20,17 +20,18 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
+  s.add_dependency('mime-types', '~> 2.6')
   s.add_dependency('i18n')
-  s.add_dependency('json')
-  s.add_dependency('rest-client')
-  s.add_dependency('rack')
+  s.add_dependency('json', '~> 1.8')
+  s.add_dependency('rest-client', '~> 1.8')
+  s.add_dependency('rack', '~> 1.6')
   s.add_dependency('ya2yaml')
   s.add_dependency('gli')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec', '~> 3.3')
   s.add_development_dependency('yard')
-  s.add_development_dependency('RedCloth')
+  s.add_development_dependency('RedCloth', '< 4.3')
   s.add_development_dependency('aruba', '~> 0.8')
   s.add_development_dependency('cucumber', '~> 2.0')
   s.add_development_dependency('fakeweb')

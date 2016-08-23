@@ -7,6 +7,13 @@ class TestController
   end
 end
 
+class TestActionController
+  def self.before_action(*options)
+  end
+  def self.after_action(*options)
+  end
+end
+
 require 'localeapp/rails/controller'
 
 describe Localeapp::Rails::Controller, '#handle_translation_updates' do
@@ -141,5 +148,35 @@ describe Localeapp::Rails::Controller, '#send_missing_translations' do
     Localeapp.configuration.environment_name = 'development'
     expect(Localeapp.missing_translations).to receive(:reject_blacklisted)
     @controller.send_missing_translations
+  end
+end
+
+describe Localeapp::Rails::Controller, 'Rails 5 before_action support' do
+  before do
+    TestActionController.send(:include, Localeapp::Rails::Controller)
+    configuration = {
+      :synchronization_data_file => LocaleappSynchronizationData::setup,
+      :api_key => "my_key"
+    }
+    with_configuration(configuration) do
+      @controller = TestActionController.new
+    end
+    now = Time.now; allow(Time).to receive(:now).and_return(now)
+    Localeapp.configuration.environment_name = 'development'
+  end
+
+  context "#handle_translation_updates" do
+    it "calls poller.poll! when the synchronization file's polled_at has changed" do
+      Localeapp.poller.write_synchronization_data!(01234, 56789)
+      expect(Localeapp.poller).to receive(:poll!)
+      @controller.handle_translation_updates
+    end
+  end
+
+  context "#send_missing_translations" do
+    it "proceeds when configuration is enabled" do
+      expect(Localeapp.sender).to receive(:post_missing_translations)
+      @controller.send_missing_translations
+    end
   end
 end

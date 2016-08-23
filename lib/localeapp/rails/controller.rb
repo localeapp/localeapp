@@ -2,8 +2,13 @@ module Localeapp
   module Rails
     module Controller
       def self.included(base)
-        base.before_filter :handle_translation_updates
-        base.after_filter  :send_missing_translations
+        if base.respond_to? :before_action
+          base.before_action :handle_translation_updates
+          base.after_action :send_missing_translations
+        else
+          base.before_filter :handle_translation_updates
+          base.after_filter  :send_missing_translations
+        end
       end
 
       def handle_translation_updates

@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_dependency('i18n', '~> 0.4')
+  s.add_dependency('i18n', '~> 0.7')
   s.add_dependency('json', '>= 1.8', '< 3')
   s.add_dependency('rest-client', '>= 1.8', '< 3')
   s.add_dependency('gli')
@@ -32,5 +32,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency('aruba', '~> 0.8')
   s.add_development_dependency('cucumber', '~> 2.0')
   s.add_development_dependency('fakeweb')
-  s.add_development_dependency('appraisal')
 end

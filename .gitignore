@@ -3,7 +3,6 @@ pkg/*
 .bundle
 Gemfile.lock
 Gemfile.*.lock
-gemfiles/*.gemfile.lock
 .yardoc/*
 doc/*
 tmp/*

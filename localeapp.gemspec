@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
   s.add_dependency('i18n', '~> 0.4')
   s.add_dependency('json', '~> 1.8')
   s.add_dependency('rest-client', '~> 1.8')
-  s.add_dependency('ya2yaml')
   s.add_dependency('gli')
 
   s.add_development_dependency('rake')

@@ -2,12 +2,10 @@ before_install:
   - gem install bundler
   - gem update bundler
 rvm:
-  - 1.9.3
   - 2.0
   - 2.1
   - 2.2
   - 2.3.1
-  - jruby
   - jruby-head
 gemfile:
   - gemfiles/i18n_0.4.gemfile

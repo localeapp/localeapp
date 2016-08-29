@@ -10,6 +10,7 @@ matrix:
      - rvm: 2.3.1
      - rvm: jruby-9.1.2.0
        env: JRUBY_OPTS='--dev'
+       jdk: oraclejdk8
 
 notifications:
   slack:

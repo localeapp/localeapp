@@ -10,8 +10,6 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    RedCloth (4.2.9)
-    RedCloth (4.2.9-java)
     aruba (0.14.2)
       childprocess (~> 0.5.6)
       contracts (~> 0.9)
@@ -84,7 +82,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  RedCloth (< 4.3)
   aruba (~> 0.8)
   cucumber (~> 2.0)
   fakeweb

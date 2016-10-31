@@ -68,6 +68,7 @@ command :install do |c|
     installer.config_type = :standalone if options[:standalone]
     installer.config_type = :heroku if options[:heroku]
     installer.config_type = :github if options[:github]
+    installer.write_dotenv = true if File.exist?('.env')
     installer.config_type ||= :rails
     unless installer.execute(key)
       exit_now! "", 1

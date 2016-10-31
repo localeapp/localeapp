@@ -78,6 +78,29 @@ Feature: Installation
       And the file "config/initializers/localeapp.rb" should contain "config.api_key = ENV['LOCALEAPP_API_KEY']"
       And the exit status should be 0
 
+  Scenario: Running install with .env
+    In order to configure my non rails project and check my api key is correct
+    Given I have a valid project on localeapp.com with api key "MYAPIKEY"
+    And a file named ".env" with ""
+    When I run `localeapp install --standalone MYAPIKEY`
+    Then the output should contain:
+    """
+    Localeapp Install
+
+    Checking API key: MYAPIKEY
+    Success!
+    Project: Test Project
+    NOTICE: you probably want to add .localeapp to your .gitignore file
+    Writing configuration file to .localeapp/config.rb
+    NOTICE: .env detected. Your API key was saved there.
+    WARNING: please create the locales directory. Your translation data will be stored there.
+    """
+      And help should not be displayed
+      And a file named ".localeapp/config.rb" should exist
+      And a file named ".localeapp/config.rb" should not contain "MYAPIKEY"
+      And a file named ".env" should contain "LOCALEAPP_API_KEY=MYAPIKEY"
+      And the exit status should be 0
+
   Scenario: Running install with bad api key
     In order to configure my project and check my api key is correct
     Given I have a valid project on localeapp.com but an incorrect api key "BADAPIKEY"

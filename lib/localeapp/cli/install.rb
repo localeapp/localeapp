@@ -2,14 +2,16 @@ module Localeapp
   module CLI
     class Install < Command
       attr_accessor :config_type
+      attr_accessor :write_dotenv
 
       def initialize(args = {})
         super
         @config_type = :default
+        @write_dotenv = false
       end
 
       def execute(key = nil)
-        installer("#{config_type.to_s.capitalize}Installer").execute(key)
+        installer("#{config_type.to_s.capitalize}Installer").execute(key, write_dotenv)
       end
 
       def installer(installer_class)
@@ -17,20 +19,22 @@ module Localeapp
       end
 
       class DefaultInstaller
-        attr_accessor :key, :project_data, :config_file_path, :data_directory
+        attr_accessor :key, :project_data, :config_file_path, :data_directory, :dotenv
 
         def initialize(output)
           @output = output
         end
 
-        def execute(key = nil)
+        def execute(key = nil, dotenv = false)
           self.key = key
+          self.dotenv = dotenv
           print_header
           if validate_key
             check_default_locale
             set_config_paths
             @output.puts "Writing configuration file to #{config_file_path}"
             write_config_file
+            write_dotenv if self.dotenv
             check_data_directory_exists
             true
           else
@@ -79,13 +83,25 @@ module Localeapp
           write_rails_config
         end
 
+        def write_dotenv
+          @output.puts "NOTICE: .env detected. Your API key was saved there."
+          File.open('.env', 'a') do |file|
+            file.puts
+            file.puts "LOCALEAPP_API_KEY=#{self.key}"
+          end
+        end
+
+        def config_api_key_str
+          self.dotenv ? "ENV['LOCALEAPP_API_KEY']" : "'#{key}'"
+        end
+
         def write_rails_config
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT
 require 'localeapp/rails'
 
 Localeapp.configure do |config|
-  config.api_key = '#{key}'
+  config.api_key = #{config_api_key_str}
 end
 CONTENT
           end
@@ -118,7 +134,7 @@ CONTENT
           if key.nil?
             @output.puts "ERROR: No api key found in heroku config, have you installed the localeapp addon?"
             return
-          else
+          elsif not self.dotenv
             @output.puts "Add the following line to your .env file for Foreman"
             @output.puts "LOCALEAPP_API_KEY=#{key}"
             @output.puts '^' * 80
@@ -181,7 +197,7 @@ CONTENT
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT
 Localeapp.configure do |config|
-  config.api_key                    = '#{key}'
+  config.api_key                    = #{config_api_key_str}
   config.translation_data_directory = '#{data_directory}'
   config.synchronization_data_file  = '#{config_dir}/log.yml'
   config.daemon_pid_file            = '#{config_dir}/localeapp.pid'

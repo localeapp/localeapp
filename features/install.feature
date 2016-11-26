@@ -78,6 +78,11 @@ Feature: Installation
     And the file "config/initializers/localeapp.rb" should contain "config.api_key = ENV['LOCALEAPP_API_KEY']"
     And the exit status should be 0
 
+  Scenario: Not saving api key in .env
+    Given I have a valid project on localeapp.com with api key "MYAPIKEY"
+    When I successfully run `localeapp install --standalone MYAPIKEY`
+    Then a file named ".env" should not contain "LOCALEAPP_API_KEY"
+
   Scenario: Saving api key in .env
     In order to configure my non rails project and have an api key saved in the .env file
     Given I have a valid project on localeapp.com with api key "MYAPIKEY"

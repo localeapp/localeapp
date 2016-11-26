@@ -62,6 +62,9 @@ command :install do |c|
   c.desc "install a skeleton project suitable for Github (warning: README.md will be overwritten)"
   c.switch [:g, 'github']
 
+  c.desc "save API key to .env"
+  c.switch [:d, 'dotenv']
+
   c.action do |global_options, options, args|
     key = args.first
     installer = Localeapp::CLI::Install.new
@@ -69,7 +72,7 @@ command :install do |c|
     installer.config_type = :heroku if options[:heroku]
     installer.config_type = :github if options[:github]
     installer.config_type ||= :rails
-    unless installer.execute(key)
+    unless installer.execute(key, apikey_to_dotenv: options[:dotenv])
       exit_now! "", 1
     end
   end

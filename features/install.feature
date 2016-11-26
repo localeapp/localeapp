@@ -81,12 +81,8 @@ Feature: Installation
   Scenario: Saving api key in .env
     In order to configure my non rails project and have an api key saved in the .env file
     Given I have a valid project on localeapp.com with api key "MYAPIKEY"
-    And an empty file named ".env"
-    When I successfully run `localeapp install --standalone MYAPIKEY`
-    Then the output should contain:
-    """
-    NOTICE: .env detected. Your API key was saved there.
-    """
+    When I successfully run `localeapp install --standalone MYAPIKEY --dotenv`
+    Then the output should contain "NOTICE: API key saved to .env"
     And a file named ".env" should contain "LOCALEAPP_API_KEY=MYAPIKEY"
 
   Scenario: Running install with bad api key

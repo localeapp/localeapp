@@ -132,10 +132,6 @@ CONTENT
           if key.nil?
             @output.puts "ERROR: No api key found in heroku config, have you installed the localeapp addon?"
             return
-          elsif not apikey_to_dotenv
-            @output.puts "Add the following line to your .env file for Foreman"
-            @output.puts "LOCALEAPP_API_KEY=#{key}"
-            @output.puts '^' * 80
           end
           super
         end

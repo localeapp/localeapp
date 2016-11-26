@@ -14,7 +14,7 @@ describe Localeapp::CLI::Install, '.execute(key = nil)' do
 
   it "executes the installer with the given key" do
     installer = double(:installer)
-    expect(installer).to receive(:execute).with(key, false)
+    expect(installer).to receive(:execute).with(key)
     allow(command).to receive(:installer).and_return(installer)
     command.execute(key)
   end

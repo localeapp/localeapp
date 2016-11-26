@@ -2,16 +2,14 @@ module Localeapp
   module CLI
     class Install < Command
       attr_accessor :config_type
-      attr_accessor :write_dotenv
 
       def initialize(args = {})
         super
         @config_type = :default
-        @write_dotenv = false
       end
 
       def execute(key = nil)
-        installer("#{config_type.to_s.capitalize}Installer").execute(key, write_dotenv)
+        installer("#{config_type.to_s.capitalize}Installer").execute(key)
       end
 
       def installer(installer_class)
@@ -25,9 +23,9 @@ module Localeapp
           @output = output
         end
 
-        def execute(key = nil, dotenv = false)
+        def execute(key = nil)
           self.key = key
-          self.dotenv = dotenv
+          self.dotenv = File.exist? '.env'
           print_header
           if validate_key
             check_default_locale

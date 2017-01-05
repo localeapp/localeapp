@@ -43,11 +43,7 @@ module Localeapp
     private
 
     def generate_yaml(translations)
-      if defined?(Psych) && defined?(Psych::VERSION)
-        Psych.dump(translations, :line_width => -1)[4..-1]
-      else
-        translations.ya2yaml[5..-1]
-      end
+      YAML.dump(translations, :line_width => -1)[4..-1]
     end
 
     def remove_flattened_key!(hash, locale, key)

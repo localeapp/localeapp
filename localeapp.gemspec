@@ -22,10 +22,9 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2.1"
 
-  s.add_dependency('mime-types', '~> 2.6')
   s.add_dependency('i18n', '~> 0.4')
-  s.add_dependency('json', '~> 1.8')
-  s.add_dependency('rest-client', '~> 1.8')
+  s.add_dependency('json')
+  s.add_dependency('rest-client')
   s.add_dependency('gli')
 
   s.add_development_dependency('rake')

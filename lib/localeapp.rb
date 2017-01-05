@@ -25,9 +25,6 @@ require 'localeapp/cli/remove'
 require 'localeapp/cli/rename'
 require 'localeapp/cli/daemon'
 
-# AUDIT: Will this work on ruby 1.9.x
-$KCODE="UTF8" if RUBY_VERSION < '1.9'
-
 require 'ya2yaml'
 
 module Localeapp

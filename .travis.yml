@@ -9,7 +9,6 @@ rvm:
   - 2.0.0
   - 1.9.3
   - jruby
-  - jruby-head
 gemfile:
   - gemfiles/i18n_0.4.gemfile
   - gemfiles/i18n_0.5.gemfile

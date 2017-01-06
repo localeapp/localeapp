@@ -1,5 +1,6 @@
 # master
 
+* Support ruby 2.4
 * Drop ruby 1.9 and ruby 2.0 support
 
 # Version 2.0.0

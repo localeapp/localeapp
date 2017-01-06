@@ -137,10 +137,6 @@ You can invite other developers and translators via localeapp.com.  Developers h
 
 If we find an unknown locale during an import we'll add it to your project. You can also add a new locale to a project via localeapp.com. This will create missing translations for every translation key. You will need to restart any listeners completely to pick up the new locale.
 
-## Syck, Psych, and creating YAML
-
-Since ruby 1.9.3-p0 Psych has been the default YAML engine in Ruby. Psych is based on libyaml and fixes a number of issues with the previous YAML library, Syck. localeapp.com uses 1.9.3 and Psych for all its YAML processing. The localeapp gem will use Psych if it is available but falls back to the ya2yaml library if not. ya2yaml supports UTF-8 (which Syck doesn't handle very well) but it does write YAML differently to Psych so you will notice differences between exporting directly from localeapp.com and doing localeapp pull on the command line unless you're using 1.9.3+ or have installed Psych as a gem.
-
 ## Proxies
 
 If you need to go through a proxy server, you can configure it with:

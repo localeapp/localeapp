@@ -1,19 +1,19 @@
+sudo: false
+
 before_install:
   - gem install bundler
   - gem update bundler
-rvm:
-  - 1.9.3
-  - 2.0
-  - 2.1
-  - 2.2
-  - 2.3.1
-  - jruby
-  - jruby-head
-gemfile:
-  - gemfiles/i18n_0.4.gemfile
-  - gemfiles/i18n_0.5.gemfile
-  - gemfiles/i18n_0.6.gemfile
-  - gemfiles/i18n_0.7.gemfile
+
+matrix:
+  include:
+     - rvm: 2.0.0
+     - rvm: 2.1.10
+     - rvm: 2.2.5
+     - rvm: 2.3.1
+     - rvm: jruby-9.1.2.0
+       env: JRUBY_OPTS='--dev'
+       jdk: oraclejdk8
+
 notifications:
   slack:
     secure: JryUWfe2JR0cfNT+TIHwryy8NS8m9/hbRhg+5UqwuYWuEp6gtcWCA05wKsajQyRrGaNGYKu81RA9jpQrirgQWzDUJl5o3sEWbqKZv3pW0ybn8Tx52N1mxW3Puar5KLZ8TPRphKKIJ8/1EhAh4zpC5Mtxv8Sz1/AHuqnlu6l+bb4=

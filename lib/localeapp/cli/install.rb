@@ -82,11 +82,11 @@ module Localeapp
         end
 
         def write_apikey_to_dotenv
-          @output.puts "NOTICE: API key saved to .env"
           File.open(".env", "a") do |file|
             file.puts
             file.puts "LOCALEAPP_API_KEY=#{self.key}"
           end
+          @output.puts "NOTICE: API key saved to .env"
         end
 
         def config_api_key_str

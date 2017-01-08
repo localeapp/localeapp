@@ -65,9 +65,6 @@ Feature: Installation
     Localeapp Install
 
     Getting API key from heroku config
-    Add the following line to your .env file for Foreman
-    LOCALEAPP_API_KEY=MYAPIKEY
-    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     Checking API key: MYAPIKEY
     Success!
     Project: Test Project

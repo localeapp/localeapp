@@ -122,8 +122,9 @@ describe Localeapp::Updater, ".update(data)" do
     expect(File.exist?(File.join(@yml_dir, 'ja.yml'))).to be false
   end
 
-  if defined?(Psych) && defined?(Psych::VERSION) && Psych::VERSION >= "1.1.0" && !RUBY_PLATFORM == 'jruby'
-    it "doesn't try to wrap long lines in the output" do
+  if defined?(Psych) && defined?(Psych::VERSION) && Psych::VERSION >= "1.1.0" \
+    && RUBY_PLATFORM != "java"
+    it "doesn't wrap long lines in the output" do
       do_update({
         'translations' => {
           'en' => { 'foo' => ('bar ' * 30) }
@@ -131,7 +132,8 @@ describe Localeapp::Updater, ".update(data)" do
          'locales' => ['en'],
          'deleted' => []
       })
-      expect(File.read(File.join(@yml_dir, 'en.yml'))).to match(/foo: ! 'bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar bar '/m)
+      expect(File.read(File.join(@yml_dir, "en.yml")))
+        .to match /foo:.*(?:bar ){30,}/m
     end
   end
 

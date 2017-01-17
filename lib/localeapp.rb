@@ -1,5 +1,6 @@
 require 'i18n'
 require 'i18n/core_ext/hash'
+require 'yaml'
 
 require 'localeapp/i18n_shim'
 require 'localeapp/version'
@@ -24,8 +25,6 @@ require 'localeapp/cli/add'
 require 'localeapp/cli/remove'
 require 'localeapp/cli/rename'
 require 'localeapp/cli/daemon'
-
-require 'ya2yaml'
 
 module Localeapp
   API_VERSION = "1"
@@ -100,11 +99,7 @@ module Localeapp
         raise Localeapp::PotentiallyInsecureYaml if contents =~ /!ruby\//
       end
 
-      if defined?(Psych) && defined?(Psych::VERSION)
-        Psych.load(contents)
-      else
-        normalize_results(YAML.load(contents))
-      end
+      YAML.load(contents)
     end
 
     def load_yaml_file(filename)
@@ -119,22 +114,6 @@ module Localeapp
         return true if results.is_a?(YAML::Yecht::PrivateType) && results.type_id == 'null'
       end
       false
-    end
-
-    def normalize_results(results)
-      if private_null_type(results)
-        nil
-      elsif results.is_a?(Array)
-        results.each_with_index do |value, i|
-          results[i] = normalize_results(value)
-        end
-      elsif results.is_a?(Hash)
-        results.each_pair do |key, value|
-          results[key] = normalize_results(value)
-        end
-      else
-        results
-      end
     end
   end
 end

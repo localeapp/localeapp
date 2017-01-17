@@ -122,8 +122,7 @@ describe Localeapp::Updater, ".update(data)" do
     expect(File.exist?(File.join(@yml_dir, 'ja.yml'))).to be false
   end
 
-  if defined?(Psych) && defined?(Psych::VERSION) && Psych::VERSION >= "1.1.0" \
-    && RUBY_PLATFORM != "java"
+  if RUBY_PLATFORM != "java"
     it "doesn't wrap long lines in the output" do
       do_update({
         'translations' => {

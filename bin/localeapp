@@ -6,6 +6,9 @@ require 'localeapp'
 # Use FakeWeb to simulate api.localeapp.com
 if ENV['FAKE_WEB_DURING_CUCUMBER_RUN']
   require 'fakeweb'
+  class FakeWeb::StubSocket
+    define_method(:close) {}
+  end
   FakeWeb.allow_net_connect = false
   if fake_data_as_json = ENV['FAKE_WEB_FAKES']
     fakes = JSON.parse(fake_data_as_json)

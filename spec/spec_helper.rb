@@ -1,10 +1,9 @@
 require 'i18n'
 require 'localeapp'
 require 'fakeweb'
-require 'support/localeapp_integration_data'
-require 'support/localeapp_synchronization_data'
-require 'support/i18n/missing_translation'
 require 'logger'
+
+Dir["spec/support/**/*.rb"].map { |e| require e.gsub 'spec/', '' }
 
 I18n.config.available_locales = :en
 

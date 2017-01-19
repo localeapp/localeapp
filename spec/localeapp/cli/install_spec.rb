@@ -14,7 +14,7 @@ describe Localeapp::CLI::Install, '.execute(key = nil)' do
 
   it "executes the installer with the given key" do
     installer = double(:installer)
-    expect(installer).to receive(:execute).with(key)
+    expect(installer).to receive(:execute).with(key, {})
     allow(command).to receive(:installer).and_return(installer)
     command.execute(key)
   end
@@ -78,6 +78,45 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#execute(key = nil)' do
 
     it "returns true" do
       expect(installer.execute(key)).to eq(true)
+    end
+  end
+
+  context "When saving key to .env is not requested" do
+    let(:execute_options) { {} }
+
+    it 'does not save key to .env' do
+      expect(installer).not_to receive(:write_apikey_to_dotenv)
+      installer.execute(key, execute_options)
+    end
+  end
+
+  context "When saving key to .env is requested" do
+    let(:execute_options) { {:apikey_to_dotenv => true} }
+
+    context "And key validation is successful" do
+      before do
+        allow(installer).to receive(:validate_key).and_return(true)
+        allow(installer).to receive(:check_default_locale)
+        allow(installer).to receive(:set_config_paths)
+        allow(installer).to receive(:write_config_file)
+        allow(installer).to receive(:check_data_directory_exists)
+      end
+
+      it 'saves key to .env' do
+        expect(installer).to receive(:write_apikey_to_dotenv)
+        installer.execute(key, execute_options)
+      end
+    end
+
+    context "And key validation fails" do
+      before :each do
+        allow(installer).to receive(:validate_key).and_return(false)
+      end
+
+      it 'does not save key to .env' do
+        expect(installer).not_to receive(:write_apikey_to_dotenv)
+        installer.execute(key, execute_options)
+      end
     end
   end
 end
@@ -168,6 +207,24 @@ CONTENT
     expect(File).to receive(:open).with(config_file_path, 'w+').and_yield(file)
     installer.write_config_file
   end
+
+  context "When saving key to .env is requested" do
+    it "references environment variable in the configuration file" do
+      installer.key = key
+      installer.config_file_path = config_file_path
+      installer.apikey_to_dotenv = true
+      file = double('file')
+      expect(file).to receive(:write).with <<-CONTENT
+require 'localeapp/rails'
+
+Localeapp.configure do |config|
+  config.api_key = ENV['LOCALEAPP_API_KEY']
+end
+CONTENT
+      expect(File).to receive(:open).with(config_file_path, 'w+').and_yield(file)
+      installer.write_config_file
+    end
+  end
 end
 
 describe Localeapp::CLI::Install::DefaultInstaller, '#check_data_directory_exists' do
@@ -189,6 +246,23 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#check_data_directory_exist
     allow(File).to receive(:directory?).with(data_directory).and_return(true)
     installer.check_data_directory_exists
     expect(output.string).to eq('')
+  end
+end
+
+describe Localeapp::CLI::Install::DefaultInstaller, '#write_apikey_to_dotenv' do
+  let(:output) { StringIO.new }
+  let(:key) { 'APIKEY' }
+  let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
+
+  it "creates a configuration file containing just the api key" do
+    installer.key = key
+    file = double('file')
+    expect(file).to receive(:write).with <<-CONTENT
+
+LOCALEAPP_API_KEY=APIKEY
+CONTENT
+    expect(File).to receive(:open).with('.env', 'a').and_yield(file)
+    installer.write_apikey_to_dotenv
   end
 end
 

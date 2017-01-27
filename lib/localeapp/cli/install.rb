@@ -8,8 +8,9 @@ module Localeapp
         @config_type = :default
       end
 
-      def execute(key = nil)
-        installer("#{config_type.to_s.capitalize}Installer").execute(key)
+      def execute(key = nil, **options)
+        installer("#{config_type.to_s.capitalize}Installer")
+          .execute key, options
       end
 
       def installer(installer_class)
@@ -19,11 +20,12 @@ module Localeapp
       class DefaultInstaller
         attr_accessor :key, :project_data, :config_file_path, :data_directory
 
-        def initialize(output)
-          @output = output
+        def initialize(output, key_checker: Localeapp::KeyChecker.new)
+          @output       = output
+          @key_checker  = key_checker
         end
 
-        def execute(key = nil)
+        def execute(key = nil, **options)
           self.key = key
           print_header
           if validate_key
@@ -31,6 +33,9 @@ module Localeapp
             set_config_paths
             @output.puts "Writing configuration file to #{config_file_path}"
             write_config_file
+            if options[:write_env_file]
+              write_env_file_apikey options[:write_env_file], key
+            end
             check_data_directory_exists
             true
           else
@@ -98,16 +103,23 @@ CONTENT
         end
 
         def check_key(key)
-          Localeapp::KeyChecker.new.check(key)
+          key_checker.check key
         end
 
         private
+
+        attr_reader :key_checker
+
         def config_dir
           File.dirname(config_file_path)
         end
 
         def create_config_dir
           FileUtils.mkdir_p(config_dir)
+        end
+
+        def write_env_file_apikey(path, key)
+          File.write(path, "LOCALEAPP_API_KEY=#{key}\n")
         end
       end
 

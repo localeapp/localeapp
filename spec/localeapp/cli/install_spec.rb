@@ -21,8 +21,18 @@ describe Localeapp::CLI::Install, "#execute" do
     end
     expect(installer)
       .to receive(:execute)
-      .with key
+      .with key, anything
     command.execute key
+  end
+
+  it "executes the installer with the given options" do
+    allow(Localeapp::CLI::Install::DefaultInstaller).to receive :new do
+      installer
+    end
+    expect(installer)
+      .to receive(:execute)
+      .with anything, foo: :bar
+    command.execute key, foo: :bar
   end
 end
 
@@ -83,6 +93,25 @@ describe Localeapp::CLI::Install::DefaultInstaller, "#execute" do
 
     it "returns true" do
       expect(installer.execute(key)).to eq(true)
+    end
+  end
+
+  context "when given `write_env_file' option with a path" do
+    let :key_checker do
+      double "key checker", check: [true, Hash.new({})]
+    end
+    subject :installer do
+      described_class.new StringIO.new, key_checker: key_checker
+    end
+
+    around do |example|
+      Dir.mktmpdir("localeapp-spec") { |dir| Dir.chdir(dir) { example.run } }
+    end
+
+    it "writes the API key and a new line to the file at given path" do
+      installer.execute key, write_env_file: "some_env_file"
+      expect(File.read("some_env_file"))
+        .to eq "LOCALEAPP_API_KEY=#{key}\n"
     end
   end
 end

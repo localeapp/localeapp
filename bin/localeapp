@@ -66,14 +66,21 @@ module LocaleappGLIWrapper
     c.desc "install a skeleton project suitable for Github (warning: README.md will be overwritten)"
     c.switch [:g, 'github']
 
+    c.desc "write API key to `#{Localeapp.env_file_path}'"
+    c.switch [:e, "write-env-file"]
+
     c.action do |global_options, options, args|
+      install_opts = {}
+      if options[:"write-env-file"]
+        install_opts[:write_env_file] = Localeapp.env_file_path
+      end
       key = args.first
       installer = Localeapp::CLI::Install.new
       installer.config_type = :standalone if options[:standalone]
       installer.config_type = :heroku if options[:heroku]
       installer.config_type = :github if options[:github]
       installer.config_type ||= :rails
-      unless installer.execute(key)
+      unless installer.execute(key, install_opts)
         exit_now! "", 1
       end
     end

@@ -29,6 +29,7 @@ require 'localeapp/cli/daemon'
 module Localeapp
   API_VERSION = "1"
   LOG_PREFIX = "** [Localeapp] "
+  ENV_FILE_PATH = ".env".freeze
 
   class LocaleappError < StandardError; end
   class PotentiallyInsecureYaml < LocaleappError; end
@@ -104,6 +105,10 @@ module Localeapp
 
     def load_yaml_file(filename)
       load_yaml(File.read(filename))
+    end
+
+    def env_file_path
+      ENV_FILE_PATH
     end
 
     private

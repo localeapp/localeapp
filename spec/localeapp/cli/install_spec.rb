@@ -1,22 +1,28 @@
 require 'spec_helper'
 require 'localeapp/cli/install'
 
-describe Localeapp::CLI::Install, '.execute(key = nil)' do
-  let(:output) { StringIO.new }
-  let(:key) { 'MYAPIKEY' }
-  let(:command) { Localeapp::CLI::Install.new(:output => output) }
+describe Localeapp::CLI::Install, "#execute" do
+  let(:key)         { "MYAPIKEY" }
+  let(:installer)   { double "installer" }
+  subject(:command) { described_class.new output: output }
 
-  it "creates the installer based on the config type" do
+  it "executes the appropriate installer based on the config type" do
     command.config_type = :heroku
-    expect(command).to receive(:installer).with("HerokuInstaller").and_return(double.as_null_object)
-    command.execute(key)
+    allow(Localeapp::CLI::Install::HerokuInstaller).to receive :new do
+      installer
+    end
+    expect(installer).to receive :execute
+    command.execute key
   end
 
   it "executes the installer with the given key" do
-    installer = double(:installer)
-    expect(installer).to receive(:execute).with(key)
-    allow(command).to receive(:installer).and_return(installer)
-    command.execute(key)
+    allow(Localeapp::CLI::Install::DefaultInstaller).to receive :new do
+      installer
+    end
+    expect(installer)
+      .to receive(:execute)
+      .with key
+    command.execute key
   end
 end
 

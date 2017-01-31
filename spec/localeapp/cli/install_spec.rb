@@ -20,10 +20,9 @@ describe Localeapp::CLI::Install, '.execute(key = nil)' do
   end
 end
 
-describe Localeapp::CLI::Install::DefaultInstaller, '#execute(key = nil)' do
-  let(:output) { StringIO.new }
-  let(:key) { 'MYAPIKEY' }
-  let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
+describe Localeapp::CLI::Install::DefaultInstaller, "#execute" do
+  let(:key)           { "MYAPIKEY" }
+  subject(:installer) { described_class.new StringIO.new }
 
   before do
     allow(installer).to receive(:print_header)

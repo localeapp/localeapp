@@ -30,29 +30,29 @@ describe Localeapp::CLI::Install::DefaultInstaller, "#execute" do
   let(:key)           { "MYAPIKEY" }
   subject(:installer) { described_class.new StringIO.new }
 
-  before do
-    allow(installer).to receive(:print_header)
-    allow(installer).to receive(:validate_key).and_return(false)
-  end
+  context "when key validation fails" do
+    before do
+      allow(installer).to receive(:print_header)
+      allow(installer).to receive(:validate_key).and_return(false)
+    end
 
-  it "prints the header" do
-    expect(installer).to receive(:print_header)
-    installer.execute
-  end
+    it "prints the header" do
+      expect(installer).to receive(:print_header)
+      installer.execute
+    end
 
-  it "validates the key" do
-    expect(installer).to receive(:key=).with(key)
-    expect(installer).to receive(:validate_key)
-    installer.execute(key)
-  end
+    it "validates the key" do
+      expect(installer).to receive(:key=).with(key)
+      expect(installer).to receive(:validate_key)
+      installer.execute(key)
+    end
 
-  context "When key validation fails" do
     it "returns false" do
       expect(installer.execute(key)).to eq(false)
     end
   end
 
-  context "When key validation is successful" do
+  context "when key validation is successful" do
     before do
       allow(installer).to receive(:validate_key).and_return(true)
       allow(installer).to receive(:check_default_locale)

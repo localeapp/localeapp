@@ -63,7 +63,8 @@ module LocaleappGLIWrapper
     c.desc "create configuration when using localeapp via a heroku addon (PRE ALPHA)"
     c.switch [:h, 'heroku']
 
-    c.desc "install a skeleton project suitable for Github (warning: README.md will be overwritten)"
+    c.desc "install a skeleton project suitable for Github " \
+      "(warning: will write to .gitignore and README.md"
     c.switch [:g, 'github']
 
     c.action do |global_options, options, args|

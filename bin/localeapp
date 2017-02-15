@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require 'gli'
+
 require 'localeapp'
 
 # Don't connect to the net if we're running under cucumber for testing
@@ -18,150 +20,157 @@ if ENV['FAKE_WEB_DURING_CUCUMBER_RUN']
   end
 end
 
-require 'gli'
-gli2 = GLI::VERSION >= '2.0.0'
-
-if gli2
-  include GLI::App
-else
-  include GLI
-end
-
-pre do |global_options, command, options, args|
-  global_options[:k] = if global_options[:k]
-    global_options[:k]
-  elsif ENV['LOCALEAPP_API_KEY']
-    ENV['LOCALEAPP_API_KEY']
-  elsif File.exist?('.env') && IO.read('.env') =~ /^LOCALEAPP_API_KEY=(\w+)$/
-    $1
+module LocaleappGLIWrapper
+  gli2 = GLI::VERSION >= '2.0.0'
+  if gli2
+    include GLI::App
   else
-    nil
+    include GLI
+  end
+  extend self
+
+  pre do |global_options, command, options, args|
+    global_options[:k] = if global_options[:k]
+      global_options[:k]
+    elsif ENV['LOCALEAPP_API_KEY']
+      ENV['LOCALEAPP_API_KEY']
+    elsif File.exist?('.env') && IO.read('.env') =~ /^LOCALEAPP_API_KEY=(\w+)$/
+      $1
+    else
+      nil
+    end
+
+    if Localeapp.has_config_file? || !global_options[:k].nil?
+      true
+    else
+      puts "Could not load config file and no key specified"
+      exit 1
+    end
   end
 
-  if Localeapp.has_config_file? || !global_options[:k].nil?
-    true
+  desc "API Key (for when there is no configuration file)"
+  flag [:k, 'api-key']
+
+  version Localeapp::VERSION
+
+  desc "Creates new configuration files and confirms key works"
+  skips_pre
+  arg_name "<api_key>"
+  command :install do |c|
+    c.desc "install configuration files in .localeapp/"
+    c.switch [:s, 'standalone']
+
+    c.desc "create configuration when using localeapp via a heroku addon (PRE ALPHA)"
+    c.switch [:h, 'heroku']
+
+    c.desc "install a skeleton project suitable for Github (warning: README.md will be overwritten)"
+    c.switch [:g, 'github']
+
+    c.desc "write API key to `#{Localeapp.env_file_path}'"
+    c.switch [:e, "write-env-file"]
+
+    c.action do |global_options, options, args|
+      install_opts = {
+        write_env_file: options[:"write-env-file"] ? Localeapp.env_file_path : nil
+      }
+      key = args.first
+      installer = Localeapp::CLI::Install.new
+      installer.config_type = :standalone if options[:standalone]
+      installer.config_type = :heroku if options[:heroku]
+      installer.config_type = :github if options[:github]
+      installer.config_type ||= :rails
+      unless installer.execute(key, install_opts)
+        exit_now! "", 1
+      end
+    end
+  end
+
+  desc "Sends the key and content to localeapp.com"
+  arg_name "<key> <locale:content> (<locale:content> ...)"
+  command :add do |c|
+    c.action do |global_options, options, args|
+      key = args.shift
+      if key.nil? || args.size.zero?
+        exit_now! "localeapp add requires a key name and at least one translation", 1
+      else
+        Localeapp::CLI::Add.new(global_options).execute(key, *args)
+      end
+    end
+  end
+
+  desc "removes a key from the project"
+  arg_name "<key>"
+  command :rm do |c|
+    c.action do |global_options, options, args|
+      key = args.shift
+      if key.nil?
+        exit_now! "localeapp rm requires a key name", 1
+      else
+        Localeapp::CLI::Remove.new(global_options).execute(key, *args)
+      end
+    end
+  end
+
+  desc "renames a key in the project"
+  arg_name "<current key name> <new key name>"
+  command :mv do |c|
+    c.action do |global_options, options, args|
+      current_name = args.shift
+      new_name = args.shift
+      if current_name.nil? || new_name.nil?
+        exit_now! "localeapp mv requires a current key name and a new key name", 1
+      else
+        Localeapp::CLI::Rename.new(global_options).execute(current_name, new_name, *args)
+      end
+    end
+  end
+
+  desc "Pulls all translations from localeapp.com"
+  command :pull do |c|
+    c.action do |global_options, options, args|
+      Localeapp::CLI::Pull.new(global_options).execute
+    end
+  end
+
+  desc "Pushes a translation file or directory to localeapp.com"
+  arg_name "<file>"
+  command :push do |c|
+    c.action do |global_options, options, args|
+      if args.empty?
+        exit_now! "localeapp push requires a file or directory to push", 1
+      else
+        path = args.first
+        pusher = Localeapp::CLI::Push.new(global_options)
+        pusher.execute(path)
+      end
+    end
+  end
+
+  desc "Gets any changes since the last poll and updates the yml"
+  command :update do |c|
+    c.action do |global_options, options, args|
+      Localeapp::CLI::Update.new(global_options).execute
+    end
+  end
+
+  desc "Simple daemon (checks for new translations in the background)"
+  command :daemon do |c|
+    c.desc "Interval to wait between checks"
+    c.arg_name 'interval'
+    c.default_value 5
+    c.flag [:i, :interval]
+
+    c.desc "run the daemon in the background"
+    c.switch [:b, 'background']
+
+    c.action do |global_options, options, args|
+      Localeapp::CLI::Daemon.new(global_options).execute(options)
+    end
+  end
+
+  if gli2
+    exit run(ARGV)
   else
-    puts "Could not load config file and no key specified"
-    exit 1
+    exit GLI.run(ARGV)
   end
-end
-
-desc "API Key (for when there is no configuration file)"
-flag [:k, 'api-key']
-
-version Localeapp::VERSION
-
-desc "Creates new configuration files and confirms key works"
-skips_pre
-arg_name "<api_key>"
-command :install do |c|
-  c.desc "install configuration files in .localeapp/"
-  c.switch [:s, 'standalone']
-
-  c.desc "create configuration when using localeapp via a heroku addon (PRE ALPHA)"
-  c.switch [:h, 'heroku']
-
-  c.desc "install a skeleton project suitable for Github (warning: README.md will be overwritten)"
-  c.switch [:g, 'github']
-
-  c.action do |global_options, options, args|
-    key = args.first
-    installer = Localeapp::CLI::Install.new
-    installer.config_type = :standalone if options[:standalone]
-    installer.config_type = :heroku if options[:heroku]
-    installer.config_type = :github if options[:github]
-    installer.config_type ||= :rails
-    unless installer.execute(key)
-      exit_now! "", 1
-    end
-  end
-end
-
-desc "Sends the key and content to localeapp.com"
-arg_name "<key> <locale:content> (<locale:content> ...)"
-command :add do |c|
-  c.action do |global_options, options, args|
-    key = args.shift
-    if key.nil? || args.size.zero?
-      exit_now! "localeapp add requires a key name and at least one translation", 1
-    else
-      Localeapp::CLI::Add.new(global_options).execute(key, *args)
-    end
-  end
-end
-
-desc "removes a key from the project"
-arg_name "<key>"
-command :rm do |c|
-  c.action do |global_options, options, args|
-    key = args.shift
-    if key.nil?
-      exit_now! "localeapp rm requires a key name", 1
-    else
-      Localeapp::CLI::Remove.new(global_options).execute(key, *args)
-    end
-  end
-end
-
-desc "renames a key in the project"
-arg_name "<current key name> <new key name>"
-command :mv do |c|
-  c.action do |global_options, options, args|
-    current_name = args.shift
-    new_name = args.shift
-    if current_name.nil? || new_name.nil?
-      exit_now! "localeapp mv requires a current key name and a new key name", 1
-    else
-      Localeapp::CLI::Rename.new(global_options).execute(current_name, new_name, *args)
-    end
-  end
-end
-
-desc "Pulls all translations from localeapp.com"
-command :pull do |c|
-  c.action do |global_options, options, args|
-    Localeapp::CLI::Pull.new(global_options).execute
-  end
-end
-
-desc "Pushes a translation file or directory to localeapp.com"
-arg_name "<file>"
-command :push do |c|
-  c.action do |global_options, options, args|
-    if args.empty?
-      exit_now! "localeapp push requires a file or directory to push", 1
-    else
-      path = args.first
-      pusher = Localeapp::CLI::Push.new(global_options)
-      pusher.execute(path)
-    end
-  end
-end
-
-desc "Gets any changes since the last poll and updates the yml"
-command :update do |c|
-  c.action do |global_options, options, args|
-    Localeapp::CLI::Update.new(global_options).execute
-  end
-end
-
-desc "Simple daemon (checks for new translations in the background)"
-command :daemon do |c|
-  c.desc "Interval to wait between checks"
-  c.arg_name 'interval'
-  c.default_value 5
-  c.flag [:i, :interval]
-
-  c.desc "run the daemon in the background"
-  c.switch [:b, 'background']
-
-  c.action do |global_options, options, args|
-    Localeapp::CLI::Daemon.new(global_options).execute(options)
-  end
-end
-
-if gli2
-  exit run(ARGV)
-else
-  exit GLI.run(ARGV)
 end

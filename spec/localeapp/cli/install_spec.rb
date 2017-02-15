@@ -1,53 +1,68 @@
 require 'spec_helper'
 require 'localeapp/cli/install'
 
-describe Localeapp::CLI::Install, '.execute(key = nil)' do
-  let(:output) { StringIO.new }
-  let(:key) { 'MYAPIKEY' }
-  let(:command) { Localeapp::CLI::Install.new(:output => output) }
+describe Localeapp::CLI::Install, "#execute" do
+  let(:key)         { "MYAPIKEY" }
+  let(:installer)   { double "installer" }
+  subject(:command) { described_class.new output: output }
 
-  it "creates the installer based on the config type" do
+  it "executes the appropriate installer based on the config type" do
     command.config_type = :heroku
-    expect(command).to receive(:installer).with("HerokuInstaller").and_return(double.as_null_object)
-    command.execute(key)
+    allow(Localeapp::CLI::Install::HerokuInstaller).to receive :new do
+      installer
+    end
+    expect(installer).to receive :execute
+    command.execute key
   end
 
   it "executes the installer with the given key" do
-    installer = double(:installer)
-    expect(installer).to receive(:execute).with(key)
-    allow(command).to receive(:installer).and_return(installer)
-    command.execute(key)
+    allow(Localeapp::CLI::Install::DefaultInstaller).to receive :new do
+      installer
+    end
+    expect(installer)
+      .to receive(:execute)
+      .with key, anything
+    command.execute key
+  end
+
+  it "executes the installer with the given options" do
+    allow(Localeapp::CLI::Install::DefaultInstaller).to receive :new do
+      installer
+    end
+    expect(installer)
+      .to receive(:execute)
+      .with anything, foo: :bar
+    command.execute key, foo: :bar
   end
 end
 
-describe Localeapp::CLI::Install::DefaultInstaller, '#execute(key = nil)' do
-  let(:output) { StringIO.new }
-  let(:key) { 'MYAPIKEY' }
-  let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
+describe Localeapp::CLI::Install::DefaultInstaller, "#execute" do
+  let(:key)           { "MYAPIKEY" }
+  subject(:installer) { described_class.new StringIO.new }
 
-  before do
-    allow(installer).to receive(:print_header)
-    allow(installer).to receive(:validate_key).and_return(false)
-  end
+  context "when key validation fails" do
+    before do
+      allow(installer).to receive(:print_header)
+      allow(installer).to receive(:validate_key).and_return(false)
+    end
 
-  it "prints the header" do
-    expect(installer).to receive(:print_header)
-    installer.execute
-  end
+    it "prints the header" do
+      expect(installer).to receive(:print_header)
+      installer.execute
+    end
 
-  it "validates the key" do
-    expect(installer).to receive(:key=).with(key)
-    expect(installer).to receive(:validate_key)
-    installer.execute(key)
-  end
+    it "validates the key" do
+      expect(installer).to receive(:key=).with(key)
+      expect(installer).to receive(:validate_key)
+      installer.execute(key)
+    end
 
-  context "When key validation fails" do
     it "returns false" do
       expect(installer.execute(key)).to eq(false)
     end
   end
 
-  context "When key validation is successful" do
+  context "when key validation is successful" do
     before do
       allow(installer).to receive(:validate_key).and_return(true)
       allow(installer).to receive(:check_default_locale)
@@ -78,6 +93,25 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#execute(key = nil)' do
 
     it "returns true" do
       expect(installer.execute(key)).to eq(true)
+    end
+  end
+
+  context "when given `write_env_file' option with a path" do
+    let :key_checker do
+      double "key checker", check: [true, Hash.new({})]
+    end
+    subject :installer do
+      described_class.new StringIO.new, key_checker: key_checker
+    end
+
+    around do |example|
+      Dir.mktmpdir("localeapp-spec") { |dir| Dir.chdir(dir) { example.run } }
+    end
+
+    it "writes the API key and a new line to the file at given path" do
+      installer.execute key, write_env_file: "some_env_file"
+      expect(File.read("some_env_file"))
+        .to eq "LOCALEAPP_API_KEY=#{key}\n"
     end
   end
 end

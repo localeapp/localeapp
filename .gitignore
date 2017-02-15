@@ -1,11 +1,1 @@
-pkg/*
-*.gem
-.bundle
-Gemfile.lock
-Gemfile.*.lock
-gemfiles/*.gemfile.lock
-.yardoc/*
-doc/*
-tmp/*
-.ruby-version
-.ruby-gemsets
+/tmp/

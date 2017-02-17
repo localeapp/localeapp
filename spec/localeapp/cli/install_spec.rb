@@ -189,24 +189,25 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#set_config_paths' do
   end
 end
 
-describe Localeapp::CLI::Install::DefaultInstaller, '#write_config_file' do
-  let(:output) { StringIO.new }
-  let(:config_file_path) { 'config/initializers/localeapp.rb' }
-  let(:key) { 'APIKEY' }
-  let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
+describe Localeapp::CLI::Install::DefaultInstaller, "#write_config_file" do
+  let(:config_file_path)  { "config/initializers/localeapp.rb" }
+  let(:key)               { "APIKEY" }
+  let(:file)              { double "file" }
+  subject(:installer)     { described_class.new StringIO.new }
 
-  it "creates a configuration file containing just the api key" do
-    installer.key = key
+  before do
+    allow(File).to receive(:open).and_yield file
     installer.config_file_path = config_file_path
-    file = double('file')
+  end
+
+  it "creates a configuration file reading the API key from the environment" do
     expect(file).to receive(:write).with <<-CONTENT
 require 'localeapp/rails'
 
 Localeapp.configure do |config|
-  config.api_key = 'APIKEY'
+  config.api_key = ENV['LOCALEAPP_API_KEY']
 end
 CONTENT
-    expect(File).to receive(:open).with(config_file_path, 'w+').and_yield(file)
     installer.write_config_file
   end
 end
@@ -290,28 +291,28 @@ describe Localeapp::CLI::Install::StandaloneInstaller, '#set_config_paths' do
   end
 end
 
-describe Localeapp::CLI::Install::StandaloneInstaller, '#write_config_file' do
-  let(:output) { StringIO.new }
-  let(:key) { 'APIKEY' }
-  let(:config_file_path) { '.localeapp/config.rb' }
-  let(:data_directory) { 'locales' }
-  let(:installer) { Localeapp::CLI::Install::StandaloneInstaller.new(output) }
+describe Localeapp::CLI::Install::StandaloneInstaller, "#write_config_file" do
+  let(:key)               { "APIKEY" }
+  let(:config_file_path)  { ".localeapp/config.rb" }
+  let(:data_directory)    { "locales" }
+  let(:file)              { double "file" }
+  subject(:installer)     { described_class.new StringIO.new }
 
-  it "creates a configuration file containing the dot file configuration at the given config_file_path" do
-    allow(installer).to receive(:create_config_dir).and_return(File.dirname(config_file_path))
-    installer.key = key
+  before do
+    allow(File).to receive(:open).and_yield file
     installer.config_file_path = config_file_path
     installer.data_directory = data_directory
-    file = double('file')
+  end
+
+  it "creates a configuration file using given config_file_path" do
     expect(file).to receive(:write).with <<-CONTENT
 Localeapp.configure do |config|
-  config.api_key                    = 'APIKEY'
+  config.api_key                    = ENV['LOCALEAPP_API_KEY']
   config.translation_data_directory = 'locales'
   config.synchronization_data_file  = '.localeapp/log.yml'
   config.daemon_pid_file            = '.localeapp/localeapp.pid'
 end
 CONTENT
-    expect(File).to receive(:open).with(config_file_path, 'w+').and_yield(file)
     installer.write_config_file
   end
 end

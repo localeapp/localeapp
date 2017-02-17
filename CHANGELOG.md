@@ -1,5 +1,7 @@
 # master
 
+* Read API key from environment in generated config files, instead of
+  writing the API key directly in those files
 * Support ruby 2.4
 * Drop ruby 1.9 and ruby 2.0 support
 

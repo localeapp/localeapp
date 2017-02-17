@@ -90,7 +90,7 @@ module Localeapp
 require 'localeapp/rails'
 
 Localeapp.configure do |config|
-  config.api_key = '#{key}'
+  config.api_key = ENV['LOCALEAPP_API_KEY']
 end
 CONTENT
           end
@@ -193,7 +193,7 @@ CONTENT
           File.open(config_file_path, 'w+') do |file|
             file.write <<-CONTENT
 Localeapp.configure do |config|
-  config.api_key                    = '#{key}'
+  config.api_key                    = ENV['LOCALEAPP_API_KEY']
   config.translation_data_directory = '#{data_directory}'
   config.synchronization_data_file  = '#{config_dir}/log.yml'
   config.daemon_pid_file            = '#{config_dir}/localeapp.pid'

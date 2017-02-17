@@ -113,6 +113,13 @@ describe Localeapp::CLI::Install::DefaultInstaller, "#execute" do
       expect(File.read("some_env_file"))
         .to eq "LOCALEAPP_API_KEY=#{key}\n"
     end
+
+    it "appends the API key at the end of the file" do
+      File.open("some_env_file", "w") { |f| f.puts "FOO=BAR" }
+      installer.execute key, write_env_file: "some_env_file"
+      expect(File.read("some_env_file"))
+        .to match /\AFOO=BAR\nLOCALEAPP_API_KEY/
+    end
   end
 end
 

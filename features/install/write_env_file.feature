@@ -11,3 +11,16 @@ Feature: Installation with `-e' option
       """
       LOCALEAPP_API_KEY=MYAPIKEY
       """
+
+  Scenario: preserves `.env' file content when given `-e' option
+    Given I have a valid project on localeapp.com with api key "MYAPIKEY"
+    And a file ".env" with content:
+      """
+      FOO=BAR
+      """
+    When I successfully run `localeapp install MYAPIKEY -e`
+    Then the file ".env" must contain exactly:
+      """
+      FOO=BAR
+      LOCALEAPP_API_KEY=MYAPIKEY
+      """

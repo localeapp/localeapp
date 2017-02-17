@@ -119,7 +119,7 @@ CONTENT
         end
 
         def write_env_file_apikey(path, key)
-          File.write(path, "LOCALEAPP_API_KEY=#{key}\n")
+          File.open(path, "a") { |f| f.puts "LOCALEAPP_API_KEY=#{key}" }
         end
       end
 

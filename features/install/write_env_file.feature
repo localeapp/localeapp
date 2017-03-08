@@ -1,4 +1,4 @@
-Feature: Installation with `-e' option
+Feature: `install' command with `-e' option
 
   Scenario: describes `-e' option in the `install' command usage
     When I successfully run `localeapp help install`

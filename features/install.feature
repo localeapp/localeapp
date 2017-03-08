@@ -1,7 +1,6 @@
-Feature: Installation
+Feature: `install' command
 
-  Scenario: Running Rails install
-    In order to configure my project and check my api key is correct
+  Scenario: Installs rails configuration
     Given I have a valid project on localeapp.com with api key "MYAPIKEY"
     When I run `localeapp install MYAPIKEY`
     Then the output should contain:
@@ -13,12 +12,11 @@ Feature: Installation
     Project: Test Project
     Default Locale: en (English)
     """
-      And help should not be displayed
-      And a file named "config/initializers/localeapp.rb" should exist
-      And the exit status should be 0
+    And help should not be displayed
+    And a file named "config/initializers/localeapp.rb" should exist
+    And the exit status should be 0
 
-  Scenario: Running standalone install
-    In order to configure my non rails project and check my api key is correct
+  Scenario: Installs standalone configuration when given --standalone option
     Given I have a valid project on localeapp.com with api key "MYAPIKEY"
     When I run `localeapp install --standalone MYAPIKEY`
     Then the output should contain:
@@ -32,12 +30,11 @@ Feature: Installation
     Writing configuration file to .localeapp/config.rb
     WARNING: please create the locales directory. Your translation data will be stored there.
     """
-      And help should not be displayed
-      And a file named ".localeapp/config.rb" should exist
-      And the exit status should be 0
+    And help should not be displayed
+    And a file named ".localeapp/config.rb" should exist
+    And the exit status should be 0
 
-  Scenario: Running github install
-    In order to configure my public github project and check my api key is correct
+  Scenario: Installs standalone config and other files when given --github option
     Given I have a valid project on localeapp.com with api key "MYAPIKEY"
     When I run `localeapp install --github MYAPIKEY`
     Then the output should contain:
@@ -50,14 +47,13 @@ Feature: Installation
     NOTICE: you probably want to add .localeapp to your .gitignore file
     Writing configuration file to .localeapp/config.rb
     """
-      And help should not be displayed
-      And a file named ".localeapp/config.rb" should exist
-      And a file named ".gitignore" should exist
-      And a file named "README.md" should exist
-      And the exit status should be 0
+    And help should not be displayed
+    And a file named ".localeapp/config.rb" should exist
+    And a file named ".gitignore" should exist
+    And a file named "README.md" should exist
+    And the exit status should be 0
 
-  Scenario: Running heroku install with no api key
-    In order to configure my project to use localeapp as a heroku addon
+  Scenario: Installs heroku config files when given --heroku option
     Given I have a valid heroku project
     When I run `localeapp install --heroku`
     Then the output should contain:
@@ -73,13 +69,12 @@ Feature: Installation
     Project: Test Project
     Default Locale: en (English)
     """
-      And help should not be displayed
-      And a file named "config/initializers/localeapp.rb" should exist
-      And the file "config/initializers/localeapp.rb" should contain "config.api_key = ENV['LOCALEAPP_API_KEY']"
-      And the exit status should be 0
+    And help should not be displayed
+    And a file named "config/initializers/localeapp.rb" should exist
+    And the file "config/initializers/localeapp.rb" should contain "config.api_key = ENV['LOCALEAPP_API_KEY']"
+    And the exit status should be 0
 
-  Scenario: Running install with bad api key
-    In order to configure my project and check my api key is correct
+  Scenario: Reports an error when given incorrect API key
     Given I have a valid project on localeapp.com but an incorrect api key "BADAPIKEY"
     When I run `localeapp install BADAPIKEY`
     Then the output should contain:
@@ -89,6 +84,6 @@ Feature: Installation
     Checking API key: BADAPIKEY
     ERROR: Project not found
     """
-      And help should not be displayed
-      And a file named "config/initializers/localeapp.rb" should not exist
-      And the exit status should not be 0
+    And help should not be displayed
+    And a file named "config/initializers/localeapp.rb" should not exist
+    And the exit status should not be 0

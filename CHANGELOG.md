@@ -2,7 +2,13 @@
 
 * Read API key from environment in generated config files, instead of
   writing the API key directly in those files
+
+# Version 2.1.1
+
 * Support ruby 2.4
+
+# Version 2.1.0
+
 * Drop ruby 1.9 and ruby 2.0 support
 
 # Version 2.0.0

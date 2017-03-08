@@ -18,7 +18,7 @@ describe Localeapp::CLI::Add, "#execute(current_name, new_name, *rest)" do
         :payload => { :new_name => 'test.new_name' },
         :success => :report_success,
         :failure => :report_failure,
-        :max_connection_attempts => 3
+        :max_connection_attempts => anything
       )
       do_action
     end

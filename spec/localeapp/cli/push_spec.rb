@@ -45,7 +45,7 @@ describe Localeapp::CLI::Push, "#push_file(file_path)" do
         :payload => { :file => file },
         :success => :report_success,
         :failure => :report_failure,
-        :max_connection_attempts => 3
+        :max_connection_attempts => anything
       )
       pusher.push_file(file_path)
     end

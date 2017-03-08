@@ -12,7 +12,7 @@ module Localeapp
           :payload => { :new_name => new_name },
           :success => :report_success,
           :failure => :report_failure,
-          :max_connection_attempts => 3
+          :max_connection_attempts => 1
       end
 
       def report_success(response)
@@ -21,6 +21,7 @@ module Localeapp
 
       def report_failure(response)
         @output.puts "Failed!"
+        fail APIResponseError, "API returned #{response.code} status code"
       end
     end
   end

@@ -48,6 +48,17 @@ module LocaleappGLIWrapper
     end
   end
 
+  on_error do |ex|
+    case ex
+    when Localeapp::APIResponseError
+      $stderr.puts "ERROR: #{ex}"
+      exit 70
+      false
+    else
+      true
+    end
+  end
+
   desc "API Key (for when there is no configuration file)"
   flag [:k, 'api-key']
 

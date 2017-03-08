@@ -19,3 +19,13 @@ Feature: `update' command
     """
     Timestamp is missing or too old
     """
+
+  Scenario: Reports an error when the given API key is incorrect
+    Given no project exist on localeapp.com with API key "MYAPIKEY"
+    And the timestamp is 2 months old
+    # FIXME:
+    And new translations for the api key "MYAPIKEY" since last fetch with time "60" seconds later
+    And a directory named "config/locales"
+    When I run `localeapp -k MYAPIKEY update`
+    Then the exit status must be 70
+    #And the output must match /error.+404/i

@@ -11,3 +11,9 @@ Feature: `rm' command
     Remove key: foo.bar
     Success!
     """
+
+  Scenario: Reports an error when the given API key is incorrect
+    Given no project exist on localeapp.com with API key "MYAPIKEY"
+    When I run `localeapp -k MYAPIKEY rm foo.bar`
+    Then the exit status must be 70
+    And the output must match /error.+404/i

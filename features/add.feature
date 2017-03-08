@@ -30,3 +30,9 @@ Feature: `add' command
     """
     localeapp add requires a key name and at least one translation
     """
+
+  Scenario: Reports an error when the given API key is incorrect
+    Given no project exist on localeapp.com with API key "MYAPIKEY"
+    When I run `localeapp -k MYAPIKEY add foo en:bar`
+    Then the exit status must be 70
+    And the output must match /error.+404/i

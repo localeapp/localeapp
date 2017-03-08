@@ -1,6 +1,12 @@
 require 'net/http'
 require 'time'
 
+Given /^no project exist on localeapp\.com with API key "([^"]+)"$/ do |api_key|
+  add_fake_web_uri :any, /\Ahttps:\/\/api\.localeapp\.com\/.*/,
+    [404, "Not Found"],
+    ""
+end
+
 When /^I have a valid project on localeapp\.com with api key "([^"]*)"$/ do |api_key|
   uri = "https://api.localeapp.com/v1/projects/#{api_key}.json"
   body = valid_project_data.to_json

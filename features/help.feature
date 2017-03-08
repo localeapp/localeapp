@@ -1,7 +1,6 @@
-Feature: Getting help
+Feature: `help' command
 
-  Scenario: Viewing help
-    In order to see what options I have
+  Scenario: Shows help when given `help' command
     When I run `localeapp help`
     Then the output should contain:
     """

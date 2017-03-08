@@ -48,6 +48,7 @@ module Localeapp
 
     def handle_missing_translation_failure(response)
        Localeapp.log([translations_url, response.code, @data.inspect].join(' - '))
+       fail APIResponseError, "API returned #{response.code} status code"
     end
   end
 end

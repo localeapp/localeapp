@@ -4,6 +4,7 @@ Feature: `pull' command
     Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"
     And an initializer file
     And a directory named "config/locales"
+    And a directory named "log"
     When I run `localeapp pull`
     Then the output should contain:
     """
@@ -29,6 +30,7 @@ Feature: `pull' command
   Scenario: Running pull with no initializer file, passing the key on the command line
     Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"
     And a directory named "config/locales"
+    And a directory named "log"
     When I run `localeapp -k MYAPIKEY pull`
     Then the output should contain:
     """

@@ -26,3 +26,9 @@ Feature: `pull' command
     """
     Could not write locale file, please make sure that config/locales exists and is writable
     """
+
+  Scenario: Reports an error when the given API key is incorrect
+    Given no project exist on localeapp.com with API key "MYAPIKEY"
+    When I run `localeapp -k MYAPIKEY pull`
+    Then the exit status must be 70
+    And the output must match /error.+404/i

@@ -24,7 +24,7 @@ module Localeapp
             :payload => { :file => file },
             :success => :report_success,
             :failure => :report_failure,
-            :max_connection_attempts => 3
+            :max_connection_attempts => 1
         else
           @output.puts "Could not load file"
         end
@@ -38,6 +38,7 @@ module Localeapp
 
       def report_failure(response)
         @output.puts "Failed!"
+        fail APIResponseError, "API returned #{response.code} status code"
       end
 
       private

@@ -11,7 +11,7 @@ module Localeapp
         api_call :export,
           :success => :update_backend,
           :failure => :report_failure,
-          :max_connection_attempts => 3
+          :max_connection_attempts => 1
       end
 
       def update_backend(response)
@@ -24,6 +24,7 @@ module Localeapp
 
       def report_failure(response)
         @output.puts "Failed!"
+        fail APIResponseError, "API returned #{response.code} status code"
       end
     end
   end

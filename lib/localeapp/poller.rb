@@ -52,10 +52,13 @@ module Localeapp
     end
 
     def handle_failure(response)
-      if response.code == 304
+      case response.code
+      when 304
         Localeapp.log_with_time "No new data"
         # Nothing new, update synchronization files
         write_synchronization_data!(current_time, updated_at)
+      when 404
+        fail APIResponseError, "API returned #{response.code} status code"
       end
       @success = false
     end

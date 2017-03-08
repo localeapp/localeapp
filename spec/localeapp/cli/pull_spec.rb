@@ -13,7 +13,7 @@ describe Localeapp::CLI::Pull, "#execute" do
         :export,
         :success => :update_backend,
         :failure => :report_failure,
-        :max_connection_attempts => 3
+        :max_connection_attempts => anything
       )
       @puller.execute
     end

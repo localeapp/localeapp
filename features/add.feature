@@ -30,38 +30,3 @@ Feature: `add' command
     """
     localeapp add requires a key name and at least one translation
     """
-
-  Scenario: Adds the given translation when given the API key on the command line
-    Given I have a valid project on localeapp.com with api key "MYAPIKEY"
-    When I successfully run `localeapp -k MYAPIKEY add foo.baz en:"test en content"`
-    Then the output should contain:
-    """
-    Localeapp Add
-
-    Sending key: foo.baz
-    Success!
-    """
-
-  Scenario: Adds the given translation when given the API key via environment
-    Given I have a valid project on localeapp.com with api key "MYAPIKEY"
-    And I have a LOCALEAPP_API_KEY env variable set to "MYAPIKEY"
-    When I successfully run `localeapp add foo.baz en:"test en content"`
-    Then the output should contain:
-    """
-    Localeapp Add
-
-    Sending key: foo.baz
-    Success!
-    """
-
-  Scenario: Adds the given translation when given the API key in .env file
-    Given I have a valid project on localeapp.com with api key "MYAPIKEY"
-    And I have a .env file containing the api key "MYAPIKEY"
-    When I successfully run `localeapp add foo.baz en:"test en content"`
-    Then the output should contain:
-    """
-    Localeapp Add
-
-    Sending key: foo.baz
-    Success!
-    """

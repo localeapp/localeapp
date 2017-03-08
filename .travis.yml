@@ -9,6 +9,7 @@ rvm:
   - 2.1.10
   - jruby
 gemfile:
+  - Gemfile
   - gemfiles/i18n_0.4.gemfile
   - gemfiles/i18n_0.5.gemfile
   - gemfiles/i18n_0.6.gemfile

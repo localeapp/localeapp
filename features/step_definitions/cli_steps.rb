@@ -71,15 +71,6 @@ When /^an initializer file$/ do
   }
 end
 
-When /^help should not be displayed$/ do
-  steps %Q{
-    And the output should not contain:
-    """
-    Usage: localeapp COMMAND [options]
-    """
-  }
-end
-
 When /^the timestamp is (\d+) months? old$/ do |months|
   @timestamp = Time.now.to_i - months.to_i * 2592000
   steps %Q{

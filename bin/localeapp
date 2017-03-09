@@ -13,7 +13,7 @@ if ENV['FAKE_WEB_DURING_CUCUMBER_RUN']
   end
   FakeWeb.allow_net_connect = false
   if fake_data_as_json = ENV['FAKE_WEB_FAKES']
-    fakes = JSON.parse(fake_data_as_json)
+    fakes = YAML.load(fake_data_as_json)
     fakes.each do |fake|
       FakeWeb.register_uri fake['method'].to_sym, fake['uri'], { :body => fake['body'], :status => fake['status'] }.merge(fake['headers'])
     end

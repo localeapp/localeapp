@@ -14,7 +14,7 @@ module Localeapp
       end
 
       # match all versions after CVE-2013-4491 patch (https://github.com/rails/rails/commit/78790e4bceedc632cb40f9597792d7e27234138a)
-      if rails_version_matches_any? '~> 3.2.16', '>= 4.0.2'
+      if rails_version_matches_any? '~> 3.2.16', '~> 4.0.2'
         require 'localeapp/rails/mimic_rails_missing_translation_display'
         require 'localeapp/rails/force_exception_handler_in_translation_helper'
       end

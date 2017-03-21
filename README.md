@@ -138,6 +138,13 @@ To prevent localeapp from sending translations every time they are missing, add 
 
     config.cache_missing_translations = true
 
+### Empty translations
+
+To prevent localeapp from sending translations with empty values,
+add this config setting:
+
+    config.ignore_empty_translations = true
+
 ## Inviting other developers and translators
 
 You can invite other developers and translators via localeapp.com.  Developers have access to all the content and all the locales. Translators are restricted to editing only the locales you give them access too.

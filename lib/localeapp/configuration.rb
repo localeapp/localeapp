@@ -87,6 +87,10 @@ module Localeapp
     # default: nil
     attr_accessor :blacklisted_keys_pattern
 
+    # Enable or disable ignoring empty translations
+    # default: false
+    attr_accessor :ignore_empty_translations
+
     def initialize
       defaults.each do |setting, value|
         send("#{setting}=", value)
@@ -109,6 +113,7 @@ module Localeapp
         :daemon_log_file            => File.join('log', 'localeapp_daemon.log'),
         :translation_data_directory => File.join('config', 'locales'),
         :raise_on_insecure_yaml     => true,
+        :ignore_empty_translations  => false,
       }
       if ENV['DEBUG']
         require 'logger'

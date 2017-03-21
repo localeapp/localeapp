@@ -55,6 +55,14 @@ describe Localeapp::Configuration do
     expect { configuration.ssl_ca_file = '/foo/bar' }.to change(configuration, :ssl_ca_file).to('/foo/bar')
   end
 
+  it "sets ignore_empty_translations to false by default" do
+    configuration.ignore_empty_translations.should == false
+  end
+
+  it "allows ignore_empty_translations setting to be overridden" do
+    expect { configuration.ignore_empty_translations = true }.to change(configuration, :ignore_empty_translations).to(true)
+  end
+
   it "includes http_auth_username defaulting to nil" do
     expect(configuration.http_auth_username).to eq(nil)
     configuration.http_auth_username = "test"

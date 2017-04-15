@@ -5,9 +5,17 @@ module Localeapp
 
       def execute(path = nil)
         @output.puts "Localeapp Push"
+        push_path(path)
+      end
+      
+      def push_path(path)
         if path_is_directory?(path)
           yaml_files_in_directory(path).each do |path|
             push_file(path)
+          end
+          
+          directories_in_directory(path).each do | path |
+            push_path(path)
           end
         else
           push_file(path)
@@ -41,6 +49,11 @@ module Localeapp
       end
 
       private
+      
+      def directories_in_directory(path) 
+        Dir.glob(File.join(path, '*')).find_all{|path| path_is_directory?(path)}
+      end
+      
       def sanitize_file(file_path)
         if File.exist?(file_path)
           File.new(file_path)

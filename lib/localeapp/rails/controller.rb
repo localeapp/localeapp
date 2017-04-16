@@ -31,7 +31,8 @@ module Localeapp
       end
 
       def send_missing_translations
-        return if ::Localeapp.configuration.sending_disabled?
+        return if ::Localeapp.configuration.sending_disabled? ||
+                  ::Localeapp.configuration.request_path_blacklisted?(request.path)
         ::Localeapp.missing_translations.reject_blacklisted
         ::Localeapp.sender.post_missing_translations
       end

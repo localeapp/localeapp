@@ -87,6 +87,12 @@ module Localeapp
     # default: nil
     attr_accessor :blacklisted_keys_pattern
 
+    # A regular expression that is matched against the request path.
+    # If the request path matches, the missing translations will not be sent
+    # to the Locale server via the rails exception handler.
+    # default: nil
+    attr_accessor :blacklisted_request_paths_pattern
+
     def initialize
       defaults.each do |setting, value|
         send("#{setting}=", value)
@@ -131,6 +137,11 @@ module Localeapp
 
     def has_api_key?
       !api_key.nil? && !api_key.empty?
+    end
+
+    def request_path_blacklisted?(request_path)
+      return false unless blacklisted_request_paths_pattern
+      request_path.match(blacklisted_request_paths_pattern)
     end
 
   end

@@ -29,7 +29,7 @@ module Localeapp
           self.key = key
           print_header
           if validate_key
-            check_default_locale
+            print_default_locale
             set_config_paths
             @output.puts "Writing configuration file to #{config_file_path}"
             write_config_file
@@ -66,12 +66,13 @@ module Localeapp
           end
         end
 
-        def check_default_locale
+        def print_default_locale
           localeapp_default_code = project_data['default_locale']['code']
-          @output.puts "Default Locale: #{localeapp_default_code} (#{project_data['default_locale']['name']})"
-          if I18n.default_locale.to_s != localeapp_default_code
-            @output.puts "WARNING: I18n.default_locale is #{I18n.default_locale}, change in config/application.rb (Rails 3+)"
-          end
+          @output.puts <<-eoh
+Default Locale: #{localeapp_default_code} (#{project_data['default_locale']['name']})
+Please ensure I18n.default_locale is #{localeapp_default_code} or change it in
+config/application.rb
+          eoh
         end
 
         def set_config_paths
@@ -173,7 +174,7 @@ CONTENT
       end
 
       class StandaloneInstaller < DefaultInstaller
-        def check_default_locale
+        def print_default_locale
           # do nothing standalone
         end
 

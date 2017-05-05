@@ -65,14 +65,14 @@ describe Localeapp::CLI::Install::DefaultInstaller, "#execute" do
   context "when key validation is successful" do
     before do
       allow(installer).to receive(:validate_key).and_return(true)
-      allow(installer).to receive(:check_default_locale)
+      allow(installer).to receive(:print_default_locale)
       allow(installer).to receive(:set_config_paths)
       allow(installer).to receive(:write_config_file)
       allow(installer).to receive(:check_data_directory_exists)
     end
 
     it "checks the default locale" do
-      expect(installer).to receive(:check_default_locale)
+      expect(installer).to receive(:print_default_locale)
       installer.execute(key)
     end
 
@@ -151,7 +151,7 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#validate_key(key)' do
   end
 end
 
-describe Localeapp::CLI::Install::DefaultInstaller, '#check_default_locale' do
+describe Localeapp::CLI::Install::DefaultInstaller, '#print_default_locale' do
   let(:output) { StringIO.new }
   let(:installer) { Localeapp::CLI::Install::DefaultInstaller.new(output) }
 
@@ -160,15 +160,13 @@ describe Localeapp::CLI::Install::DefaultInstaller, '#check_default_locale' do
   end
 
   it "displays project base locale" do
-    installer.check_default_locale
+    installer.print_default_locale
     expect(output.string).to match(/en \(English\)/)
   end
 
-  it "displays warning if I18n.default_locale doesn't match what's configured on localeapp.com" do
-    allow(I18n).to receive(:default_locale).and_return(:es)
-    installer.check_default_locale
-    expect(output.string)
-      .to match(%r{WARNING: I18n\.default_locale is es, change in config/application\.rb \(Rails 3\+\)})
+  it "warns that I18n.default_locale must match project locale" do
+    installer.print_default_locale
+    expect(output.string).to include "Please ensure I18n.default_locale is en"
   end
 end
 
@@ -264,12 +262,12 @@ CONTENT
     installer.write_config_file
   end
 end
-describe Localeapp::CLI::Install::StandaloneInstaller, '#check_default_locale' do
+describe Localeapp::CLI::Install::StandaloneInstaller, '#print_default_locale' do
   let(:output) { StringIO.new }
   let(:installer) { Localeapp::CLI::Install::StandaloneInstaller.new(output) }
 
   it "does nothing" do
-    installer.check_default_locale
+    installer.print_default_locale
     expect(output.string).to eq('')
   end
 end

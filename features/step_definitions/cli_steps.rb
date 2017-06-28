@@ -5,7 +5,13 @@ When /^I have a valid project on localeapp\.com with api key "([^"]*)"$/ do |api
   uri = "https://api.localeapp.com/v1/projects/#{api_key}.json"
   body = valid_project_data.to_json
   add_fake_web_uri(:get, uri, ['200', 'OK'], body)
-  add_fake_web_uri(:post, "https://api.localeapp.com/v1/projects/#{api_key}/import/", ['202', 'OK'], '')
+  add_fake_web_uri(
+    :post,
+    "https://api.localeapp.com/v1/projects/#{api_key}/import/",
+    %w[202 OK],
+    JSON.generate(id: 12345),
+    "Content-Type" => "application/json; charset=utf-8"
+  )
   add_fake_web_uri(:post, "https://api.localeapp.com/v1/projects/#{api_key}/translations/missing.json", ["202", "OK"], '')
 end
 

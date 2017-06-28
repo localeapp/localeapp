@@ -35,6 +35,21 @@ describe Localeapp::CLI::Pull, "#update_backend(response)" do
     end
   end
 
+  context "if a target directory is provided" do
+    let(:target_dir) { 'target/dir' }
+    before do
+      @puller.instance_variable_set(:@target_dir, target_dir)
+    end
+
+    it "calls the updater with a target_dir" do
+      with_configuration do
+        allow(Localeapp.poller).to receive(:write_synchronization_data!)
+        expect(Localeapp.updater).to receive(:dump).with(['test data'], target_dir)
+        @puller.update_backend(@test_data)
+      end
+    end
+  end
+
   it "writes the synchronization data" do
     with_configuration do
       allow(Localeapp.updater).to receive(:dump)

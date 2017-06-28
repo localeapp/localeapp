@@ -128,9 +128,15 @@ module LocaleappGLIWrapper
   end
 
   desc "Pulls all translations from localeapp.com"
+  arg_name "[target_dir]"
   command :pull do |c|
     c.action do |global_options, options, args|
-      Localeapp::CLI::Pull.new(global_options).execute
+      target_dir = args.shift
+      if !target_dir.nil? && !File.directory?(target_dir)
+        exit_now! "localeapp pull must be targeted at a directory", 1
+      else
+        Localeapp::CLI::Pull.new(global_options).execute(target_dir)
+      end
     end
   end
 

@@ -31,9 +31,9 @@ module Localeapp
       end
     end
 
-    def dump(data)
+    def dump(data, target_dir = Localeapp.configuration.translation_data_directory)
       data.each do |locale, translations|
-        filename = File.join(Localeapp.configuration.translation_data_directory, "#{locale}.yml")
+        filename = File.join(target_dir, "#{locale}.yml")
         atomic_write(filename) do |file|
           file.write generate_yaml({locale => translations})
         end

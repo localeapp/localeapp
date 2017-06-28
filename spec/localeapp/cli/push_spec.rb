@@ -57,3 +57,15 @@ describe Localeapp::CLI::Push, "#push_file(file_path)" do
     pusher.push_file('foo')
   end
 end
+
+describe Localeapp::CLI::Push, "#report_success" do
+  let(:output)      { StringIO.new }
+  let(:body)        { JSON.generate(id: 12345) }
+  let(:response)    { double "response", body: body }
+  subject(:pusher)  { described_class.new output: output }
+
+  it "prints the response import identifier on the output" do
+    pusher.report_success response
+    expect(output.string).to match /queued for processing.+id: 12345/
+  end
+end

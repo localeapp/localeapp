@@ -15,3 +15,20 @@ describe Localeapp, "#load_yaml(content)" do
     end
   end
 end
+
+describe Localeapp, "#yaml_data(content, locale_key = nil)" do
+  let(:content) { "en:\n   foo: bar" }
+  let(:locale_key) { "en" }
+
+  it "raises an exception if the given locale key is missing" do
+    with_configuration do
+      expect { Localeapp.yaml_data(content, "de") }.to raise_error("Could not find given locale")
+    end
+  end
+
+  it "finds the given locale key" do
+    with_configuration do
+      expect(Localeapp.yaml_data(content, locale_key)).to eq({"en" => {"foo" => "bar"}})
+    end
+  end
+end

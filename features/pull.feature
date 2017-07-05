@@ -16,6 +16,27 @@ Feature: `pull' command
     Success!
     """
     And a file named "config/locales/en.yml" should exist
+    And a file named "config/locales/es.yml" should exist
+
+  Scenario: Pulls single translation
+    Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"
+    And an initializer file
+    And a directory named "config/locales"
+    And a directory named "log"
+    When I successfully run `localeapp pull en`
+    Then the output should contain "Fetching en translations:"
+    And a file named "config/locales/en.yml" should exist
+    And a file named "config/locales/es.yml" should not exist
+
+  Scenario: Reports an error when a given locale is missing
+  Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"
+    And an initializer file
+    When I run `localeapp pull err`
+    Then the exit status must be 1
+    And the output should contain:
+    """
+    Could not find given locale
+    """
 
   Scenario: Reports an error when locales directory is missing
     Given I have a translations on localeapp.com for the project with api key "MYAPIKEY"

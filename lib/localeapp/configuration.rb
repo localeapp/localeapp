@@ -38,7 +38,7 @@ module Localeapp
     # RAILS_ROOT
     attr_accessor :project_root
 
-    # The names of environments where notifications are sent
+    # The names of environments where missing translations are sent from
     # (defaults to 'development')
     attr_accessor :sending_environments
 

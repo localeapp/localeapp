@@ -12,7 +12,7 @@ Feature: `push' command
     Pushing file en.yml:
     Success!
 
-    config/locales/en.yml queued for processing.
+    config/locales/en.yml queued for processing. (id: )
     """
 
   Scenario: Pushes all locales within given directory
@@ -28,12 +28,12 @@ Feature: `push' command
     Pushing file en.yml:
     Success!
 
-    config/locales/en.yml queued for processing.
+    config/locales/en.yml queued for processing. (id: )
 
     Pushing file es.yml:
     Success!
 
-    config/locales/es.yml queued for processing.
+    config/locales/es.yml queued for processing. (id: )
     """
 
   Scenario: Reports an error when the given API key is incorrect

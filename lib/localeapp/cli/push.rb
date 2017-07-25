@@ -33,7 +33,7 @@ module Localeapp
       def report_success(response)
         @output.puts "Success!"
         @output.puts ""
-        @output.puts "#{@file_path} queued for processing."
+        @output.puts "#{@file_path} queued for processing. (id: #{response['id']})"
       end
 
       def report_failure(response)

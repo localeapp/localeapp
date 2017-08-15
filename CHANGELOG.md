@@ -1,7 +1,11 @@
 # master
 
+# Version 2.2.0
+
 * Read API key from environment in generated config files, instead of
   writing the API key directly in those files
+* Fix handling of HTTP errors when querying API
+* Stop checking project and app default locale at install
 
 # Version 2.1.1
 

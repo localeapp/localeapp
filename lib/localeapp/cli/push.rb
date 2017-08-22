@@ -31,9 +31,12 @@ module Localeapp
       end
 
       def report_success(response)
-        @output.puts "Success!"
-        @output.puts ""
-        @output.puts "#{@file_path} queued for processing."
+        id = JSON.parse(response.body)["id"]
+        @output.puts <<-eoh
+Success!
+
+#{@file_path} queued for processing. (id: #{id})
+        eoh
       end
 
       def report_failure(response)

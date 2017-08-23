@@ -1,5 +1,9 @@
 # master
 
+# Version 2.3.0
+
+* Report import identifier on push success
+
 # Version 2.2.0
 
 * Read API key from environment in generated config files, instead of

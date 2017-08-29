@@ -46,7 +46,9 @@ module Localeapp
     # (defaults to 'development')
     attr_accessor :reloading_environments
 
-    # The names of environments where updates aren't pulled
+    # The names of environments where localeapp will poll for translations from
+    # Localeapp API (to check for new translations there) on every page request
+    # to your app's website.
     # (defaults to 'development')
     attr_accessor :polling_environments
 

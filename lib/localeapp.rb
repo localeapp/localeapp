@@ -109,6 +109,15 @@ module Localeapp
       load_yaml(File.read(filename))
     end
 
+    def yaml_data(content, locale_key = nil)
+      yaml_data = Localeapp.load_yaml(content)
+      if locale_key
+        raise "Could not find given locale" unless yaml_data and yaml_data[locale_key]
+        yaml_data = {locale_key => yaml_data[locale_key]}
+      end
+      yaml_data
+    end
+
     def env_file_path
       ENV_FILE_PATH
     end

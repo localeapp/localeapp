@@ -138,10 +138,12 @@ module LocaleappGLIWrapper
     end
   end
 
-  desc "Pulls all translations from localeapp.com"
+  desc "Pulls one or all translations from localeapp.com"
+  arg_name "<key> (optional)"
   command :pull do |c|
     c.action do |global_options, options, args|
-      Localeapp::CLI::Pull.new(global_options).execute
+      locale_key = args[0]
+      Localeapp::CLI::Pull.new(global_options).execute(locale_key)
     end
   end
 

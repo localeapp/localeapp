@@ -1,5 +1,9 @@
 # master
 
+# Version 2.4.0
+
+* Support pulling of single locales
+
 # Version 2.3.0
 
 * Report import identifier on push success

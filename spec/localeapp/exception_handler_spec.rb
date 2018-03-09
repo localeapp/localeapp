@@ -46,4 +46,9 @@ describe Localeapp::ExceptionHandler, '#call(exception, locale, key, options)' d
       Localeapp::ExceptionHandler.call(exception, :en, 'foo', {})
     }.to_not raise_error
   end
+
+  it "handles the scope option" do
+    expect(I18n.t('foo.bar', scope: 'scoped')).to eq 'en, scoped.foo.bar'
+    expect(I18n.t(%w{foo.bar foo.baz}, scope: 'scoped')).to eq 'en, scoped.foo.bar, scoped.foo.baz'
+  end
 end

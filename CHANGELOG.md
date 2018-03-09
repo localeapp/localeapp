@@ -7,7 +7,7 @@
 
 # Version 2.4.0
 
-* Support pulling of single locales
+* Support pulling of single locales (thanks to @full-of-foo)
 
 # Version 2.3.0
 

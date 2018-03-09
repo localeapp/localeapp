@@ -2,12 +2,12 @@
 
 # Version 2.5.0
 
-* Show fully-scoped keys in `ExceptionHandler` log messages (thanks to @leonhooijer)
-* Don't force raising an exception for blacklisted keys (thanks to @leonhooijer)
+* Show fully-scoped keys in `ExceptionHandler` log messages (thanks to [@leonhooijer](https://github.com/leonhooijer))
+* Don't force raising an exception for blacklisted keys (thanks to [@leonhooijer](https://github.com/leonhooijer))
 
 # Version 2.4.0
 
-* Support pulling of single locales (thanks to @full-of-foo)
+* Support pulling of single locales (thanks to [@full-of-foo](https://github.com/full-of-foo))
 
 # Version 2.3.0
 
@@ -35,7 +35,7 @@
 
 # Version 1.0.2
 
-* Fix a XSS vulnerability where translations keys could contain unescaped HTML (@grekko)
+* Fix a XSS vulnerability where translations keys could contain unescaped HTML (thanks to [@grekko](https://github.com/grekko))
 
 # Version 1.0.1
 
@@ -71,7 +71,7 @@
 
 # Version 0.8.0
 
-* Fix problem with line ending in three dots. (@holli)
+* Fix problem with line ending in three dots. (thanks to [@holli](https://github.com/holli))
 * Change deprecated File.exists? to File.exist?
 * Fix "install --github" so it appends README.md. Before it truncated the README.md file with new content, now it appends content in a more correct manner.
 * Fix .gitignore injection so it ensures a newline.
@@ -130,7 +130,7 @@
 
 # Version 0.6.9
 
-* Make rack a dependency as we actually use it (Thanks @martoche)
+* Make rack a dependency as we actually use it (thanks to [@martoche](https://github.com/martoche))
 
 # Version 0.6.8
 
@@ -190,21 +190,21 @@
 
 # Version 0.4.3
 
-* Make sure Psych is fully loaded before using it (Thanks @tenderlove)
+* Make sure Psych is fully loaded before using it (thanks to [@tenderlove](https://github.com/tenderlove))
 
 # Version 0.4.2
 
-* Improve compatibility of Psych with ruby 1.9.2 (Thanks @ardpac)
+* Improve compatibility of Psych with ruby 1.9.2 (thanks to [@ardpac](https://github.com/ardpac))
 
 # Version 0.4.1
 
-* Ignore HUP when backgrounded. (Thanks @xijo)
+* Ignore HUP when backgrounded. (thanks to [@xijo](https://github.com/xijo))
 * Add --standalone option to install to generate a .localeapp/ config directory. This enables usage outside of rails.
 
 # Version 0.4.0
 
 * Use Psych to generate the yaml if it's available (This will completely change your yaml the first time you do a localeapp pull and Psych is available)
-* Report when the directory to write the yml to doesn't exist (Thanks Robin Mehner)
+* Report when the directory to write the yml to doesn't exist (thanks to [@rmehner](https://github.com/rmehner))
 
 # Version 0.3.2
 
@@ -213,13 +213,13 @@
 # Version 0.3.1
 
 * Handle SocketError so we don't cause errors in client apps when they're not connected to the network
-* Fix bug with empty log file (Thanks Robin Mehner)
+* Fix bug with empty log file (thanks to [@rmehner](https://github.com/rmehner))
 
 # Version 0.3.0
 
 * Allow symbols for environment names in config file
-* `localeapp push` will now push all yaml files in a directory if it's given a directory instead of a file. (Thanks Bartłomiej Danek)
-* Better daemon support. `daemon_pid_file` and `daemon_log_file` configuration options. (Thanks again Bartłomiej Danek)
+* `localeapp push` will now push all yaml files in a directory if it's given a directory instead of a file (thanks to [@bartlomiejdanek](https://github.com/bartlomiejdanek))
+* Better daemon support. `daemon_pid_file` and `daemon_log_file` configuration options (thanks to [@bartlomiejdanek](https://github.com/bartlomiejdanek))
 
 # Version 0.2.0
 

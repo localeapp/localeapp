@@ -14,7 +14,11 @@
 module Localeapp
   module ForceExceptionHandlerInTranslationHelper
     def translate(key, options = {})
-      super(key, {:raise => false}.merge(options))
+      if [options[:scope], key].compact.join(".").match?(Localeapp.configuration.blacklisted_keys_pattern)
+        super(key, options)
+      else
+        super(key, {:raise => false}.merge(options))
+      end
     end
     alias :t :translate
   end

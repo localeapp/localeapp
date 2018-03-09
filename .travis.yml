@@ -11,9 +11,6 @@ rvm:
   - jruby-9.1.15.0
 gemfile:
   - Gemfile
-  - spec/gemfiles/i18n_0.4.gemfile
-  - spec/gemfiles/i18n_0.5.gemfile
-  - spec/gemfiles/i18n_0.6.gemfile
   - spec/gemfiles/i18n_0.7.gemfile
   - spec/gemfiles/i18n_0.8.gemfile
   - spec/gemfiles/i18n_0.9.gemfile

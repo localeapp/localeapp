@@ -8,3 +8,4 @@ doc/*
 tmp/*
 .ruby-version
 .ruby-gemsets
+.rvmrc

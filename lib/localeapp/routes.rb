@@ -6,6 +6,7 @@ require "localeapp/routes/remove"
 require "localeapp/routes/rename"
 require "localeapp/routes/missing_translations"
 require "localeapp/routes/import"
+require "localeapp/routes/copy"
 
 module Localeapp
   module Routes
@@ -19,5 +20,6 @@ module Localeapp
     include Rename
     include MissingTranslations
     include Import
+    include Copy
   end
 end

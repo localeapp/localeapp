@@ -2,10 +2,10 @@
 
 source "https://rubygems.org"
 
-gem "i18n", "~> 0.6.0"
+gem "i18n", "~> 0.5.0"
 
 platforms :jruby do
   gem "jruby-openssl", "~> 0.6"
 end
 
-gemspec :path => "../"
+gemspec :path => "../.."

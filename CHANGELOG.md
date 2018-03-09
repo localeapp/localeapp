@@ -1,5 +1,10 @@
 # master
 
+# Version 2.5.0
+
+* Show fully-scoped keys in `ExceptionHandler` log messages (thanks to @leonhooijer)
+* Don't force raising an exception for blacklisted keys (thanks to @leonhooijer)
+
 # Version 2.4.0
 
 * Support pulling of single locales

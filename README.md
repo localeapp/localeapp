@@ -1,10 +1,11 @@
 # Locale
 
-[![Build status](https://secure.travis-ci.org/Locale/localeapp.png)](http://travis-ci.org/Locale/localeapp)
-[![Code Climate](https://codeclimate.com/github/Locale/localeapp.png)](https://codeclimate.com/github/Locale/localeapp)
-[![Gem Version](https://badge.fury.io/rb/localeapp.png)](http://badge.fury.io/rb/localeapp)
+[![Build status](https://secure.travis-ci.org/Locale/localeapp.svg)](http://travis-ci.org/Locale/localeapp)
+[![Code Climate](https://codeclimate.com/github/Locale/localeapp.svg)](https://codeclimate.com/github/Locale/localeapp)
+[![Security](https://hakiri.io/github/Locale/localeapp/master.svg)](https://hakiri.io/github/Locale/localeapp/master)
+[![Gem Version](https://badge.fury.io/rb/localeapp.svg)](http://badge.fury.io/rb/localeapp)
 
-The localeapp gem connects your rails app to the Locale service on http://www.localeapp.com. Locale makes hand editing translation files something you don't have to do.
+The `localeapp` gem connects your Rails app to the Locale service on https://www.localeapp.com. Locale makes hand editing translation files something you don't have to do.
 
 The gem hooks into the i18n exception mechanism to send missing translations to the app. When translated content has been added it's automatically pulled down so you can see it straight away.
 

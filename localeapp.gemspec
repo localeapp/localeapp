@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2.1"
 
-  s.add_dependency('i18n', '~> 0.4')
+  s.add_dependency('i18n', '>= 0.7', '< 2')
   s.add_dependency('json')
   s.add_dependency('rest-client')
   s.add_dependency('gli')
@@ -33,5 +33,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency('aruba', '~> 0.8')
   s.add_development_dependency('cucumber', '~> 2.0')
   s.add_development_dependency('fakeweb')
-  s.add_development_dependency('appraisal')
 end

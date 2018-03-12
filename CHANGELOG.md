@@ -1,5 +1,16 @@
 # master
 
+# Version 3.0.0
+
+* drop support for i18n 0.4, 0.5 and 0.6 (ℹ️ Rails [dropped those in July 2014](https://github.com/rails/rails/commit/cd7d414e48f537278043bfc77cfb4217e8c89c24)))
+* add official support for i18n 0.8, 0.9 and 1.0
+* prevent users to use dependencies impacted by some vulnerabilities:
+  * OSVDB-101157
+  * CVE-2015-3448 / OSVDB-117461
+  * CVE-2013-0269 / OSVDB-101137
+  * CVE-2015-1820 / OSVDB-119878
+* fix a bug introduced in 2.5.0 where the exception handler was crashing with `TypeMismatch` error when `blacklisted_keys_pattern` was not explicitly configured
+
 # Version 2.5.0
 
 * Show fully-scoped keys in `ExceptionHandler` log messages (thanks to [@leonhooijer](https://github.com/leonhooijer))

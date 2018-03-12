@@ -1,5 +1,9 @@
 # master
 
+# Version 3.0.1
+
+* actually prevent `CVE-2013-0269 / OSVDB-101137` (3.0.0 was supposed to)
+
 # Version 3.0.0
 
 * drop support for i18n 0.4, 0.5 and 0.6 (ℹ️ Rails [dropped those in July 2014](https://github.com/rails/rails/commit/cd7d414e48f537278043bfc77cfb4217e8c89c24)))

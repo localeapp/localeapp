@@ -6,8 +6,8 @@ Gem::Specification.new do |s|
   s.name        = "localeapp"
   s.version     = Localeapp::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Christopher Dell", "Chris McGrath", "Michael Baudino"]
-  s.email       = ["chris@tigrish.com", "chris@octopod.info", "michael.baudino@alpine-lab.com"]
+  s.authors     = ["Christopher Dell", "Chris McGrath", "Michael Baudino", "Thibault Dalban"]
+  s.email       = ["chris@tigrish.com", "chris@octopod.info", "michael.baudino@alpine-lab.com", "thibault.dalban@alpine-lab.com"]
   s.homepage    = "http://www.localeapp.com"
   s.summary     = %q{Easy i18n translation management with localeapp.com}
   s.description = %q{Synchronizes i18n translation keys and content with localeapp.com so you don't have to manage translations by hand.}

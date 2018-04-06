@@ -24,6 +24,7 @@ require 'localeapp/cli/update'
 require 'localeapp/cli/add'
 require 'localeapp/cli/remove'
 require 'localeapp/cli/rename'
+require 'localeapp/cli/copy'
 require 'localeapp/cli/daemon'
 
 module Localeapp

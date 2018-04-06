@@ -92,6 +92,14 @@ You can create translations on the command line by running:
 
 You must provide at least one translation and the locale code must already exist in the project.
 
+## Copy a translation
+
+You can copy a translation on the command line by running:
+
+    localeapp cp key.source_name key.destination_name
+
+If the destination key name exists in the project the content is overwritten, otherwise a new key is created.
+
 ## Automatically pulling translations
 
 There are two ways to do this, one that suits a single developer working the code locally and one where the translations are being pulled down to a staging (or live) server.

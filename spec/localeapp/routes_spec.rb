@@ -124,6 +124,24 @@ describe Localeapp::Routes do
     end
   end
 
+  describe "#copy_endpoint(options = {})" do
+    it "returns :post and the copy url for the options" do
+      with_configuration(@config) do
+        options = { :source_name => "foo.bar" }
+        expect(@routes).to receive(:copy_url).with(options).and_return("url")
+        expect(@routes.copy_endpoint(options)).to eq([:post, "url"])
+      end
+    end
+  end
+
+  describe "#copy_url(options = {})" do
+    it "extends the project_url and includes the escaped key name" do
+      with_configuration(@config) do
+        expect(@routes.copy_url(:source_name => "test.key")).to eq("https://test.host/v1/projects/API_KEY/translations/test%2Ekey/copy")
+      end
+    end
+  end
+
   describe "#export_url" do
     it "it extends the project_url and defaults to yml" do
       with_configuration(@config) do

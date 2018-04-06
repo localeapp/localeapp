@@ -56,6 +56,7 @@ When /^I have a valid project on localeapp\.com with api key "([^"]*)" and the t
   uri = "https://api.localeapp.com/v1/projects/#{api_key}/translations/#{key_name.gsub(/\./, '%2E')}"
   add_fake_web_uri(:delete, uri, ['200', 'OK'], '')
   add_fake_web_uri(:post, uri + '/rename', ['200', 'OK'], '')
+  add_fake_web_uri(:post, uri + '/copy', ['200', 'OK'], '')
 end
 
 When /^I have a LOCALEAPP_API_KEY env variable set to "(.*?)"$/ do |api_key|

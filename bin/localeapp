@@ -138,6 +138,20 @@ module LocaleappGLIWrapper
     end
   end
 
+  desc "copies a key in the project"
+  arg_name "<source key name> <dest key name>"
+  command :cp do |c|
+    c.action do |global_options, options, args|
+      source_name = args.shift
+      dest_name = args.shift
+      if source_name.nil? || dest_name.nil?
+        exit_now! "localeapp cp requires a source key name and a destination key name", 1
+      else
+        Localeapp::CLI::Copy.new(global_options).execute(source_name, dest_name, *args)
+      end
+    end
+  end
+
   desc "Pulls one or all translations from localeapp.com"
   arg_name "<key> (optional)"
   command :pull do |c|

@@ -1,5 +1,9 @@
 # master
 
+# Version 3.1.0
+
+* add `localeapp cp`
+
 # Version 3.0.1
 
 * actually prevent `CVE-2013-0269 / OSVDB-101137` (3.0.0 was supposed to)

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Localeapp::CLI::Add, "#execute(current_name, new_name, *rest)" do
+describe Localeapp::CLI::Rename, "#execute(current_name, new_name, *rest)" do
   def do_action(current_name = 'test.key', new_name = 'test.new_name')
     @command.execute(current_name, new_name)
   end

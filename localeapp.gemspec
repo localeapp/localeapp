@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2.1"
 
-  s.add_dependency('i18n', '>= 0.7', '< 2')
+  s.add_dependency('i18n', '>= 0.7', '< 1.3')
   s.add_dependency('json', '>= 1.7.7')
   s.add_dependency('rest-client', '>= 1.8.0')
   s.add_dependency('gli')

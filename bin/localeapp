@@ -34,7 +34,7 @@ module LocaleappGLIWrapper
       global_options[:k]
     elsif ENV['LOCALEAPP_API_KEY']
       ENV['LOCALEAPP_API_KEY']
-    elsif File.exist?('.env') && IO.read('.env') =~ /^LOCALEAPP_API_KEY=(\w+)$/
+    elsif File.exist?('.localeapprc') && IO.read('.localeapprc') =~ /^LOCALEAPP_API_KEY=(\w+)$/
       $1
     else
       nil

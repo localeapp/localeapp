@@ -1,5 +1,7 @@
 # master
 
+* Remove I18n Hash#deep_merge! usage
+
 # Version 3.1.0
 
 * add `localeapp cp`

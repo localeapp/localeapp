@@ -11,7 +11,7 @@ module Localeapp
           translations = Localeapp.load_yaml_file(filename)
           if data['translations'] && data['translations'][short_code]
             new_data = { short_code => data['translations'][short_code] }
-            translations.deep_merge!(new_data)
+            translations = deep_merge translations, new_data
           end
         else
           translations = { short_code => data['translations'][short_code] }
@@ -41,6 +41,16 @@ module Localeapp
     end
 
     private
+
+    def deep_merge(original, other)
+      original.merge other do |_, a, b|
+        if Hash === a && Hash === b
+          deep_merge a, b
+        else
+          b
+        end
+      end
+    end
 
     def generate_yaml(translations)
       YAML.dump(translations, :line_width => -1)[4..-1]

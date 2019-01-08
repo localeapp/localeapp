@@ -1,7 +1,7 @@
 sudo: required
 dist: trusty
 before_install:
-  - gem install bundler
+  - gem install bundler -v '< 2'
 rvm:
   - 2.5.0
   - 2.4.3

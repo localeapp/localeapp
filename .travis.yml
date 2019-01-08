@@ -1,5 +1,5 @@
-sudo: required
-dist: trusty
+dist: xenial
+jdk: openjdk10
 before_install:
   - gem install bundler -v '< 2'
 rvm:

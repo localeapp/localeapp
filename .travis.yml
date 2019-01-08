@@ -1,4 +1,7 @@
 sudo: required
+os:
+  - linux
+  - osx
 dist: trusty
 before_install:
   - gem install bundler -v '< 2'

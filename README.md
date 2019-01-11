@@ -178,6 +178,10 @@ You can contact us via the support link at the bottom of the page or emailing su
 
 See corresponding [contributing guidelines][3].
 
+## Known bugs
+
+We are aware about a compatibility issue with JRuby 9.1 and i18n 1.3. Our recommandation so far is to use i18n < 1.3 if you are using JRuby 9.1.
+
 ## License
 
 Copyright (c) 2014 [Locale][5] and other [contributors][6], released under the [MIT License][4].

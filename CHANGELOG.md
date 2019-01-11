@@ -1,6 +1,9 @@
 # master
 
+# Version 3.1.1
+
 * Remove I18n Hash#deep_merge! usage
+* Support ruby 2.6
 
 # Version 3.1.0
 

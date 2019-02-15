@@ -1,5 +1,9 @@
 # master
 
+# Version 3.1.2
+
+* Fix a bug when `.env` is a directory (thanks to [@xijo](https://github.com/xijo) for [reporting it](https://github.com/Locale/localeapp/pull/262))
+
 # Version 3.1.1
 
 * Remove I18n Hash#deep_merge! usage

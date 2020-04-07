@@ -1,5 +1,9 @@
 # master
 
+# Version 3.1.3
+
+* Fix deprecation warning in Rails 6 initialization (thanks to [@ryanb](https://github.com/ryanb) for [reporting it](https://github.com/Locale/localeapp/issues/276))
+
 # Version 3.1.2
 
 * Fix a bug when `.env` is a directory (thanks to [@xijo](https://github.com/xijo) for [reporting it](https://github.com/Locale/localeapp/pull/262))

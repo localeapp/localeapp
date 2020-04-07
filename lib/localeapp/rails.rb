@@ -4,7 +4,9 @@ module Localeapp
   module Rails
     def self.initialize
 
-      ActionController::Base.send(:include, Localeapp::Rails::Controller)
+      ActiveSupport.on_load(:action_controller) do
+        ActionController::Base.send(:include, Localeapp::Rails::Controller)
+      end
 
       # match all versions between https://github.com/rails/rails/commit/d57ce232a885b21e1d6d1f9fbf60bc5908ad880d and https://github.com/rails/rails/commit/4dbce79e95e3f56a9b48992dea4531493a5008cc on all branches
       if rails_version_matches_all?('~> 4.0.10.rc1') |

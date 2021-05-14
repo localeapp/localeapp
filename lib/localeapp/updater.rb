@@ -40,7 +40,51 @@ module Localeapp
       end
     end
 
+    def dump_translation_keys(data, translation_keys)
+      data.each do |locale, remote_translations|
+        filename = File.join(Localeapp.configuration.translation_data_directory, "#{locale}.yml")
+        translations = Localeapp.load_yaml_file(filename)
+
+        new_data = get_translations(translations[locale], remote_translations, translation_keys)
+
+        if new_data['translations']
+          translations = deep_merge translations, { locale => new_data['translations'] }
+          translations = deeply_sort_hash translations
+        end
+
+        if new_data['deleted']
+          new_data['deleted'].each do |key|
+            remove_flattened_key!(translations, locale, key)
+          end
+        end
+
+        atomic_write(filename) do |file|
+          file.write generate_yaml(translations)
+        end
+      end
+    end
+
     private
+
+    def get_translations(translations, remote_translations, translation_keys)
+      data = {}
+      translation_keys.each do |translation_key|
+        path = translation_key.split('.')
+        local_key_exist = translations.dig(*path[0..-2])&.has_key?(path.dup.pop)
+        remote_key_exist = remote_translations.dig(*path[0..-2])&.has_key?(path.dup.pop)
+
+        raise "Could not find given locale: #{translation_key}" unless remote_key_exist || local_key_exist
+
+        if local_key_exist && !remote_key_exist
+          data['deleted'] = {}
+          data['deleted'].merge!([path].to_h)
+        else
+          data['translations'] = {}
+          data['translations'].merge!(path.reverse.inject(remote_translations.dig(*path)) { |a, n| { n => a } })
+        end
+      end
+      data
+    end
 
     def deep_merge(original, other)
       original.merge other do |_, a, b|
@@ -50,6 +94,14 @@ module Localeapp
           b
         end
       end
+    end
+
+    def deeply_sort_hash(object)
+      return object unless object.is_a?(Hash)
+      hash = Hash.new
+      object.each { |k, v| hash[k] = deeply_sort_hash(v) }
+      sorted = hash.sort { |a, b| a[0].to_s <=> b[0].to_s }
+      hash.class[sorted]
     end
 
     def generate_yaml(translations)

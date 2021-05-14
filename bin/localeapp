@@ -182,6 +182,26 @@ module LocaleappGLIWrapper
     end
   end
 
+  desc "Gets one or multiple translations by key from localeapp.com and updates the yml"
+  arg_name "<translation keys>"
+  command :get do |c|
+    c.desc "Set the locale key"
+    c.arg_name 'locale_key'
+    c.default_value nil
+    c.flag [:l, :locale_key]
+
+    c.action do |global_options, options, args|
+      locale_key = options[:locale_key]
+      translation_keys = args
+
+      if translation_keys.empty?
+        exit_now! "localeapp get requires at least one key name", 1
+      else
+        Localeapp::CLI::Get.new(global_options).execute(locale_key, translation_keys)
+      end
+    end
+  end
+
   desc "Simple daemon (checks for new translations in the background)"
   command :daemon do |c|
     c.desc "Interval to wait between checks"

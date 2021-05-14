@@ -4,6 +4,9 @@ module Localeapp
       include ::Localeapp::ApiCall
 
       def execute(path = nil)
+        # moneky path this method in our own projects
+        @output.puts "This Command is restricted for eMerchantPay projects"
+        return
         @output.puts "Localeapp Push"
         if path_is_directory?(path)
           yaml_files_in_directory(path).each do |path|

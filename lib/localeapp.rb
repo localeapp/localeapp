@@ -26,6 +26,7 @@ require 'localeapp/cli/remove'
 require 'localeapp/cli/rename'
 require 'localeapp/cli/copy'
 require 'localeapp/cli/daemon'
+require 'localeapp/cli/get'
 
 module Localeapp
   API_VERSION = "1"

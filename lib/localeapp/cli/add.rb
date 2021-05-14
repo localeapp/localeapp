@@ -4,6 +4,14 @@ module Localeapp
       def execute(key, *translations)
         @output.puts "Localeapp Add"
         @output.puts ""
+        # Those are just first thoughs, didn't went deep into this one
+        # get all en translations
+        # find potential aliases
+        # if there is a match suggest reusing the key or copy it
+        # add the promt from bellow
+        # STDOUT.puts "An alias was found, suggest to use/copy it. Enter 'create' to confirm creating a new key:"
+        # input = STDIN.gets.chomp
+        # raise "Aborting creating key: #{key}. You entered #{input}" unless input == 'create'
         translations.each do |translation|
           if translation =~ /([\w\-]+):(.*)/m
             locale, description = $1, $2

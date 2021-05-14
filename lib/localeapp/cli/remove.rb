@@ -7,6 +7,12 @@ module Localeapp
         @output.puts "Localeapp rm"
         @output.puts ""
         @output.puts "Remove key: #{key}"
+        # monkey path this method in our own projects
+        # or maybe suggest it for PR instead
+        # add a confirmation before actually delete the key
+        STDOUT.puts "Are you sure? Enter 'yes' to confirm:"
+        input = STDIN.gets.chomp
+        raise "Aborting removing key: #{key}. You entered #{input}" unless input == 'yes'
         api_call :remove,
           :url_options => { :key => key },
           :success => :report_success,

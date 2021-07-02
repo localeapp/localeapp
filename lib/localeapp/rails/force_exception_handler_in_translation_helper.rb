@@ -16,9 +16,9 @@ module Localeapp
     def translate(key, options = {})
       full_key = [options[:scope], key].compact.join(".")
       if full_key =~ Localeapp.configuration.blacklisted_keys_pattern
-        super(key, options)
+        super(key, **options)
       else
-        super(key, {:raise => false}.merge(options))
+        super(key, **{:raise => false}.merge(options))
       end
     end
     alias :t :translate

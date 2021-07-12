@@ -1,5 +1,9 @@
 # master
 
+# Version 3.2.0
+
+* Support ruby 3.0 (thanks to [@spilin](https://github.com/spilin))
+
 # Version 3.1.3
 
 * Fix deprecation warning in Rails 6 initialization (thanks to [@ryanb](https://github.com/ryanb) for [reporting it](https://github.com/Locale/localeapp/issues/276))

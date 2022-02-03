@@ -49,7 +49,8 @@ module Localeapp::TranslationHelperRails41MonkeyPatch
 
     if html_safe_translation_key?(key)
       html_safe_options = options.dup
-      options.except(*I18n::RESERVED_KEYS).each do |name, value|
+      options.each do |name, value|
+        next if I18n::RESERVED_KEYS.include?(name)
         unless name == :count && value.is_a?(Numeric)
           html_safe_options[name] = ERB::Util.html_escape(value.to_s)
         end

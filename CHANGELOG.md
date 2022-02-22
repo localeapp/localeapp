@@ -1,5 +1,9 @@
 # master
 
+# Version 3.3.0
+
+* Support I18n >= 1.9.0 (thanks to [@ryanb](https://github.com/ryanb))
+
 # Version 3.2.0
 
 * Support ruby 3.0 (thanks to [@spilin](https://github.com/spilin))

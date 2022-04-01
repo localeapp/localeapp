@@ -16,6 +16,11 @@ gemfile:
   - spec/gemfiles/i18n_0.8.gemfile
   - spec/gemfiles/i18n_0.9.gemfile
   - spec/gemfiles/i18n_1.0.gemfile
+  - spec/gemfiles/i18n_1.1.gemfile
+  - spec/gemfiles/i18n_1.2.gemfile
+  - spec/gemfiles/i18n_1.3.gemfile
+  - spec/gemfiles/i18n_1.4.gemfile
+  - spec/gemfiles/i18n_1.5.gemfile
 notifications:
   slack:
     secure: dPiP4+6xO6L9/RfXyivr2X2UohSD8CDdnnY57BvNgGVvFtQ2LUP9s1mDxj7gbBGhRZJzTMZlM/PU7bT9O9JCJPcpUs4dWg748KZ0ZGOslnv8yfzNbRh9U5OzyEjch2PFkEhpQPnuVCiof+ahjfxQQSkokpsbNa9DLlDmUapXFPY=

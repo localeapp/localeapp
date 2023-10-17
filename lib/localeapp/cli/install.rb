@@ -8,7 +8,7 @@ module Localeapp
         @config_type = :default
       end
 
-      def execute(key = nil, **options)
+      def execute(key = nil, options = {})
         installer("#{config_type.to_s.capitalize}Installer")
           .execute key, options
       end
@@ -25,7 +25,7 @@ module Localeapp
           @key_checker  = key_checker
         end
 
-        def execute(key = nil, **options)
+        def execute(key = nil, options = {})
           self.key = key
           print_header
           if validate_key
